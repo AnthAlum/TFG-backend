@@ -1,0 +1,274 @@
+---
+openapi: 3.0.0
+info:
+  title: API
+  description: API para mi TFG
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/MyOrganization62/TFGAplicactionAPI/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /merchants:
+    get:
+      tags:
+      - Comerciales
+      summary: Devuelve la informacion de todos los comerciales
+      description: Devuelve la infomacion de todos los comerciales.
+      operationId: getMerchants
+      responses:
+        "200":
+          description: Operacion completada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaComerciales'
+        "403":
+          description: No tienes permisos para ver este contenido.
+    post:
+      tags:
+      - Comerciales
+      summary: Crea un comercial.
+      operationId: addMerchant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comercial'
+      responses:
+        "201":
+          description: Nuevo comercial creado
+        "400":
+          description: Entrada invalida
+  /merchant/{merchantId}:
+    get:
+      tags:
+      - Comerciales
+      summary: Obtiene la informacion de un comercial a partir de su ID.
+      description: Esta operacion devuelve la informacion asociada a un comercial a partir de un ID.
+      operationId: getMerchant
+      parameters:
+      - name: merchantId
+        in: path
+        description: Merchant ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Operacion completada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comercial'
+        "404":
+          description: Comercial no encontrado.
+    put:
+      tags:
+      - Comerciales
+      summary: Modifica la informacion de un comercial
+      description: Modifica la informacion de un comercial actualizando los valores que vienen definidos en la peticion.
+      operationId: modifyMerchant
+      parameters:
+      - name: merchantId
+        in: path
+        description: El ID del comercial a modificar.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comercial'
+      responses:
+        "200":
+          description: Informacion actualizada.
+        "404":
+          description: El ID indicado no hace referencia a ningun comercial.
+    delete:
+      tags:
+      - Comerciales
+      summary: Elimina  un comercial
+      description: Elimina un comercial.
+      operationId: deleteMerchant
+      parameters:
+      - name: merchantId
+        in: path
+        description: Merchant ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminacion finalizada.
+        "404":
+          description: Comercial no encontrado.
+  /clients:
+    get:
+      tags:
+      - Cliente
+      summary: Devuelve la informacion de todos los clientes.
+      description: Devuelve la informacion de todos los clientes.
+      operationId: getClients
+      responses:
+        "200":
+          description: Operacion completada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaClientes'
+    post:
+      tags:
+      - Cliente
+      summary: Crea un cliente.
+      description: Crea un cliente con la informacion recibida.
+      operationId: createClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+      responses:
+        "201":
+          description: Cliente creado correctamente.
+        "400":
+          description: Entrada invalida.
+  /clients/{clientId}:
+    get:
+      tags:
+      - Cliente
+      summary: Obtiene la informacion de un cliente a partir de su ID.
+      description: Obtiene la informacion de un cliente a partir de su ID.
+      operationId: getClient
+      parameters:
+      - name: clientId
+        in: path
+        description: El ID del cliente.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Consulta completada.
+        "404":
+          description: Cliente no encontrado.
+    put:
+      tags:
+      - Cliente
+      summary: Cambia la informacion asociada a un cliente a partor de su ID.
+      description: Cambia la informacion asociada a un cliente a partor de su ID.
+      operationId: modifyClient
+      parameters:
+      - name: clientId
+        in: path
+        description: El ID del cliente a modificar
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+      responses:
+        "200":
+          description: Informacion actualizada.
+        "404":
+          description: El ID indicado no hace referencia a ningun cliente.
+    delete:
+      tags:
+      - Cliente
+      summary: Elimina a un cliente.
+      description: Elimina a un cliente.
+      operationId: deleteClient
+      parameters:
+      - name: clientId
+        in: path
+        description: Merchant ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminacion finalizada
+        "404":
+          description: El ID indicado no hace referencia a ningun cliente.
+components:
+  schemas:
+    Comercial:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 12345
+        nombre:
+          type: string
+          example: Juan Antonio Gonzalez Carrasco1
+        idRol:
+          type: integer
+          example: 1
+        cif:
+          type: string
+          example: 12345678H
+        email:
+          type: string
+          example: juangoncarrasco@example.com
+        telefono:
+          type: string
+          example: "123456789"
+      description: Esquema que representa un comercial
+    ListaComerciales:
+      type: object
+      properties:
+        comerciales:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comercial'
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 67890
+        nombre:
+          type: string
+          example: Fernando Carlos Roca Rivas
+        idComerciante:
+          type: integer
+          format: int64
+        email:
+          type: string
+          example: correoexample@example.com
+        telefono:
+          type: string
+          example: "987654321"
+        empresa:
+          type: string
+          example: Cinco Jotas
+    ListaClientes:
+      type: object
+      properties:
+        clientes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cliente'
