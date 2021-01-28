@@ -11,7 +11,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_client")
-    private Integer idClient;
+    private Long idClient;
 
     private String nombre;
     private String email;
@@ -23,7 +23,7 @@ public class Client {
     private Merchant merchant;
 
     /*   CTOR., GETTERS, SETTERS    */
-    public Client(Integer idClient, Merchant merchant, String nombre, String email, String telefono, String empresa) {
+    public Client(Long idClient, Merchant merchant, String nombre, String email, String telefono, String empresa) {
         this.idClient = idClient;
         this.merchant = merchant;
         this.nombre = nombre;
@@ -32,11 +32,11 @@ public class Client {
         this.empresa = empresa;
     }
 
-    public Integer getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(Integer idClient) {
+    public void setIdClient(Long idClient) {
         this.idClient = idClient;
     }
 

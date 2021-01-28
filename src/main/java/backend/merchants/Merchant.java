@@ -13,7 +13,7 @@ public class Merchant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_merchant")
-    private Integer idMerchant;
+    private Long idMerchant;
     /**
      * Value 0 for Admin or Value 1 for User
      */
@@ -30,7 +30,7 @@ public class Merchant {
     private Set<Client> clients;
 
     /*   CTOR., GETTERS, SETTERS    */
-    public Merchant(Integer idMerchant, Integer idRol, String name, String email, String cif, String telefono) {
+    public Merchant(Long idMerchant, Integer idRol, String name, String email, String cif, String telefono) {
         this.idMerchant = idMerchant;
         this.idRol = idRol;
         this.name = name;
@@ -39,11 +39,11 @@ public class Merchant {
         this.telefono = telefono;
     }
 
-    public Integer getIdMerchant() {
+    public Long getIdMerchant() {
         return idMerchant;
     }
 
-    public void setIdMerchant(Integer idMerchant) {
+    public void setIdMerchant(Long idMerchant) {
         this.idMerchant = idMerchant;
     }
 
