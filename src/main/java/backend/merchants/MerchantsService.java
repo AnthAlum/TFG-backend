@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MerchantsService {
     public Merchant findMerchantById(Long idMerchant);
-    public MerchantResponse getUserById(Long idUser);
-    public void registerMerchant(MerchantRegistrationRequest registrationRequest);
+    public MerchantResponse getMerchantById(Long idMerchant);
+    public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
 }
