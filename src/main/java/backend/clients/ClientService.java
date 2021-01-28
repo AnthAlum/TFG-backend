@@ -1,5 +1,6 @@
 package backend.clients;
 
+import backend.api.clients.ClientResponse;
 import org.springframework.stereotype.Service;
 
 @Service

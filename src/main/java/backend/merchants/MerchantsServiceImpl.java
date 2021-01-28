@@ -1,5 +1,7 @@
 package backend.merchants;
 
+import backend.api.merchants.MerchantResponse;
+
 public class MerchantsServiceImpl implements MerchantsService{
     @Override
     public Merchant findMerchantById(Long idMerchant) {
@@ -7,7 +9,7 @@ public class MerchantsServiceImpl implements MerchantsService{
     }
 
     @Override
-    public UserResponse getUserById(Long idUser) {
+    public MerchantResponse getUserById(Long idUser) {
         return null;
     }
 
