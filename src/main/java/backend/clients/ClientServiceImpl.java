@@ -1,5 +1,6 @@
 package backend.clients;
 
+import backend.api.clients.ClientRegistrationRequest;
 import backend.api.clients.ClientResponse;
 
 public class ClientServiceImpl implements ClientService{

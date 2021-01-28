@@ -1,5 +1,6 @@
 package backend.merchants;
 
+import backend.api.merchants.MerchantRegistrationRequest;
 import backend.api.merchants.MerchantResponse;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 @Validated
-public class ClientResponse {
+public class ClientRegistrationRequest {
     @JsonProperty("idCliente")
     private Long idClient = null;
 
@@ -77,8 +77,8 @@ public class ClientResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientResponse that = (ClientResponse) o;
-        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(idMerchant, that.idMerchant) && Objects.equals(email, that.email) && phone.equals(that.phone) && Objects.equals(company, that.company);
+        ClientRegistrationRequest that = (ClientRegistrationRequest) o;
+        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(idMerchant, that.idMerchant) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ClientResponse {
 
     @Override
     public String toString() {
-        return "ClientResponse{" +
+        return "ClientRegistrationRequest{" +
                 "idClient=" + idClient +
                 ", name='" + name + '\'' +
                 ", idMerchant=" + idMerchant +

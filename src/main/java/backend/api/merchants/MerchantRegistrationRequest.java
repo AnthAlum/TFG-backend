@@ -1,4 +1,4 @@
-package backend.api.clients;
+package backend.api.merchants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
@@ -6,15 +6,12 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 @Validated
-public class ClientResponse {
-    @JsonProperty("idCliente")
-    private Long idClient = null;
+public class MerchantRegistrationRequest {
+    @JsonProperty("idMerchant")
+    private Long idMerchant = null;
 
     @JsonProperty("nombre")
     private String name = null;
-
-    @JsonProperty("idComerciante")
-    private Long idMerchant = null;
 
     @JsonProperty("email")
     private String email = null;
@@ -25,12 +22,12 @@ public class ClientResponse {
     @JsonProperty("empresa")
     private String company = null;
 
-    public Long getIdClient() {
-        return idClient;
+    public Long getIdMerchant() {
+        return idMerchant;
     }
 
-    public void setIdClient(Long idClient) {
-        this.idClient = idClient;
+    public void setIdMerchant(Long idMerchant) {
+        this.idMerchant = idMerchant;
     }
 
     public String getName() {
@@ -39,14 +36,6 @@ public class ClientResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getIdMerchant() {
-        return idMerchant;
-    }
-
-    public void setIdMerchant(Long idMerchant) {
-        this.idMerchant = idMerchant;
     }
 
     public String getEmail() {
@@ -77,21 +66,20 @@ public class ClientResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientResponse that = (ClientResponse) o;
-        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(idMerchant, that.idMerchant) && Objects.equals(email, that.email) && phone.equals(that.phone) && Objects.equals(company, that.company);
+        MerchantRegistrationRequest that = (MerchantRegistrationRequest) o;
+        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idClient, name, idMerchant, email, phone, company);
+        return Objects.hash(idMerchant, name, email, phone, company);
     }
 
     @Override
     public String toString() {
-        return "ClientResponse{" +
-                "idClient=" + idClient +
+        return "MerchantRegistrationRequest{" +
+                "idMerchant=" + idMerchant +
                 ", name='" + name + '\'' +
-                ", idMerchant=" + idMerchant +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", company='" + company + '\'' +
