@@ -14,6 +14,9 @@ public class MerchantResponse {
     @JsonProperty("nombre")
     private String name = null;
 
+    @JsonProperty("idRol")
+    private Integer idRol = null;
+
     @JsonProperty("email")
     private String email = null;
 
@@ -90,40 +93,39 @@ public class MerchantResponse {
         this.company = company;
     }
 
+    @Schema(example = "0", description = "")
+
+    public Integer getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
+    }
 
     @Override
-    public boolean equals(java.lang.Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MerchantResponse merchantResponse = (MerchantResponse) o;
-        return Objects.equals(this.idMerchant, merchantResponse.idMerchant) &&
-                Objects.equals(this.name, merchantResponse.name) &&
-                Objects.equals(this.company, merchantResponse.company) &&
-                Objects.equals(this.email, merchantResponse.email) &&
-                Objects.equals(this.phone, merchantResponse.phone);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MerchantResponse that = (MerchantResponse) o;
+        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(name, that.name) && Objects.equals(idRol, that.idRol) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMerchant, name, email, phone, company);
+        return Objects.hash(idMerchant, name, idRol, email, phone, company);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Cliente {\n");
-
-        sb.append("    id: ").append(toIndentedString(idMerchant)).append("\n");
-        sb.append("    nombre: ").append(toIndentedString(name)).append("\n");
-        sb.append("    email: ").append(toIndentedString(email)).append("\n");
-        sb.append("    telefono: ").append(toIndentedString(phone)).append("\n");
-        sb.append("    empresa: ").append(toIndentedString(company)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "MerchantResponse{" +
+                "idMerchant=" + idMerchant +
+                ", name='" + name + '\'' +
+                ", idRol=" + idRol +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", company='" + company + '\'' +
+                '}';
     }
 
     /**
