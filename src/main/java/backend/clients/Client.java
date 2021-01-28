@@ -13,23 +13,23 @@ public class Client {
     @Column(name = "id_client")
     private Long idClient;
 
-    private String nombre;
+    private String name;
     private String email;
-    private String telefono;
-    private String empresa;
+    private String phone;
+    private String company;
 
     /*   RELATION   */
     @ManyToOne
     private Merchant merchant;
 
     /*   CTOR., GETTERS, SETTERS    */
-    public Client(Long idClient, Merchant merchant, String nombre, String email, String telefono, String empresa) {
+    public Client(Long idClient, Merchant merchant, String nombre, String email, String phone, String company) {
         this.idClient = idClient;
         this.merchant = merchant;
-        this.nombre = nombre;
+        this.name = nombre;
         this.email = email;
-        this.telefono = telefono;
-        this.empresa = empresa;
+        this.phone = phone;
+        this.company = company;
     }
 
     public Long getIdClient() {
@@ -48,12 +48,12 @@ public class Client {
         this.merchant = merchant;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -64,19 +64,19 @@ public class Client {
         this.email = email;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPhone(String Phone) {
+        this.phone = phone;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public String getCompany() {
+        return company;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void setCompany(String company) {
+        this.company = company;
     }
 }
