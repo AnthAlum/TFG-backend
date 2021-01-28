@@ -23,20 +23,20 @@ public class Merchant {
     private String name;
     private String email;
     private String cif;
-    private String telefono;
+    private String phone;
 
     /*   RELATION   */
     @OneToMany
     private Set<Client> clients;
 
     /*   CTOR., GETTERS, SETTERS    */
-    public Merchant(Long idMerchant, Integer idRol, String name, String email, String cif, String telefono) {
+    public Merchant(Long idMerchant, Integer idRol, String name, String email, String cif, String phone) {
         this.idMerchant = idMerchant;
         this.idRol = idRol;
         this.name = name;
         this.email = email;
         this.cif = cif;
-        this.telefono = telefono;
+        this.phone = phone;
     }
 
     public Long getIdMerchant() {
@@ -79,11 +79,11 @@ public class Merchant {
         this.cif = cif;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPhone(String telefono) {
+        this.phone = phone;
     }
 }
