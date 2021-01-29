@@ -3,15 +3,21 @@ package backend.merchants;
 import backend.api.merchants.MerchantListResponse;
 import backend.api.merchants.MerchantRegistrationRequest;
 import backend.api.merchants.MerchantResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MerchantsServiceImpl implements MerchantsService{
-
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
 
+    public MerchantsServiceImpl() {
+    }
+
+    @Autowired
     public MerchantsServiceImpl(MerchantRepository merchantRepository, MerchantMapper merchantMapper) {
         this.merchantRepository = merchantRepository;
         this.merchantMapper = merchantMapper;

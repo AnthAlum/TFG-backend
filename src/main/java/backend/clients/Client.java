@@ -23,6 +23,8 @@ public class Client {
     private Merchant merchant;
 
     /*   CTOR., GETTERS, SETTERS    */
+    public Client(){}
+
     public Client(Long idClient, Merchant merchant, String nombre, String email, String phone, String company) {
         this.idClient = idClient;
         this.merchant = merchant;

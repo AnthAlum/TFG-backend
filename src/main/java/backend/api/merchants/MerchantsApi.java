@@ -5,33 +5,19 @@
  */
 package backend.api.merchants;
 
-import io.swagger.model.Comercial;
-import io.swagger.model.ListaComerciales;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 
 public interface MerchantsApi {
 
@@ -48,13 +34,13 @@ public interface MerchantsApi {
 
     @Operation(summary = "Devuelve la informacion de todos los comerciales", description = "Devuelve la infomacion de todos los comerciales.", tags={ "Comerciales" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operacion completada.", content = @Content(schema = @Schema(implementation = ListaComerciales.class))),
+        @ApiResponse(responseCode = "200", description = "Operacion completada.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
         
         @ApiResponse(responseCode = "403", description = "No tienes permisos para ver este contenido.") })
     @RequestMapping(value = "/merchants",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MerchantListResponse> getMerchants(); //TODO: CAMBIAR ESTE METODO POR LA NUEVA CLASE PAGINATION QUE VOY A HACER
+    ResponseEntity<MerchantListResponse> getMerchants();
 
 }
 
