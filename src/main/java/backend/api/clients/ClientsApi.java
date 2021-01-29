@@ -3,7 +3,7 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package io.swagger.api;
+package backend.api.clients;
 
 import io.swagger.model.Cliente;
 import io.swagger.model.ListaClientes;

@@ -1,4 +1,4 @@
-package io.swagger.api;
+package backend.api.clients;
 
 import io.swagger.model.Cliente;
 import io.swagger.model.ListaClientes;

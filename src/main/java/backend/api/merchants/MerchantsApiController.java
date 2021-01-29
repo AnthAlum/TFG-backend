@@ -1,5 +1,8 @@
-package io.swagger.api;
+package backend.api.merchants;
 
+import backend.api.merchants.MerchantListResponse;
+import backend.api.merchants.MerchantRegistrationRequest;
+import backend.merchants.MerchantsService;
 import io.swagger.model.Comercial;
 import io.swagger.model.ListaComerciales;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,29 +46,22 @@ public class MerchantsApiController implements MerchantsApi {
 
     private final HttpServletRequest request;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public MerchantsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    private MerchantsService merchantsService;
+
+
+    public MerchantsApiController(ObjectMapper objectMapper, HttpServletRequest request, MerchantsService merchantsService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.merchantsService = merchantsService;
     }
 
-    public ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Comercial body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRegistrationRequest body) {
+        merchantsService.registerMerchant(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<ListaComerciales> getMerchants() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ListaComerciales>(objectMapper.readValue("{\r\n  \"comerciales\" : [ {\r\n    \"cif\" : \"12345678H\",\r\n    \"idRol\" : 1,\r\n    \"id\" : 12345,\r\n    \"telefono\" : \"123456789\",\r\n    \"nombre\" : \"Juan Antonio Gonzalez Carrasco1\",\r\n    \"email\" : \"juangoncarrasco@example.com\"\r\n  }, {\r\n    \"cif\" : \"12345678H\",\r\n    \"idRol\" : 1,\r\n    \"id\" : 12345,\r\n    \"telefono\" : \"123456789\",\r\n    \"nombre\" : \"Juan Antonio Gonzalez Carrasco1\",\r\n    \"email\" : \"juangoncarrasco@example.com\"\r\n  } ]\r\n}", ListaComerciales.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ListaComerciales>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ListaComerciales>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<MerchantListResponse> getMerchants() {
+        return new ResponseEntity<MerchantListResponse>(merchantsService.getMerchants(), HttpStatus.OK);
     }
 
 }

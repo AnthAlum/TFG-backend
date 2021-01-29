@@ -3,7 +3,7 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package io.swagger.api;
+package backend.api.merchants;
 
 import io.swagger.model.Comercial;
 import io.swagger.model.ListaComerciales;
@@ -33,7 +33,6 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 public interface MerchantsApi {
 
     @Operation(summary = "Crea un comercial.", description = "", tags={ "Comerciales" })
@@ -44,7 +43,7 @@ public interface MerchantsApi {
     @RequestMapping(value = "/merchants",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Comercial body);
+    ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRegistrationRequest body);
 
 
     @Operation(summary = "Devuelve la informacion de todos los comerciales", description = "Devuelve la infomacion de todos los comerciales.", tags={ "Comerciales" })
@@ -55,7 +54,7 @@ public interface MerchantsApi {
     @RequestMapping(value = "/merchants",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ListaComerciales> getMerchants();
+    ResponseEntity<MerchantListResponse> getMerchants(); //TODO: CAMBIAR ESTE METODO POR LA NUEVA CLASE PAGINATION QUE VOY A HACER
 
 }
 
