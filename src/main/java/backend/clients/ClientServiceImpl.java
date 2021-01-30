@@ -1,9 +1,16 @@
 package backend.clients;
 
+import backend.api.clients.ClientListResponse;
 import backend.api.clients.ClientRegistrationRequest;
 import backend.api.clients.ClientResponse;
+import backend.api.merchants.MerchantListResponse;
+import backend.api.merchants.MerchantResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class ClientServiceImpl implements ClientService{
 
     private ClientMapper clientMapper;
@@ -35,5 +42,16 @@ public class ClientServiceImpl implements ClientService{
     public void registerClient(ClientRegistrationRequest clientRegistrationRequest) {
         Client client = clientMapper.clientRegistrationRequestToClient(clientRegistrationRequest);
         clientRepository.save(client);
+    }
+
+    @Override
+    public ClientListResponse getClients(){
+        List<Client> clientList = (List<Client>)clientRepository.findAll(); //Obtener todos los clients
+        ClientListResponse clientListResponse = new ClientListResponse(); //Crear la lista de responses.
+        clientList.forEach(client ->
+                clientListResponse.addClientResponse(
+                        clientMapper.ClientToClientResponse(client)
+                )); //Mapear todos los clients a clientsResponse y guardalos en la lista.
+        return clientListResponse;
     }
 }

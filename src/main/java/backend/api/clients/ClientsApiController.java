@@ -1,5 +1,7 @@
 package backend.api.clients;
 
+import backend.clients.ClientService;
+import backend.clients.ClientServiceImpl;
 import io.swagger.model.Cliente;
 import io.swagger.model.ListaClientes;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,47 +41,31 @@ public class ClientsApiController implements ClientsApi {
 
     private static final Logger log = LoggerFactory.getLogger(ClientsApiController.class);
 
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
+    private ClientService clientService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public ClientsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    public ClientsApiController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
-    public ResponseEntity<Void> createClient(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Cliente body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<Void> createClient(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientRegistrationRequest body) {
+        clientService.registerClient(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
-        String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
-        String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<ListaClientes> getClients() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<ListaClientes>(objectMapper.readValue("{\r\n  \"clientes\" : [ {\r\n    \"id\" : 67890,\r\n    \"telefono\" : \"987654321\",\r\n    \"empresa\" : \"Cinco Jotas\",\r\n    \"nombre\" : \"Fernando Carlos Roca Rivas\",\r\n    \"idComerciante\" : 0,\r\n    \"email\" : \"correoexample@example.com\"\r\n  }, {\r\n    \"id\" : 67890,\r\n    \"telefono\" : \"987654321\",\r\n    \"empresa\" : \"Cinco Jotas\",\r\n    \"nombre\" : \"Fernando Carlos Roca Rivas\",\r\n    \"idComerciante\" : 0,\r\n    \"email\" : \"correoexample@example.com\"\r\n  } ]\r\n}", ListaClientes.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<ListaClientes>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<ListaClientes>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ClientListResponse> getClients() {
+        return new ResponseEntity<ClientListResponse>(clientService.getClients(), HttpStatus.OK);
     }
 
     public ResponseEntity<Void> modifyClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId,@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Cliente body) {
-        String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

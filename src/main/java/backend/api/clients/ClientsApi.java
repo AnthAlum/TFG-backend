@@ -5,6 +5,7 @@
  */
 package backend.api.clients;
 
+import backend.clients.Client;
 import io.swagger.model.Cliente;
 import io.swagger.model.ListaClientes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public interface ClientsApi {
     @RequestMapping(value = "/clients",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> createClient(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Cliente body);
+    ResponseEntity<Void> createClient(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientRegistrationRequest body);
 
 
     @Operation(summary = "Elimina a un cliente.", description = "Elimina a un cliente.", tags={ "Cliente" })
@@ -73,7 +74,7 @@ public interface ClientsApi {
     @RequestMapping(value = "/clients",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ListaClientes> getClients();
+    ResponseEntity<ClientListResponse> getClients();
 
 
     @Operation(summary = "Cambia la informacion asociada a un cliente a partor de su ID.", description = "Cambia la informacion asociada a un cliente a partor de su ID.", tags={ "Cliente" })
