@@ -26,8 +26,8 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Client findClientById(Long idCliente) {
-        Client client = clientRepository.findById(idCliente).orElse(null);
+    public Client findClientById(Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
         return client;
     }
 
@@ -53,5 +53,18 @@ public class ClientServiceImpl implements ClientService{
                         clientMapper.ClientToClientResponse(client)
                 )); //Mapear todos los clients a clientsResponse y guardalos en la lista.
         return clientListResponse;
+    }
+
+    @Override
+    public void deleteClient(Long idClient){
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            clientRepository.delete(client);
+        }
+    }
+
+    @Override
+    public void modifyClient(Long idClient){
+
     }
 }

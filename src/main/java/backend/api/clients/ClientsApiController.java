@@ -54,11 +54,12 @@ public class ClientsApiController implements ClientsApi {
     }
 
     public ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        clientService.deleteClient(clientId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
+        return new ResponseEntity<ClientResponse>(clientService.getClientById(clientId), HttpStatus.OK);
     }
 
     public ResponseEntity<ClientListResponse> getClients() {
@@ -66,6 +67,7 @@ public class ClientsApiController implements ClientsApi {
     }
 
     public ResponseEntity<Void> modifyClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId,@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Cliente body) {
+        clientService.modifyClient(clientId); //Pendiente de implementar.
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

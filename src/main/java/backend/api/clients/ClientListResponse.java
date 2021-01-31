@@ -2,6 +2,7 @@ package backend.api.clients;
 
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +10,9 @@ import java.util.Objects;
 public class ClientListResponse {
     private List<ClientResponse> clientResponseList;
 
-    public ClientListResponse(){}
+    public ClientListResponse(){
+        this.clientResponseList = new ArrayList<ClientResponse>();
+    }
 
     public ClientListResponse(List<ClientResponse> clientResponseList) {
         this.clientResponseList = clientResponseList;

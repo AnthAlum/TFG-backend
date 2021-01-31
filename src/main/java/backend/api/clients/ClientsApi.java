@@ -65,7 +65,7 @@ public interface ClientsApi {
         @ApiResponse(responseCode = "404", description = "Cliente no encontrado.") })
     @RequestMapping(value = "/clients/{clientId}",
         method = RequestMethod.GET)
-    ResponseEntity<Void> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
+    ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
 
 
     @Operation(summary = "Devuelve la informacion de todos los clientes.", description = "Devuelve la informacion de todos los clientes.", tags={ "Cliente" })
