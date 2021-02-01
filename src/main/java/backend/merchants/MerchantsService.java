@@ -11,4 +11,5 @@ public interface MerchantsService {
     public MerchantResponse getMerchantById(Long idMerchant);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
     public MerchantListResponse getMerchants();
+    public void deleteMerchant(Long idMerchant);
 }

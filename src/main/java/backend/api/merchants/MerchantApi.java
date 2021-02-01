@@ -3,8 +3,9 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package io.swagger.api;
+package backend.api.merchants;
 
+import backend.api.merchants.MerchantResponse;
 import io.swagger.model.Comercial;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +41,7 @@ public interface MerchantApi {
         @ApiResponse(responseCode = "200", description = "Eliminacion finalizada."),
         
         @ApiResponse(responseCode = "404", description = "Comercial no encontrado.") })
-    @RequestMapping(value = "/merchant/{merchantId}",
+    @RequestMapping(value = "/merchants/{merchantId}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
@@ -50,10 +51,10 @@ public interface MerchantApi {
         @ApiResponse(responseCode = "200", description = "Operacion completada.", content = @Content(schema = @Schema(implementation = Comercial.class))),
         
         @ApiResponse(responseCode = "404", description = "Comercial no encontrado.") })
-    @RequestMapping(value = "/merchant/{merchantId}",
+    @RequestMapping(value = "/merchants/{merchantId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Comercial> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
+    ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
 
     @Operation(summary = "Modifica la informacion de un comercial", description = "Modifica la informacion de un comercial actualizando los valores que vienen definidos en la peticion.", tags={ "Comerciales" })
@@ -61,7 +62,7 @@ public interface MerchantApi {
         @ApiResponse(responseCode = "200", description = "Informacion actualizada."),
         
         @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
-    @RequestMapping(value = "/merchant/{merchantId}",
+    @RequestMapping(value = "/merchants/{merchantId}",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchant(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Comercial body);

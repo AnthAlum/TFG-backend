@@ -53,4 +53,12 @@ public class MerchantsServiceImpl implements MerchantsService{
                      // MerchantsResponses a la lista tras el mapeao de cada comerciante
         return merchantListResponse;
     }
+
+    @Override
+    public void deleteMerchant(Long idMerchant){
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchantRepository.delete(merchant);
+        }
+    }
 }
