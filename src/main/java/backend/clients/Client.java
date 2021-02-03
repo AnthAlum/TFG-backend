@@ -18,17 +18,12 @@ public class Client {
     private String phone;
     private String company;
 
-    /*   RELATION   */
-    @ManyToOne
-    private Merchant merchant;
-
     /*   CTOR., GETTERS, SETTERS    */
     public Client(){}
 
-    public Client(Long idClient, Merchant merchant, String nombre, String email, String phone, String company) {
+    public Client(Long idClient, String name, String email, String phone, String company) {
         this.idClient = idClient;
-        this.merchant = merchant;
-        this.name = nombre;
+        this.name = name;
         this.email = email;
         this.phone = phone;
         this.company = company;
@@ -40,14 +35,6 @@ public class Client {
 
     public void setIdClient(Long idClient) {
         this.idClient = idClient;
-    }
-
-    public Merchant getMerchant() {
-        return merchant;
-    }
-
-    public void setMerchant(Merchant merchant) {
-        this.merchant = merchant;
     }
 
     public String getName() {
@@ -70,7 +57,7 @@ public class Client {
         return phone;
     }
 
-    public void setPhone(String Phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

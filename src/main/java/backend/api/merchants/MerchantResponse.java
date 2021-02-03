@@ -17,17 +17,11 @@ public class MerchantResponse {
     @JsonProperty("nombre")
     private String name = null;
 
-    @JsonProperty("cif")
-    private String cif = null;
-
     @JsonProperty("email")
     private String email = null;
 
     @JsonProperty("telefono")
     private String phone = null;
-
-    @JsonProperty("empresa")
-    private String company = null;
 
     /**
      * Get id
@@ -82,20 +76,6 @@ public class MerchantResponse {
         this.phone = phone;
     }
 
-    /**
-     * Get empresa
-     * @return empresa
-     **/
-    @Schema(example = "Cinco Jotas", description = "")
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
     @Schema(example = "0", description = "")
 
     public Integer getIdRol() {
@@ -106,25 +86,17 @@ public class MerchantResponse {
         this.idRol = idRol;
     }
 
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantResponse that = (MerchantResponse) o;
-        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(idRol, that.idRol) && Objects.equals(name, that.name) && Objects.equals(cif, that.cif) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
+        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(idRol, that.idRol) && Objects.equals(name, that.name)  && Objects.equals(email, that.email) && Objects.equals(phone, that.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMerchant, idRol, name, cif, email, phone, company);
+        return Objects.hash(idMerchant, idRol, name, email, phone);
     }
 
     @Override
@@ -133,10 +105,8 @@ public class MerchantResponse {
                 "idMerchant=" + idMerchant +
                 ", idRol=" + idRol +
                 ", name='" + name + '\'' +
-                ", cif='" + cif + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
                 '}';
     }
 

@@ -22,26 +22,19 @@ public class Merchant {
 
     private String email;
     private String name;
-    private String cif;
     private String phone;
-    private String company;
 
-    /*   RELATION   */
-    @OneToMany
-    private Set<Client> clients;
 
 
     /*   CTOR., GETTERS, SETTERS    */
     public Merchant(){}
 
-    public Merchant(Long idMerchant, Integer idRol, String name, String email, String cif, String phone, String company) {
+    public Merchant(Long idMerchant, Integer idRol, String name, String email, String phone) {
         this.idMerchant = idMerchant;
         this.idRol = idRol;
         this.name = name;
         this.email = email;
-        this.cif = cif;
         this.phone = phone;
-        this.company = company;
     }
 
     public Long getIdMerchant() {
@@ -76,14 +69,6 @@ public class Merchant {
         this.email = email;
     }
 
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -92,19 +77,4 @@ public class Merchant {
         this.phone = phone;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public Set<Client> getClients() {
-        return clients;
-    }
-
-    public void setClients(Set<Client> clients) {
-        this.clients = clients;
-    }
 }

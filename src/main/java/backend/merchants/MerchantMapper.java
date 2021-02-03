@@ -10,6 +10,5 @@ public interface MerchantMapper {
     
     MerchantResponse merchantToMerchantResponse(Merchant merchant);
 
-    @Mapping(target = "clients", ignore = true)
     Merchant merchantRegistrationRequestToMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
 }

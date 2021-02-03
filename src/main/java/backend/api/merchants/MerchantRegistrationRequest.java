@@ -19,9 +19,6 @@ public class MerchantRegistrationRequest {
     @JsonProperty("telefono")
     private String phone = null;
 
-    @JsonProperty("empresa")
-    private String company = null;
-
     @JsonProperty("idRol")
     private Integer idRol = null;
 
@@ -57,14 +54,6 @@ public class MerchantRegistrationRequest {
         this.phone = phone;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
     public Integer getIdRol() {
         return idRol;
     }
@@ -78,12 +67,12 @@ public class MerchantRegistrationRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantRegistrationRequest that = (MerchantRegistrationRequest) o;
-        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company) && Objects.equals(idRol, that.idRol);
+        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(idRol, that.idRol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMerchant, name, email, phone, company, idRol);
+        return Objects.hash(idMerchant, name, email, phone, idRol);
     }
 
     @Override
@@ -93,7 +82,6 @@ public class MerchantRegistrationRequest {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
                 ", idRol=" + idRol +
                 '}';
     }

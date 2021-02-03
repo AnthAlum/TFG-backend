@@ -13,9 +13,6 @@ public class ClientResponse {
     @JsonProperty("nombre")
     private String name = null;
 
-    @JsonProperty("idComerciante")
-    private Long idMerchant = null;
-
     @JsonProperty("email")
     private String email = null;
 
@@ -39,14 +36,6 @@ public class ClientResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getIdMerchant() {
-        return idMerchant;
-    }
-
-    public void setIdMerchant(Long idMerchant) {
-        this.idMerchant = idMerchant;
     }
 
     public String getEmail() {
@@ -78,12 +67,12 @@ public class ClientResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientResponse that = (ClientResponse) o;
-        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(idMerchant, that.idMerchant) && Objects.equals(email, that.email) && phone.equals(that.phone) && Objects.equals(company, that.company);
+        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && phone.equals(that.phone) && Objects.equals(company, that.company);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idClient, name, idMerchant, email, phone, company);
+        return Objects.hash(idClient, name, email, phone, company);
     }
 
     @Override
@@ -91,7 +80,6 @@ public class ClientResponse {
         return "ClientResponse{" +
                 "idClient=" + idClient +
                 ", name='" + name + '\'' +
-                ", idMerchant=" + idMerchant +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", company='" + company + '\'' +
