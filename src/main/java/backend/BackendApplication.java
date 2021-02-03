@@ -13,7 +13,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @EnableOpenApi
 @EnableJpaRepositories({"backend","backend.merchants", "backend.clients"})
 @ComponentScan(basePackages = { "backend", "backend.api", "backend.clients", "backend.merchants" , "io.swagger.configuration"})
-public class Swagger2SpringBoot implements CommandLineRunner {
+public class BackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... arg0) throws Exception {
@@ -23,7 +23,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringApplication(Swagger2SpringBoot.class).run(args);
+        new SpringApplication(BackendApplication.class).run(args);
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
