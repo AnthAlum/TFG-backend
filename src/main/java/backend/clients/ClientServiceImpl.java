@@ -1,8 +1,6 @@
 package backend.clients;
 
-import backend.api.clients.ClientListResponse;
-import backend.api.clients.ClientRegistrationRequest;
-import backend.api.clients.ClientResponse;
+import backend.api.clients.*;
 import backend.api.merchants.MerchantListResponse;
 import backend.api.merchants.MerchantResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +62,39 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void modifyClient(Long idClient){
-
+    public void modifyClientName(ClientNameChangeRequest clientNameChangeRequest, Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            client.setName(clientNameChangeRequest.getNewName());
+            clientRepository.save(client);
+        }
     }
+
+    @Override
+    public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            client.setName(clientEmailChangeRequest.getNewEmail());
+            clientRepository.save(client);
+        }
+    }
+
+    @Override
+    public void modifyClientPhone(ClientPhoneChangeRequest clientPhoneChangeRequest, Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            client.setPhone(clientPhoneChangeRequest.getNewPhone());
+            clientRepository.save(client);
+        }
+    }
+
+    @Override
+    public void modifyClientCompany(ClientCompanyChangeRequest clientCompanyChangeRequest, Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            client.setName(clientCompanyChangeRequest.getNewCompany());
+            clientRepository.save(client);
+        }
+    }
+
 }

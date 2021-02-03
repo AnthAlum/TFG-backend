@@ -66,9 +66,27 @@ public class ClientsApiController implements ClientsApi {
         return new ResponseEntity<ClientListResponse>(clientService.getClients(), HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> modifyClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId,@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Cliente body) {
-        clientService.modifyClient(clientId); //Pendiente de implementar.
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<Void> modifyClientName(Long clientId, @Valid ClientNameChangeRequest body) {
+        clientService.modifyClientName(body, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Void> modifyClientEmail(Long clientId, @Valid ClientEmailChangeRequest body) {
+        clientService.modifyClientEmail(body, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyClientPhone(Long clientId, @Valid ClientPhoneChangeRequest body) {
+        clientService.modifyClientPhone(body, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyClientCompany(Long clientId, @Valid ClientCompanyChangeRequest body) {
+        clientService.modifyClientCompany(body, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
