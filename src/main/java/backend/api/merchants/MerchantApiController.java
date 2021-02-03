@@ -1,9 +1,6 @@
 package backend.api.merchants;
 
-import backend.api.merchants.MerchantResponse;
 import backend.merchants.MerchantsService;
-import io.swagger.model.Comercial;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,13 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 @RestController
@@ -56,6 +50,12 @@ public class MerchantApiController implements MerchantApi {
     @Override
     public ResponseEntity<Void> modifyMerchantPhone(Long merchantId, @Valid MerchantPhoneChangeRequest body) {
         merchantsService.modifyMerchantPhone(body, merchantId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyMerchantRole(Long merchantId, @Valid MerchantRoleChangeRequest body) {
+        merchantsService.modifyMerchantRole(body, merchantId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

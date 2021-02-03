@@ -4,7 +4,6 @@ import backend.api.merchants.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,6 +82,15 @@ public class MerchantsServiceImpl implements MerchantsService{
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
             merchant.setName(merchantPhoneChangeRequest.getNewPhone());
+            merchantRepository.save(merchant);
+        }
+    }
+
+    @Override
+    public void modifyMerchantRole(MerchantRoleChangeRequest merchantRoleChangeRequest, Long idMerchant) {
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchant.setIdRol(merchantRoleChangeRequest.getNewRole());
             merchantRepository.save(merchant);
         }
     }

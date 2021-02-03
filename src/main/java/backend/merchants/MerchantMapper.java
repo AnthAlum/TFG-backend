@@ -10,5 +10,6 @@ public interface MerchantMapper {
     
     MerchantResponse merchantToMerchantResponse(Merchant merchant);
 
+    @Mapping(target = "idMerchant", ignore = true)
     Merchant merchantRegistrationRequestToMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
 }

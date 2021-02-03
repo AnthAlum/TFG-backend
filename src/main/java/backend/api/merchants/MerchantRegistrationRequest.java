@@ -7,28 +7,18 @@ import java.util.Objects;
 
 @Validated
 public class MerchantRegistrationRequest {
-    @JsonProperty("idMerchant")
-    private Long idMerchant = null;
 
-    @JsonProperty("nombre")
+    @JsonProperty("name")
     private String name = null;
 
     @JsonProperty("email")
     private String email = null;
 
-    @JsonProperty("telefono")
+    @JsonProperty("phone")
     private String phone = null;
 
-    @JsonProperty("idRol")
+    @JsonProperty("role")
     private Integer idRol = null;
-
-    public Long getIdMerchant() {
-        return idMerchant;
-    }
-
-    public void setIdMerchant(Long idMerchant) {
-        this.idMerchant = idMerchant;
-    }
 
     public String getName() {
         return name;
@@ -67,18 +57,17 @@ public class MerchantRegistrationRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantRegistrationRequest that = (MerchantRegistrationRequest) o;
-        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(idRol, that.idRol);
+        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(idRol, that.idRol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMerchant, name, email, phone, idRol);
+        return Objects.hash(name, email, phone, idRol);
     }
 
     @Override
     public String toString() {
         return "MerchantRegistrationRequest{" +
-                "idMerchant=" + idMerchant +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +

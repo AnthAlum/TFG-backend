@@ -21,24 +21,24 @@ import javax.validation.Valid;
 
 public interface MerchantsApi {
 
-    @Operation(summary = "Crea un comercial.", description = "", tags={ "Comerciales" })
+    @Operation(summary = "Creates a merchant.", description = "Creates a merchant with  the given information in the request", tags={ "Merchant" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "Nuevo comercial creado"),
+        @ApiResponse(responseCode = "201", description = "Merchant created successfully."),
         
-        @ApiResponse(responseCode = "400", description = "Entrada invalida") })
+        @ApiResponse(responseCode = "400", description = "The request has an invalid input") })
     @RequestMapping(value = "/merchants",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRegistrationRequest body);
 
 
-    @Operation(summary = "Devuelve la informacion de todos los comerciales", description = "Devuelve la infomacion de todos los comerciales.", tags={ "Comerciales" })
+    @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operacion completada.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+        @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
         
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para ver este contenido.") })
+        @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
     @RequestMapping(value = "/merchants",
-        produces = { "application/json" }, 
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<MerchantListResponse> getMerchants();
 

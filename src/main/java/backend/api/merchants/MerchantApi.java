@@ -5,86 +5,83 @@
  */
 package backend.api.merchants;
 
-import backend.api.merchants.MerchantResponse;
-import io.swagger.model.Comercial;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 public interface MerchantApi {
 
-    @Operation(summary = "Elimina  un comercial", description = "Elimina un comercial.", tags={ "Comerciales" })
+    @Operation(summary = "Deletes a merchant", description = "Deletes a merchant of the given ID.", tags={ "Merchant" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Eliminacion finalizada."),
+        @ApiResponse(responseCode = "200", description = "Client deleted sucessfully."),
         
-        @ApiResponse(responseCode = "404", description = "Comercial no encontrado.") })
+        @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
+    ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
 
-    @Operation(summary = "Obtiene la informacion de un comercial a partir de su ID.", description = "Esta operacion devuelve la informacion asociada a un comercial a partir de un ID.", tags={ "Comerciales" })
+    @Operation(summary = "Returns merchant's information.", description = "Returns merchant's information of the given ID.", tags={ "Merchant" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operacion completada.", content = @Content(schema = @Schema(implementation = Comercial.class))),
+        @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantResponse.class))),
         
-        @ApiResponse(responseCode = "404", description = "Comercial no encontrado.") })
+        @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
+    ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
-    @Operation(summary = "Modifica el nombre de un comercial", description = "Modifica el nombre de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @Operation(summary = "Change merchant's name", description = "Change merchant's name with the given new name.", tags={ "Merchant" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Nombre actualizado."),
+            @ApiResponse(responseCode = "200", description = "Name updated successfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}/name",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyMerchantName(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantNameChangeRequest body);
+    ResponseEntity<Void> modifyMerchantName(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantNameChangeRequest body);
 
-    @Operation(summary = "Modifica el email de un comercial", description = "Modifica el email de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @Operation(summary = "Change merchant's email.", description = "Change merchant's email with the given new email .", tags={ "Merchant" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Email actualizado."),
+            @ApiResponse(responseCode = "200", description = "Email updated successfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}/email",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyMerchantEmail(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantEmailChangeRequest body);
+    ResponseEntity<Void> modifyMerchantEmail(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantEmailChangeRequest body);
 
-    @Operation(summary = "Modifica el telefono de un comercial", description = "Modifica el telefono de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @Operation(summary = "Change merchant's phone number.", description = "Change merchant's phone number with the given new phone number.", tags={ "Merchant" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Telefono actualizado."),
+            @ApiResponse(responseCode = "200", description = "Phone number updated successfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}/phone",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyMerchantPhone(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantPhoneChangeRequest body);
+    ResponseEntity<Void> modifyMerchantPhone(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantPhoneChangeRequest body);
+
+    @Operation(summary = "Change merchant's role.", description = "Change merchant's role with the given new role.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Role updated successfully."),
+
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
+    @RequestMapping(value = "/merchants/{merchantId}/role",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchantRole(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRoleChangeRequest body);
 
 }
 
