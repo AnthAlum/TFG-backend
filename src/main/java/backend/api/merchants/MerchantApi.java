@@ -56,16 +56,35 @@ public interface MerchantApi {
         method = RequestMethod.GET)
     ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
+    @Operation(summary = "Modifica el nombre de un comercial", description = "Modifica el nombre de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Nombre actualizado."),
 
-    @Operation(summary = "Modifica la informacion de un comercial", description = "Modifica la informacion de un comercial actualizando los valores que vienen definidos en la peticion.", tags={ "Comerciales" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Informacion actualizada."),
-        
-        @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
-    @RequestMapping(value = "/merchants/{merchantId}",
-        consumes = { "application/json" }, 
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyMerchant(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Comercial body);
+            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+    @RequestMapping(value = "/merchants/{merchantId}/name",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchantName(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantNameChangeRequest body);
+
+    @Operation(summary = "Modifica el email de un comercial", description = "Modifica el email de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Email actualizado."),
+
+            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+    @RequestMapping(value = "/merchants/{merchantId}/email",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchantEmail(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantEmailChangeRequest body);
+
+    @Operation(summary = "Modifica el telefono de un comercial", description = "Modifica el telefono de un comercial al valor de la peticion.", tags={ "Comerciales" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Telefono actualizado."),
+
+            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun comercial.") })
+    @RequestMapping(value = "/merchants/{merchantId}/phone",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchantPhone(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantPhoneChangeRequest body);
 
 }
 

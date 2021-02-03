@@ -42,5 +42,7 @@ public interface MerchantsApi {
         method = RequestMethod.GET)
     ResponseEntity<MerchantListResponse> getMerchants();
 
+
+
 }
 

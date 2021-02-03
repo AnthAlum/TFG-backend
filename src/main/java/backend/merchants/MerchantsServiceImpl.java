@@ -1,8 +1,6 @@
 package backend.merchants;
 
-import backend.api.merchants.MerchantListResponse;
-import backend.api.merchants.MerchantRegistrationRequest;
-import backend.api.merchants.MerchantResponse;
+import backend.api.merchants.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +57,33 @@ public class MerchantsServiceImpl implements MerchantsService{
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
             merchantRepository.delete(merchant);
+        }
+    }
+
+    @Override
+    public void modifyMerchantName(MerchantNameChangeRequest merchantNameChangeRequest, Long idMerchant) {
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchant.setName(merchantNameChangeRequest.getNewName());
+            merchantRepository.save(merchant);
+        }
+    }
+
+    @Override
+    public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant) {
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchant.setName(merchantEmailChangeRequest.getNewEmaiL());
+            merchantRepository.save(merchant);
+        }
+    }
+
+    @Override
+    public void modifyMerchantPhone(MerchantPhoneChangeRequest merchantPhoneChangeRequest, Long idMerchant) {
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchant.setName(merchantPhoneChangeRequest.getNewPhone());
+            merchantRepository.save(merchant);
         }
     }
 }

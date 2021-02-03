@@ -41,8 +41,21 @@ public class MerchantApiController implements MerchantApi {
         return new ResponseEntity<MerchantResponse>(merchantsService.getMerchantById(merchantId), HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> modifyMerchant(@Parameter(in = ParameterIn.PATH, description = "El ID del comercial a modificar.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId,@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody Comercial body) {
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<Void> modifyMerchantName(Long merchantId, @Valid MerchantNameChangeRequest body) {
+        merchantsService.modifyMerchantName(body, merchantId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Void> modifyMerchantEmail(Long merchantId, @Valid MerchantEmailChangeRequest body) {
+        merchantsService.modifyMerchantEmail(body, merchantId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyMerchantPhone(Long merchantId, @Valid MerchantPhoneChangeRequest body) {
+        merchantsService.modifyMerchantPhone(body, merchantId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }
