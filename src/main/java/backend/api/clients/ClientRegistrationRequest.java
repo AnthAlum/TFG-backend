@@ -7,28 +7,17 @@ import java.util.Objects;
 
 @Validated
 public class ClientRegistrationRequest {
-    @JsonProperty("idCliente")
-    private Long idClient = null;
-
-    @JsonProperty("nombre")
+    @JsonProperty(value = "name", index = 0)
     private String name = null;
 
-    @JsonProperty("email")
-    private String email = null;
-
-    @JsonProperty("telefono")
+    @JsonProperty(value = "phone", index = 1)
     private String phone = null;
 
-    @JsonProperty("empresa")
+    @JsonProperty(value = "email", index = 2)
+    private String email = null;
+
+    @JsonProperty(value = "company", index = 3)
     private String company = null;
-
-    public Long getIdClient() {
-        return idClient;
-    }
-
-    public void setIdClient(Long idClient) {
-        this.idClient = idClient;
-    }
 
     public String getName() {
         return name;
@@ -67,18 +56,17 @@ public class ClientRegistrationRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientRegistrationRequest that = (ClientRegistrationRequest) o;
-        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
+        return  Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idClient, name, email, phone, company);
+        return Objects.hash(name, email, phone, company);
     }
 
     @Override
     public String toString() {
         return "ClientRegistrationRequest{" +
-                "idClient=" + idClient +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +

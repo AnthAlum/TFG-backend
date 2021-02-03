@@ -37,85 +37,85 @@ import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 public interface ClientsApi {
 
-    @Operation(summary = "Crea un cliente.", description = "Crea un cliente con la informacion recibida.", tags={ "Cliente" })
+    @Operation(summary = "Creates a client.", description = "Creates a new client with the given information in the request.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "Cliente creado correctamente."),
+        @ApiResponse(responseCode = "201", description = "Client created successfully."),
         
-        @ApiResponse(responseCode = "400", description = "Entrada invalida.") })
+        @ApiResponse(responseCode = "400", description = "The request is an invalid input.") })
     @RequestMapping(value = "/clients",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Void> createClient(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientRegistrationRequest body);
 
 
-    @Operation(summary = "Elimina a un cliente.", description = "Elimina a un cliente.", tags={ "Cliente" })
+    @Operation(summary = "Delete a client.", description = "Delete a client of the given ID.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Eliminacion finalizada"),
+        @ApiResponse(responseCode = "200", description = "Client deleted successfully."),
         
-        @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun cliente.") })
+        @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
+    ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Client ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
 
 
-    @Operation(summary = "Obtiene la informacion de un cliente a partir de su ID.", description = "Obtiene la informacion de un cliente a partir de su ID.", tags={ "Cliente" })
+    @Operation(summary = "Returns client's information.", description = "Returns client's information of the given ID.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Consulta completada."),
+        @ApiResponse(responseCode = "200", description = "Request completed."),
         
-        @ApiResponse(responseCode = "404", description = "Cliente no encontrado.") })
+        @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}",
         method = RequestMethod.GET)
-    ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
+    ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "Client's ID.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId);
 
 
-    @Operation(summary = "Devuelve la informacion de todos los clientes.", description = "Devuelve la informacion de todos los clientes.", tags={ "Cliente" })
+    @Operation(summary = "Returns all clients information.", description = "Returns all clients information in a List.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Operacion completada", content = @Content(schema = @Schema(implementation = ListaClientes.class))) })
+        @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientListResponse.class))) })
     @RequestMapping(value = "/clients",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<ClientListResponse> getClients();
 
 
-    @Operation(summary = "Cambia el nombre de un cliente.", description = "Cambia el nombre asociada a un cliente por el valor de la petición.", tags={ "Cliente" })
+    @Operation(summary = "Change client's name.", description = "Change client's name with the given new name.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Nombre actualizado."),
+        @ApiResponse(responseCode = "200", description = "Name updated successfully."),
         
-        @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun cliente.") })
+        @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}/name",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClientName(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientNameChangeRequest body);
+    ResponseEntity<Void> modifyClientName(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientNameChangeRequest body);
 
-    @Operation(summary = "Cambia el email de un cliente.", description = "Cambia el email asociada a un cliente por el valor de la petición.", tags={ "Cliente" })
+    @Operation(summary = "Change client's email.", description = "Change client's email with the given new email.", tags={ "Client" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Email actualizado."),
+            @ApiResponse(responseCode = "200", description = "Email updated successfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun cliente.") })
+            @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}/email",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClientEmail(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientEmailChangeRequest body);
+    ResponseEntity<Void> modifyClientEmail(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientEmailChangeRequest body);
 
-    @Operation(summary = "Cambia el telefono de un cliente.", description = "Cambia el telefono asociada a un cliente por el valor de la petición.", tags={ "Cliente" })
+    @Operation(summary = "Change client's phone.", description = "Change client's phone with the given new phone.", tags={ "Client" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Telefono actualizado."),
+            @ApiResponse(responseCode = "200", description = "Phone number updated succesfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun cliente.") })
+            @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}/phone",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClientPhone(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientPhoneChangeRequest body);
+    ResponseEntity<Void> modifyClientPhone(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientPhoneChangeRequest body);
 
-    @Operation(summary = "Cambia la empresa de un cliente.", description = "Cambia la empresa asociada a un cliente por el valor de la petición.", tags={ "Cliente" })
+    @Operation(summary = "Change client's company.", description = "Change client's company with the given new company.", tags={ "Client" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Empresa actualizado."),
+            @ApiResponse(responseCode = "200", description = "Company updated successfully."),
 
-            @ApiResponse(responseCode = "404", description = "El ID indicado no hace referencia a ningun cliente.") })
+            @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}/company",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClientCompany(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente a modificar", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientCompanyChangeRequest body);
+    ResponseEntity<Void> modifyClientCompany(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientCompanyChangeRequest body);
 
 }
 

@@ -53,12 +53,12 @@ public class ClientsApiController implements ClientsApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
+    public ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
         clientService.deleteClient(clientId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "El ID del cliente.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
+    public ResponseEntity<ClientResponse> getClient(@Parameter(in = ParameterIn.PATH, description = "Client's ID.", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId) {
         return new ResponseEntity<ClientResponse>(clientService.getClientById(clientId), HttpStatus.OK);
     }
 

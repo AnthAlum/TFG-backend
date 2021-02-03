@@ -1,8 +1,10 @@
-# Aplicación web para la gestión de la cartera de clientes en PYMES
-Esta es la implementación de la parte del backend en mi aplicación 
+# Web application for client portfolio management in SMEs
+This repository is the backend's implementation of my web application.
 
 
-## Descripción
-Para el backend he utilizado un servidor API REST desarrollado con [Java Spring](https://github.com/spring-projects/spring-framework) a partir de un stub generado con [Swagger-Codegen](https://github.com/swagger-api/swagger-codegen).
+## Description
+On the backend side I'm using a API REST server developed with [Java Spring Framework](https://github.com/spring-projects/spring-framework)
 
-En el diseño de la API he seguido la especificación [OpenAPI-Spec](https://spec.openapis.org/oas/v3.0.3), con el archivo .yml de especificación he generado el server stub con Swagger-Codegen.
+This API is designed following [OpenAPI-Spec standard](https://spec.openapis.org/oas/v3.0.3).
+
+

@@ -10,5 +10,6 @@ public interface ClientMapper {
 
     ClientResponse ClientToClientResponse(Client client);
 
+    @Mapping(target = "idClient", ignore = true)
     Client clientRegistrationRequestToClient(ClientRegistrationRequest clientRegistrationRequest);
 }

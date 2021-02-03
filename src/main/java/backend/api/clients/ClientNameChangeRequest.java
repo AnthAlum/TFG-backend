@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Validated
 public class ClientNameChangeRequest {
-    @JsonProperty("nuevoNombre")
+    @JsonProperty("newName")
     private String newName = null;
 
     public String getNewName() {

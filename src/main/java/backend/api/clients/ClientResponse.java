@@ -7,19 +7,19 @@ import java.util.Objects;
 
 @Validated
 public class ClientResponse {
-    @JsonProperty("idCliente")
+    @JsonProperty("clientId")
     private Long idClient = null;
 
-    @JsonProperty("nombre")
+    @JsonProperty("name")
     private String name = null;
 
     @JsonProperty("email")
     private String email = null;
 
-    @JsonProperty("telefono")
+    @JsonProperty("phone")
     private String phone = null;
 
-    @JsonProperty("empresa")
+    @JsonProperty("company")
     private String company = null;
 
     public Long getIdClient() {
