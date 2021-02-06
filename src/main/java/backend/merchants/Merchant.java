@@ -92,11 +92,10 @@ public class Merchant implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        // TODO: HAY QUE CREAR UNA ENTIDAD PARA LOS ROLES
         String assignedRole = null;
         if(getIdRol() == 0)
             assignedRole = "ROLE_ADMIN";
-        else
+        else if(getIdRol() == 1)
             assignedRole = "ROLE_USER";
         authorities.add(new SimpleGrantedAuthority(assignedRole));
         return authorities;
@@ -109,21 +108,21 @@ public class Merchant implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
