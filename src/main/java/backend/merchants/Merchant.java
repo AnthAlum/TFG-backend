@@ -1,14 +1,17 @@
 package backend.merchants;
 
 
-import backend.clients.Client;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "merchant")
-public class Merchant {
+public class Merchant implements UserDetails {
     /*   ATTRIBUTES  */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,18 +26,19 @@ public class Merchant {
     private String email;
     private String name;
     private String phone;
-
+    private String password;
 
 
     /*   CTOR., GETTERS, SETTERS    */
     public Merchant(){}
 
-    public Merchant(Long idMerchant, Integer idRol, String name, String email, String phone) {
+    public Merchant(Long idMerchant, Integer idRol, String name, String email, String phone, String password) {
         this.idMerchant = idMerchant;
         this.idRol = idRol;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.password = password;
     }
 
     public Long getIdMerchant() {
@@ -77,4 +81,49 @@ public class Merchant {
         this.phone = phone;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        // TODO: HAY QUE CREAR UNA ENTIDAD PARA LOS ROLES
+        String assignedRole = null;
+        if(getIdRol() == 0)
+            assignedRole = "ROLE_ADMIN";
+        else
+            assignedRole = "ROLE_USER";
+        authorities.add(new SimpleGrantedAuthority(assignedRole));
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

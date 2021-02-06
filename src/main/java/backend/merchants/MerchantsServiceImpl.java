@@ -2,12 +2,15 @@ package backend.merchants;
 
 import backend.api.merchants.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MerchantsServiceImpl implements MerchantsService{
+public class MerchantsServiceImpl implements MerchantsService, UserDetailsService {
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
 
@@ -93,5 +96,11 @@ public class MerchantsServiceImpl implements MerchantsService{
             merchant.setIdRol(merchantRoleChangeRequest.getNewRole());
             merchantRepository.save(merchant);
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Merchant merchant = merchantRepository.findMerchantByEmail(email);
+        return merchant;
     }
 }
