@@ -3,14 +3,13 @@ package backend.merchants;
 import backend.api.merchants.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MerchantsServiceImpl implements MerchantsService, UserDetailsService {
+public class MerchantsServiceImpl implements MerchantsService {
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
 

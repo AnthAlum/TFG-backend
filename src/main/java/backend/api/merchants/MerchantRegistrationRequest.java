@@ -20,6 +20,9 @@ public class MerchantRegistrationRequest {
     @JsonProperty("role")
     private Integer idRol = null;
 
+    @JsonProperty("password")
+    private String password = null;
+
     public String getName() {
         return name;
     }
@@ -52,26 +55,35 @@ public class MerchantRegistrationRequest {
         this.idRol = idRol;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantRegistrationRequest that = (MerchantRegistrationRequest) o;
-        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(idRol, that.idRol);
+        return Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(idRol, that.idRol) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, phone, idRol);
+        return Objects.hash(name, email, phone, idRol, password);
     }
 
     @Override
     public String toString() {
         return "MerchantRegistrationRequest{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", idRol=" + idRol +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

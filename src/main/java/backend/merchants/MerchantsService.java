@@ -1,10 +1,11 @@
 package backend.merchants;
 
 import backend.api.merchants.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface MerchantsService {
+public interface MerchantsService extends UserDetailsService {
     public Merchant findMerchantById(Long idMerchant);
     public MerchantResponse getMerchantById(Long idMerchant);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
