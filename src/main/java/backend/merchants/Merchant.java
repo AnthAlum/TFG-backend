@@ -125,4 +125,16 @@ public class Merchant implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Merchant{" +
+                "idMerchant=" + idMerchant +
+                ", idRol=" + idRol +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -12,7 +12,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @SpringBootApplication
 @EnableOpenApi
 @EnableJpaRepositories({"backend","backend.merchants", "backend.clients"})
-@ComponentScan(basePackages = { "backend", "backend.api", "backend.clients", "backend.merchants", "io.swagger.configuration"})
+@ComponentScan(basePackages = { "backend", "backend.api", "backend.clients", "backend.merchants", "backend.security", "io.swagger.configuration"})
 public class BackendApplication implements CommandLineRunner {
 
     @Override
