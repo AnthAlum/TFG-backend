@@ -58,4 +58,12 @@ public class MerchantApiController implements MerchantApi {
         merchantsService.modifyMerchantRole(body, merchantId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> modifyMerchantPassword(Long merchantId, @Valid MerchantPasswordChangeRequest body) {
+        merchantsService.modifyMerchantPassword(body, merchantId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }
+
+

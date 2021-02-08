@@ -17,5 +17,6 @@ public interface MerchantsService extends UserDetailsService {
     public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant);
     public void modifyMerchantPhone(MerchantPhoneChangeRequest merchantPhoneChangeRequest, Long idMerchant);
     public void modifyMerchantRole(MerchantRoleChangeRequest merchantRoleChangeRequest, Long idMerchant);
+    public void modifyMerchantPassword(MerchantPasswordChangeRequest merchantPasswordChangeRequest, Long idMerchant);
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 }

@@ -83,5 +83,16 @@ public interface MerchantApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchantRole(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRoleChangeRequest body);
 
+    @Operation(summary = "Change merchant's password.", description = "Change merchant's password with the given new role.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Password updated successfully."),
+
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
+    @RequestMapping(value = "/merchants/{merchantId}/password",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchantPassword(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantPasswordChangeRequest body);
+
+
 }
 

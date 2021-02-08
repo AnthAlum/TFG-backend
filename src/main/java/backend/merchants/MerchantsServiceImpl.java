@@ -98,6 +98,15 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
+    public void modifyMerchantPassword(MerchantPasswordChangeRequest merchantPasswordChangeRequest, Long idMerchant) {
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant != null){
+            merchant.setPassword(merchantPasswordChangeRequest.getNewPassword());
+            merchantRepository.save(merchant);
+        }
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Merchant merchant = merchantRepository.findMerchantByEmail(email);
         System.out.println("El merchant encontrado es " + merchant.toString());
