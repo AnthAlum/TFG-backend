@@ -109,7 +109,6 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Merchant merchant = merchantRepository.findMerchantByEmail(email);
-        System.out.println("El merchant encontrado es " + merchant.toString());
         return merchant;
     }
 }

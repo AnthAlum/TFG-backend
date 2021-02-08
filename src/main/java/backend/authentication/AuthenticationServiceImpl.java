@@ -4,13 +4,13 @@ import backend.api.security.LoginRequest;
 import backend.api.security.LoginResponse;
 import backend.merchants.MerchantsService;
 import backend.security.jwt.JwtConfig;
+import backend.security.jwt.JwtSecretKey;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -19,13 +19,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     private MerchantsService merchantsService;
     private JwtConfig jwtConfig;
-    private SecretKey secretKey;
+    private JwtSecretKey jwtSecretKey;
 
     @Autowired
-    public AuthenticationServiceImpl(MerchantsService merchantsService, JwtConfig jwtConfig, SecretKey secretKey) {
+    public AuthenticationServiceImpl(MerchantsService merchantsService, JwtConfig jwtConfig, JwtSecretKey jwtSecretKey) {
         this.merchantsService = merchantsService;
         this.jwtConfig = jwtConfig;
-        this.secretKey = secretKey;
+        this.jwtSecretKey = jwtSecretKey;
     }
 
     @Override
@@ -38,11 +38,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 //                throw new UnsuccessfulLoginException();
             String jwt = Jwts.builder()
                     .setSubject(username)
+                    .claim("authorities", user.getAuthorities())
                     .setIssuedAt(new Date())
                     .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(expirationAfterDays)))
-                    .signWith(secretKey)
+                    .signWith(jwtSecretKey.secretKey())
                     .compact();
-            return new LoginResponse(jwt);
+            return new LoginResponse(jwtConfig.getTokenPrefix() + jwt);
         }catch (UsernameNotFoundException e) {
             return new LoginResponse("USERNAME/PASSWORD INCORRECT");
         }
