@@ -13,16 +13,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 public interface MerchantApi {
-
+    @CrossOrigin(origins = "*")
     @Operation(summary = "Deletes a merchant", description = "Deletes a merchant of the given ID.", tags={ "Merchant" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Client deleted sucessfully."),
@@ -32,7 +29,7 @@ public interface MerchantApi {
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns merchant's information.", description = "Returns merchant's information of the given ID.", tags={ "Merchant" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantResponse.class))),
@@ -43,6 +40,7 @@ public interface MerchantApi {
         method = RequestMethod.GET)
     ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's name", description = "Change merchant's name with the given new name.", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Name updated successfully."),
@@ -53,6 +51,7 @@ public interface MerchantApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchantName(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantNameChangeRequest body);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's email.", description = "Change merchant's email with the given new email .", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Email updated successfully."),
@@ -63,6 +62,7 @@ public interface MerchantApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchantEmail(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantEmailChangeRequest body);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's phone number.", description = "Change merchant's phone number with the given new phone number.", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Phone number updated successfully."),
@@ -73,6 +73,7 @@ public interface MerchantApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchantPhone(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantPhoneChangeRequest body);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's role.", description = "Change merchant's role with the given new role.", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Role updated successfully."),
@@ -83,6 +84,7 @@ public interface MerchantApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMerchantRole(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID.", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRoleChangeRequest body);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's password.", description = "Change merchant's password with the given new role.", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password updated successfully."),

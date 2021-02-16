@@ -1,9 +1,11 @@
 package backend.api.merchants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Objects;
 
+@Validated
 public class MerchantPasswordChangeRequest {
     @JsonProperty("newPassword")
     private String newPassword = null;

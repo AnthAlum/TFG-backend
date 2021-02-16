@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -37,6 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().configurationSource(request -> {
+                    CorsConfiguration cors = new CorsConfiguration();
+                    cors.setAllowedOrigins(Arrays.asList("*"));
+                    cors.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+                    cors.setAllowedHeaders(Arrays.asList("*"));
+                    return cors;
+                }).and()
                 .csrf().disable()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -44,13 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
                 .authorizeRequests()
                 .antMatchers("/", "/css/*", "/js/*").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("*/1.0.0/merchants").hasRole("ADMIN")
-                .antMatchers("*/1.0.0/clients").hasRole("USER")
                 .anyRequest()
                 .authenticated();
 
-        http.addFilterBefore(new AuthenticationFilter(jwtConfig, jwtSecretKey, merchantsService), UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilterBefore(new AuthenticationFilter(jwtConfig, jwtSecretKey, merchantsService), UsernamePasswordAuthenticationFilter.class);
 
+        //http.cors().configurationSource(request -> );
     }
 
     @Override
@@ -63,6 +73,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(merchantsService).passwordEncoder(passwordEncoder);
     }
-
 
 }

@@ -8,34 +8,30 @@ package backend.api.merchants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 public interface MerchantsApi {
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Creates a merchant.", description = "Creates a merchant with  the given information in the request", tags={ "Merchant" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "201", description = "Merchant created successfully."),
-        
         @ApiResponse(responseCode = "400", description = "The request has an invalid input") })
     @RequestMapping(value = "/merchants",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRegistrationRequest body);
 
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
-        
         @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
     @RequestMapping(value = "/merchants",
         produces = { "application/json" },
