@@ -32,8 +32,9 @@ public class MerchantsApiController implements MerchantsApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<MerchantListResponse> getMerchants() {
-        return new ResponseEntity<MerchantListResponse>(merchantsService.getMerchants(), HttpStatus.OK);
+    @Override
+    public ResponseEntity<MerchantPaginatedResponse> getMerchants(Integer pageNumber, Integer size) {
+        return new ResponseEntity<MerchantPaginatedResponse>(merchantsService.getMerchants(pageNumber, size), HttpStatus.OK);
     }
 
 }

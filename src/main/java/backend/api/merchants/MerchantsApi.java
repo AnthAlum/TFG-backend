@@ -5,6 +5,7 @@
  */
 package backend.api.merchants;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -36,7 +37,9 @@ public interface MerchantsApi {
     @RequestMapping(value = "/merchants",
         produces = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<MerchantListResponse> getMerchants();
+    ResponseEntity<MerchantPaginatedResponse> getMerchants(
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
 
 

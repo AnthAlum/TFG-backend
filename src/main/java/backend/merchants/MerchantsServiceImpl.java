@@ -1,7 +1,10 @@
 package backend.merchants;
 
 import backend.api.merchants.*;
+import backend.api.others.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -42,15 +45,24 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public MerchantListResponse getMerchants() {
+    public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size) {
+        Page<Merchant> merchantPage = merchantRepository.searchMerchants(PageRequest.of(pageNumber, size));
         List<Merchant> merchantList = (List<Merchant>)merchantRepository.findAll(); //Encontrar todos los comerciales
         MerchantListResponse merchantListResponse = new MerchantListResponse(); //Crear el response de la lista vacia de comerciales
-        merchantList.forEach(merchant ->
+        merchantPage.forEach(merchant ->
                 merchantListResponse.addMerchantResponse(
                         merchantMapper.merchantToMerchantResponse(merchant)
                 )); //Ir agregando
                      // MerchantsResponses a la lista tras el mapeao de cada comerciante
-        return merchantListResponse;
+
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setTotalElements(merchantPage.getNumberOfElements());
+        paginationInfo.setTotalPages(merchantPage.getTotalPages());
+
+        MerchantPaginatedResponse merchantPaginatedResponse = new MerchantPaginatedResponse();
+        merchantPaginatedResponse.setPages(merchantListResponse.getMerchantResponseList());
+        merchantPaginatedResponse.setPaginationInfo(paginationInfo);
+        return merchantPaginatedResponse;
     }
 
     @Override

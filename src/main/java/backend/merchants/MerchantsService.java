@@ -11,7 +11,7 @@ public interface MerchantsService extends UserDetailsService {
     public Merchant findMerchantById(Long idMerchant);
     public MerchantResponse getMerchantById(Long idMerchant);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
-    public MerchantListResponse getMerchants();
+    public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size);
     public void deleteMerchant(Long idMerchant);
     public void modifyMerchantName(MerchantNameChangeRequest merchantNameChangeRequest, Long idMerchant);
     public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant);
