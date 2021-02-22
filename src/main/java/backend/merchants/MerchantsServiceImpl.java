@@ -46,6 +46,8 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size) {
+        if(merchantRepository.searchMerchants(PageRequest.of(pageNumber, size)) == null)
+            return null;
         Page<Merchant> merchantPage = merchantRepository.searchMerchants(PageRequest.of(pageNumber, size));
         List<Merchant> merchantList = (List<Merchant>)merchantRepository.findAll(); //Encontrar todos los comerciales
         MerchantListResponse merchantListResponse = new MerchantListResponse(); //Crear el response de la lista vacia de comerciales

@@ -34,8 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             String username = loginRequest.getUsername();
             Integer expirationAfterDays = jwtConfig.getTokenExpirationAfterDays();
             UserDetails user = merchantsService.loadUserByUsername(username);
-//            if(user.getPassword() != loginRequest.getPassword())
-//                throw new UnsuccessfulLoginException();
+            if(user.getPassword() != loginRequest.getPassword())
+                throw new UnsuccessfulLoginException("USERNAME/PASSWORD INCORRECT");
             String jwt = Jwts.builder()
                     .setSubject(username)
                     .claim("authorities", user.getAuthorities())
@@ -44,11 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                     .signWith(jwtSecretKey.secretKey())
                     .compact();
             return new LoginResponse(jwtConfig.getTokenPrefix() + jwt);
-        }catch (UsernameNotFoundException e) {
-            return new LoginResponse("USERNAME/PASSWORD INCORRECT");
+        } catch (UnsuccessfulLoginException | UsernameNotFoundException | NullPointerException e){
+           return null;
         }
-//        catch (UnsuccessfulLoginException e){
-//            return new LoginResponse("USERNAME/PASSWORD INCORRECT");
-//        }
     }
 }

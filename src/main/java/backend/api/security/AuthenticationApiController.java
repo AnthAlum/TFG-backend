@@ -20,9 +20,9 @@ public class AuthenticationApiController implements AuthenticationApi{
 
     @Override
     public ResponseEntity<LoginResponse> userLogin(@Valid LoginRequest body) {
-        System.out.println("\nCredentials recieved:\n" + body.getUsername() + "\n" + body.getPassword());
         LoginResponse loginResponse = authenticationService.loginUser(body);
-        System.out.println("\nCredentials returned:\n" + loginResponse.getJwt());
+        if(loginResponse == null)
+            return new ResponseEntity<LoginResponse>(new LoginResponse("FORBIDDEN"), HttpStatus.FORBIDDEN);
         return new ResponseEntity<LoginResponse>(loginResponse, HttpStatus.OK);
     }
 }
