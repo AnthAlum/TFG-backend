@@ -88,7 +88,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant) {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
-            merchant.setName(merchantEmailChangeRequest.getNewEmaiL());
+            merchant.setEmail(merchantEmailChangeRequest.getNewEmaiL());
             merchantRepository.save(merchant);
         }
     }
@@ -97,7 +97,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     public void modifyMerchantPhone(MerchantPhoneChangeRequest merchantPhoneChangeRequest, Long idMerchant) {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
-            merchant.setName(merchantPhoneChangeRequest.getNewPhone());
+            merchant.setPhone(merchantPhoneChangeRequest.getNewPhone());
             merchantRepository.save(merchant);
         }
     }
@@ -122,6 +122,7 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        List<MerchantResponse> pages = getMerchants(0, 5).getPages();
         Merchant merchant = merchantRepository.findMerchantByEmail(email);
         return merchant;
     }

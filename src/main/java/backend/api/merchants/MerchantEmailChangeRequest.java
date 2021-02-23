@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Validated
 public class MerchantEmailChangeRequest {
-    @JsonProperty("nuevoEmail")
+    @JsonProperty("newEmail")
     private String newEmaiL = null;
 
     public String getNewEmaiL() {

@@ -16,8 +16,8 @@ public class LoginRequest {
     private String username;
 
     @JsonProperty("password")
-    @NotNull
-    @NotBlank
+    //@NotNull
+    //@NotBlank
     private String password;
 
     public String getUsername() {

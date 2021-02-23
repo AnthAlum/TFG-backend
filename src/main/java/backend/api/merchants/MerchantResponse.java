@@ -14,13 +14,13 @@ public class MerchantResponse {
     @JsonProperty("idRol")
     private Integer idRol = null;
 
-    @JsonProperty("nombre")
+    @JsonProperty("name")
     private String name = null;
 
     @JsonProperty("email")
     private String email = null;
 
-    @JsonProperty("telefono")
+    @JsonProperty("phone")
     private String phone = null;
 
     /**

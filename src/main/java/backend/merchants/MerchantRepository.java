@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MerchantRepository extends CrudRepository<Merchant, Long> {
-    @Query("select m from Merchant m where m.email = :email")
+    @Query("select m from Merchant m where m.email = ?1")
     public Merchant findMerchantByEmail(String email);
 
     @Query("select m from Merchant m")
