@@ -1,6 +1,7 @@
 package backend.api.merchants;
 
 import backend.merchants.MerchantsService;
+import backend.utility.AlreadyRegisteredException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +44,11 @@ public class MerchantApiController implements MerchantApi {
 
     @Override
     public ResponseEntity<Void> modifyMerchantEmail(Long merchantId, @Valid MerchantEmailChangeRequest body) {
-        merchantsService.modifyMerchantEmail(body, merchantId);
+        try {
+            merchantsService.modifyMerchantEmail(body, merchantId);
+        } catch (AlreadyRegisteredException e) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

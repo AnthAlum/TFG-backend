@@ -1,6 +1,7 @@
 package backend.api.merchants;
 
 import backend.merchants.MerchantsService;
+import backend.utility.AlreadyRegisteredException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,8 +29,12 @@ public class MerchantsApiController implements MerchantsApi {
     }
 
     public ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody MerchantRegistrationRequest body) {
-        merchantsService.registerMerchant(body);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        try{
+            merchantsService.registerMerchant(body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch(AlreadyRegisteredException E){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

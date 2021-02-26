@@ -2,6 +2,7 @@ package backend.merchants;
 
 import backend.api.merchants.*;
 import backend.api.others.PaginationInfo;
+import backend.utility.AlreadyRegisteredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,9 +40,12 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) {
-        Merchant merchant = merchantMapper.merchantRegistrationRequestToMerchant(merchantRegistrationRequest);
-        merchantRepository.save(merchant);
+    public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) throws AlreadyRegisteredException {
+        Merchant merchant = merchantRepository.findMerchantByEmail(merchantRegistrationRequest.getEmail());
+        if(merchant != null)
+            throw new AlreadyRegisteredException("Already registered");
+        Merchant newMerchant = merchantMapper.merchantRegistrationRequestToMerchant(merchantRegistrationRequest);
+        merchantRepository.save(newMerchant);
     }
 
     @Override
@@ -85,8 +89,11 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant) {
-        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+    public void modifyMerchantEmail(MerchantEmailChangeRequest merchantEmailChangeRequest, Long idMerchant) throws AlreadyRegisteredException{
+        Merchant merchant = merchantRepository.findMerchantByEmail(merchantEmailChangeRequest.getNewEmaiL());
+        if(merchant != null)
+            throw new AlreadyRegisteredException("Already registered");
+        merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
             merchant.setEmail(merchantEmailChangeRequest.getNewEmaiL());
             merchantRepository.save(merchant);
@@ -106,7 +113,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     public void modifyMerchantRole(MerchantRoleChangeRequest merchantRoleChangeRequest, Long idMerchant) {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
-            merchant.setIdRol(merchantRoleChangeRequest.getNewRole());
+            merchant.setIdRole(merchantRoleChangeRequest.getNewRole());
             merchantRepository.save(merchant);
         }
     }

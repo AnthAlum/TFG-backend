@@ -11,8 +11,8 @@ public class MerchantResponse {
     @JsonProperty("idMerchant")
     private Long idMerchant = null;
 
-    @JsonProperty("idRol")
-    private Integer idRol = null;
+    @JsonProperty("idRole")
+    private Integer idRole = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -78,12 +78,12 @@ public class MerchantResponse {
 
     @Schema(example = "0", description = "")
 
-    public Integer getIdRol() {
-        return idRol;
+    public Integer getIdRole() {
+        return idRole;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdRole(Integer idRole) {
+        this.idRole = idRole;
     }
 
     @Override
@@ -91,19 +91,19 @@ public class MerchantResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantResponse that = (MerchantResponse) o;
-        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(idRol, that.idRol) && Objects.equals(name, that.name)  && Objects.equals(email, that.email) && Objects.equals(phone, that.phone);
+        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(idRole, that.idRole) && Objects.equals(name, that.name)  && Objects.equals(email, that.email) && Objects.equals(phone, that.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMerchant, idRol, name, email, phone);
+        return Objects.hash(idMerchant, idRole, name, email, phone);
     }
 
     @Override
     public String toString() {
         return "MerchantResponse{" +
                 "idMerchant=" + idMerchant +
-                ", idRol=" + idRol +
+                ", idRol=" + idRole +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +

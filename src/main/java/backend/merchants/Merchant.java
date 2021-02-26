@@ -20,8 +20,8 @@ public class Merchant implements UserDetails {
     /**
      * Value 0 for Admin or Value 1 for User
      */
-    @Column(name = "id_rol")
-    private Integer idRol;
+    @Column(name = "id_role")
+    private Integer idRole;
 
     private String email;
     private String name;
@@ -32,9 +32,9 @@ public class Merchant implements UserDetails {
     /*   CTOR., GETTERS, SETTERS    */
     public Merchant(){}
 
-    public Merchant(Long idMerchant, Integer idRol, String name, String email, String phone, String password) {
+    public Merchant(Long idMerchant, Integer idRole, String name, String email, String phone, String password) {
         this.idMerchant = idMerchant;
-        this.idRol = idRol;
+        this.idRole = idRole;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -49,12 +49,12 @@ public class Merchant implements UserDetails {
         this.idMerchant = idMerchant;
     }
 
-    public Integer getIdRol() {
-        return idRol;
+    public Integer getIdRole() {
+        return idRole;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
+    public void setIdRole(Integer idRole) {
+        this.idRole = idRole;
     }
 
     public String getName() {
@@ -93,9 +93,9 @@ public class Merchant implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         String assignedRole = null;
-        if(getIdRol() == 0)
+        if(getIdRole() == 0)
             assignedRole = "ROLE_ADMIN";
-        else if(getIdRol() == 1)
+        else if(getIdRole() == 1)
             assignedRole = "ROLE_USER";
         authorities.add(new SimpleGrantedAuthority(assignedRole));
         return authorities;
@@ -130,7 +130,7 @@ public class Merchant implements UserDetails {
     public String toString() {
         return "Merchant{" +
                 "idMerchant=" + idMerchant +
-                ", idRol=" + idRol +
+                ", idRole=" + idRole +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
