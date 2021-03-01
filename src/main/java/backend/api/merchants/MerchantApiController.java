@@ -2,6 +2,7 @@ package backend.api.merchants;
 
 import backend.merchants.MerchantsService;
 import backend.utility.AlreadyRegisteredException;
+import backend.utility.BadPasswordException;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,8 +67,12 @@ public class MerchantApiController implements MerchantApi {
 
     @Override
     public ResponseEntity<Void> modifyMerchantPassword(Long merchantId, @Valid MerchantPasswordChangeRequest body) {
-        merchantsService.modifyMerchantPassword(body, merchantId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        try{
+            merchantsService.modifyMerchantPassword(body, merchantId);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (BadPasswordException e) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
 

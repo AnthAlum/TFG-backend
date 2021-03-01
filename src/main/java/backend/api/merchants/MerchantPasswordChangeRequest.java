@@ -7,6 +7,9 @@ import java.util.Objects;
 
 @Validated
 public class MerchantPasswordChangeRequest {
+    @JsonProperty("password")
+    private String password = null;
+
     @JsonProperty("newPassword")
     private String newPassword = null;
 
@@ -18,23 +21,24 @@ public class MerchantPasswordChangeRequest {
         this.newPassword = newPassword;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MerchantPasswordChangeRequest that = (MerchantPasswordChangeRequest) o;
-        return Objects.equals(newPassword, that.newPassword);
+        return Objects.equals(password, that.password) && Objects.equals(newPassword, that.newPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(newPassword);
-    }
-
-    @Override
-    public String toString() {
-        return "MerchantPasswordChangeRequest{" +
-                "newPassword='" + newPassword + '\'' +
-                '}';
+        return Objects.hash(password, newPassword);
     }
 }

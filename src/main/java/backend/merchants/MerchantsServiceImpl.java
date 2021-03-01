@@ -3,6 +3,7 @@ package backend.merchants;
 import backend.api.merchants.*;
 import backend.api.others.PaginationInfo;
 import backend.utility.AlreadyRegisteredException;
+import backend.utility.BadPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -119,11 +120,15 @@ public class MerchantsServiceImpl implements MerchantsService {
     }
 
     @Override
-    public void modifyMerchantPassword(MerchantPasswordChangeRequest merchantPasswordChangeRequest, Long idMerchant) {
+    public void modifyMerchantPassword(MerchantPasswordChangeRequest merchantPasswordChangeRequest, Long idMerchant) throws BadPasswordException {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
-            merchant.setPassword(merchantPasswordChangeRequest.getNewPassword());
-            merchantRepository.save(merchant);
+            if(merchant.getPassword().equals(merchantPasswordChangeRequest.getPassword())){
+                merchant.setPassword(merchantPasswordChangeRequest.getNewPassword());
+                merchantRepository.save(merchant);
+            } else{
+                throw new BadPasswordException("Wrong password");
+            }
         }
     }
 
