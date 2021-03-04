@@ -13,4 +13,13 @@ public interface MerchantRepository extends CrudRepository<Merchant, Long> {
 
     @Query("select m from Merchant m")
     public Page<Merchant> searchMerchants(Pageable pageable);
+
+    Page<Merchant> findByIdRole(Integer idRole, Pageable pageable);
+    long countByIdRole(Integer idRole);
+    Page<Merchant> findByEmailContains(String email, Pageable pageable);
+    long countByEmailContains(String email);
+    Page<Merchant> findByNameContains(String name, Pageable pageable);
+    long countByNameContains(String name);
+    Page<Merchant> findByPhoneContains(String phone, Pageable pageable);
+    long countByPhoneContains(String phone);
 }

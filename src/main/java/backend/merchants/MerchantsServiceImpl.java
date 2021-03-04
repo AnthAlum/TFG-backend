@@ -51,19 +51,46 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size) {
-        if(merchantRepository.searchMerchants(PageRequest.of(pageNumber, size)) == null)
-            return null;
         Page<Merchant> merchantPage = merchantRepository.searchMerchants(PageRequest.of(pageNumber, size));
-        List<Merchant> merchantList = (List<Merchant>)merchantRepository.findAll(); //Encontrar todos los comerciales
+        return buildResponse(merchantPage, (int)merchantRepository.count());
+    }
+
+    @Override
+    public MerchantPaginatedResponse getMerchantsByIdRole(Integer idRole, Integer pageNumber, Integer size) {
+        Page<Merchant> merchantPage = merchantRepository.findByIdRole(idRole, PageRequest.of(pageNumber, size));
+        return buildResponse(merchantPage, (int) merchantRepository.countByIdRole(idRole));
+    }
+
+    @Override
+    public MerchantPaginatedResponse getMerchantsByEmail(String email, Integer pageNumber, Integer size) {
+        Page<Merchant> merchantPage = merchantRepository.findByEmailContains(email, PageRequest.of(pageNumber, size));
+        return buildResponse(merchantPage, (int) merchantRepository.countByEmailContains(email));
+    }
+
+    @Override
+    public MerchantPaginatedResponse getMerchantsByName(String name, Integer pageNumber, Integer size) {
+        Page<Merchant> merchantPage = merchantRepository.findByNameContains(name, PageRequest.of(pageNumber, size));
+        return buildResponse(merchantPage, (int) merchantRepository.countByNameContains(name));
+    }
+
+    @Override
+    public MerchantPaginatedResponse getMerchantsByPhone(String phone, Integer pageNumber, Integer size) {
+        Page<Merchant> merchantPage = merchantRepository.findByPhoneContains(phone, PageRequest.of(pageNumber, size));
+        return buildResponse(merchantPage, (int) merchantRepository.countByPhoneContains(phone));
+    }
+
+    @Override
+    public MerchantPaginatedResponse buildResponse(Page<Merchant> merchantPage, int totalElements){
+        if(merchantPage == null) {
+            return null;
+        }
         MerchantListResponse merchantListResponse = new MerchantListResponse(); //Crear el response de la lista vacia de comerciales
         merchantPage.forEach(merchant ->
                 merchantListResponse.addMerchantResponse(
                         merchantMapper.merchantToMerchantResponse(merchant)
                 )); //Ir agregando
-                     // MerchantsResponses a la lista tras el mapeao de cada comerciante
-
         PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setTotalElements(merchantPage.getNumberOfElements());
+        paginationInfo.setTotalElements(totalElements);
         paginationInfo.setTotalPages(merchantPage.getTotalPages());
 
         MerchantPaginatedResponse merchantPaginatedResponse = new MerchantPaginatedResponse();

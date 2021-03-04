@@ -38,10 +38,60 @@ public interface MerchantsApi {
         produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<MerchantPaginatedResponse> getMerchants(
-            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/merchants/findbyemail",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = false, defaultValue = "email@example.com") String email,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/merchants/findbyname",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantPaginatedResponse> getMerchantsByName(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = false, defaultValue = "namexample") String name,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/merchants/findbyphone",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantPaginatedResponse> getMerchantsByPhone(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "123456789") String phone,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/merchants/findbyidRole",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "idRole", required = false, defaultValue = "email@example.com") Integer idRole,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
 }
 

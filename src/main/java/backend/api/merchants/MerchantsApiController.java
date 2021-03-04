@@ -45,4 +45,35 @@ public class MerchantsApiController implements MerchantsApi {
         return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(@Valid String email, @Valid Integer pageNumber, @Valid Integer size) {
+        MerchantPaginatedResponse merchants = merchantsService.getMerchantsByEmail(email, pageNumber, size);
+        if(merchants == null)
+            return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByName(@Valid String name, @Valid Integer pageNumber, @Valid Integer size) {
+        MerchantPaginatedResponse merchants = merchantsService.getMerchantsByName(name, pageNumber, size);
+        if(merchants == null)
+            return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByPhone(@Valid String phone, @Valid Integer pageNumber, @Valid Integer size) {
+        MerchantPaginatedResponse merchants = merchantsService.getMerchantsByPhone(phone, pageNumber, size);
+        if(merchants == null)
+            return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(@Valid Integer idRole, @Valid Integer pageNumber, @Valid Integer size) {
+        MerchantPaginatedResponse merchants = merchantsService.getMerchantsByIdRole(idRole, pageNumber, size);
+        if(merchants == null)
+            return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.OK);
+    }
 }
