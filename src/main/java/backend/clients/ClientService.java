@@ -8,7 +8,7 @@ public interface ClientService {
     public Client findClientById(Long idClient);
     public ClientResponse getClientById(Long idClient);
     public void registerClient(ClientRegistrationRequest clientRegistrationRequest);
-    public ClientListResponse getClients();
+    public ClientPaginatedResponse getClients(Integer pageNumber, Integer size);
     public void deleteClient(Long idClient);
     public void modifyClientName(ClientNameChangeRequest clientNameChangeRequest, Long idClient);
     public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient);

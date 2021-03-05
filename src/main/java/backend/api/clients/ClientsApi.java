@@ -5,6 +5,7 @@
  */
 package backend.api.clients;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,16 +14,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 public interface ClientsApi {
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Creates a client.", description = "Creates a new client with the given information in the request.", tags={ "Client" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "201", description = "Client created successfully."),
@@ -56,11 +55,12 @@ public interface ClientsApi {
 
     @Operation(summary = "Returns all clients information.", description = "Returns all clients information in a list.", tags={ "Client" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientListResponse.class))) })
+        @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientPaginatedResponse.class))) })
     @RequestMapping(value = "/clients",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ClientListResponse> getClients();
+    ResponseEntity<ClientPaginatedResponse> getClients(@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+                                                       @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
 
     @Operation(summary = "Change client's name.", description = "Change client's name with the given new name.", tags={ "Client" })

@@ -1,9 +1,11 @@
 package backend.clients;
 
 import backend.api.clients.*;
-import backend.api.merchants.MerchantListResponse;
-import backend.api.merchants.MerchantResponse;
+import backend.api.merchants.MerchantPaginatedResponse;
+import backend.api.others.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,14 +45,27 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public ClientListResponse getClients(){
-        List<Client> clientList = (List<Client>)clientRepository.findAll(); //Obtener todos los clients
-        ClientListResponse clientListResponse = new ClientListResponse(); //Crear la lista de responses.
-        clientList.forEach(client ->
+    public ClientPaginatedResponse getClients(Integer pageNumber, Integer size){
+        Page<Client> clientPage = clientRepository.searchClients(PageRequest.of(pageNumber, size));
+        return buildResponse(clientPage, (int)clientRepository.count());
+    }
+
+    private ClientPaginatedResponse buildResponse(Page<Client> clientPage, int totalElements){
+        if(clientPage == null)
+            return null;
+        ClientListResponse clientListResponse = new ClientListResponse();
+        clientPage.forEach(client ->
                 clientListResponse.addClientResponse(
                         clientMapper.ClientToClientResponse(client)
-                )); //Mapear todos los clients a clientsResponse y guardalos en la lista.
-        return clientListResponse;
+                ));
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setTotalElements(totalElements);
+        paginationInfo.setTotalPages(clientPage.getTotalPages());
+
+        ClientPaginatedResponse clientPaginatedResponse = new ClientPaginatedResponse();
+        clientPaginatedResponse.setPages(clientListResponse.getClientResponseList());
+        clientPaginatedResponse.setPaginationInfo(paginationInfo);
+        return clientPaginatedResponse;
     }
 
     @Override
