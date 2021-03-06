@@ -43,9 +43,7 @@ public class ClientsApiController implements ClientsApi {
 
     public ResponseEntity<ClientPaginatedResponse> getClients(Integer pageNumber, Integer size) {
         ClientPaginatedResponse clients = clientService.getClients(pageNumber, size);
-        if(clients == null)
-            return new ResponseEntity<ClientPaginatedResponse>(clients, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<ClientPaginatedResponse>(clients, HttpStatus.OK);
+        return checkResponse(clients);
     }
 
     @Override
@@ -70,5 +68,35 @@ public class ClientsApiController implements ClientsApi {
     public ResponseEntity<Void> modifyClientCompany(Long clientId, @Valid ClientCompanyChangeRequest body) {
         clientService.modifyClientCompany(body, clientId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ClientPaginatedResponse> getClientsByEmail(@Valid String email, @Valid Integer pageNumber, @Valid Integer pageSize) {
+        ClientPaginatedResponse clients = clientService.getClientsByEmail(email, pageNumber, pageSize);
+        return checkResponse(clients);
+    }
+
+    @Override
+    public ResponseEntity<ClientPaginatedResponse> getClientsByName(@Valid String name, @Valid Integer pageNumber, @Valid Integer pageSize) {
+        ClientPaginatedResponse clients = clientService.getClientsByName(name, pageNumber, pageSize);
+        return checkResponse(clients);
+    }
+
+    @Override
+    public ResponseEntity<ClientPaginatedResponse> getClientsByPhone(@Valid String phone, @Valid Integer pageNumber, @Valid Integer pageSize) {
+        ClientPaginatedResponse clients = clientService.getClientsByPhone(phone, pageNumber, pageSize);
+        return checkResponse(clients);
+    }
+
+    @Override
+    public ResponseEntity<ClientPaginatedResponse> getClientsByCompany(@Valid String company, @Valid Integer pageNumber, @Valid Integer pageSize) {
+        ClientPaginatedResponse clients = clientService.getClientsByCompany(company, pageNumber, pageSize);
+        return checkResponse(clients);
+    }
+
+    private ResponseEntity<ClientPaginatedResponse> checkResponse(ClientPaginatedResponse clientPaginatedResponse){
+        if(clientPaginatedResponse == null)
+            return new ResponseEntity<ClientPaginatedResponse>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ClientPaginatedResponse>(clientPaginatedResponse, HttpStatus.OK);
     }
 }

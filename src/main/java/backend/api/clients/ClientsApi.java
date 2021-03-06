@@ -83,10 +83,10 @@ public interface ClientsApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyClientEmail(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientEmailChangeRequest body);
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change client's phone.", description = "Change client's phone with the given new phone.", tags={ "Client" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Phone number updated succesfully."),
-
             @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
     @RequestMapping(value = "/clients/{clientId}/phone",
             consumes = { "application/json" },
@@ -102,6 +102,58 @@ public interface ClientsApi {
             consumes = { "application/json" },
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyClientCompany(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientCompanyChangeRequest body);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all clients information that matches with the given email", description = "Returns all clients information that matches with the given email.", tags={ "Client" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientPaginatedResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/clients/findbyemail",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<ClientPaginatedResponse> getClientsByEmail(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = false, defaultValue = "email@example.com") String email,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer pageSize);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all clients information that matches with the given name", description = "Returns all clients information that matches with the given name.", tags={ "Client" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientPaginatedResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/clients/findbyname",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<ClientPaginatedResponse> getClientsByName(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = false, defaultValue = "name") String name,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all clients information that matches with the given phone", description = "Returns all clients information that matches with the given phone.", tags={ "Client" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientPaginatedResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/clients/findbyphone",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<ClientPaginatedResponse> getClientsByPhone(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "phone") String phone,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @Operation(summary = "Returns all clients information that matches with the given company", description = "Returns all clients information that matches with the given company.", tags={ "Client" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = ClientPaginatedResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/clients/findbycompany",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<ClientPaginatedResponse> getClientsByCompany(
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "company", required = false, defaultValue = "company") String company,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
 
 }
 

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Validated
 public class ClientResponse {
-    @JsonProperty("clientId")
+    @JsonProperty("idClient")
     private Long idClient = null;
 
     @JsonProperty("name")

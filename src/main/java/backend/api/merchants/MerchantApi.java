@@ -66,7 +66,6 @@ public interface MerchantApi {
     @Operation(summary = "Change merchant's phone number.", description = "Change merchant's phone number with the given new phone number.", tags={ "Merchant" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Phone number updated successfully."),
-
             @ApiResponse(responseCode = "404", description = "Merchant not found with the given ID.") })
     @RequestMapping(value = "/merchants/{merchantId}/phone",
             consumes = { "application/json" },

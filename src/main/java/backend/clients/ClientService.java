@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 public interface ClientService {
     public Client findClientById(Long idClient);
     public ClientResponse getClientById(Long idClient);
+    public ClientPaginatedResponse getClients(Integer pageNumber, Integer pageSize);
+    public ClientPaginatedResponse getClientsByEmail(String email, Integer pageNumber, Integer pageSize);
+    public ClientPaginatedResponse getClientsByName(String name, Integer pageNumber, Integer pageSize);
+    public ClientPaginatedResponse getClientsByPhone(String phone, Integer pageNumber, Integer pageSize);
+    public ClientPaginatedResponse getClientsByCompany(String company, Integer pageNumber, Integer pageSize);
     public void registerClient(ClientRegistrationRequest clientRegistrationRequest);
-    public ClientPaginatedResponse getClients(Integer pageNumber, Integer size);
     public void deleteClient(Long idClient);
     public void modifyClientName(ClientNameChangeRequest clientNameChangeRequest, Long idClient);
     public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient);

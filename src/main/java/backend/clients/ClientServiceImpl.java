@@ -1,14 +1,11 @@
 package backend.clients;
 
 import backend.api.clients.*;
-import backend.api.merchants.MerchantPaginatedResponse;
 import backend.api.others.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService{
@@ -45,9 +42,33 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public ClientPaginatedResponse getClients(Integer pageNumber, Integer size){
-        Page<Client> clientPage = clientRepository.searchClients(PageRequest.of(pageNumber, size));
+    public ClientPaginatedResponse getClients(Integer pageNumber, Integer pageSize){
+        Page<Client> clientPage = clientRepository.searchClients(PageRequest.of(pageNumber, pageSize));
         return buildResponse(clientPage, (int)clientRepository.count());
+    }
+
+    @Override
+    public ClientPaginatedResponse getClientsByEmail(String email, Integer pageNumber, Integer pageSize) {
+        Page<Client> clientPage = clientRepository.findByEmailContains(email, PageRequest.of(pageNumber, pageSize));
+        return buildResponse(clientPage, (int)clientRepository.countByEmailContains(email));
+    }
+
+    @Override
+    public ClientPaginatedResponse getClientsByName(String name, Integer pageNumber, Integer pageSize) {
+        Page<Client> clientPage = clientRepository.findByNameContains(name, PageRequest.of(pageNumber, pageSize));
+        return buildResponse(clientPage, (int)clientRepository.countByNameContains(name));
+    }
+
+    @Override
+    public ClientPaginatedResponse getClientsByPhone(String phone, Integer pageNumber, Integer pageSize) {
+        Page<Client> clientPage = clientRepository.findByPhoneContains(phone, PageRequest.of(pageNumber, pageSize));
+        return buildResponse(clientPage, (int)clientRepository.countByPhoneContains(phone));
+    }
+
+    @Override
+    public ClientPaginatedResponse getClientsByCompany(String company, Integer pageNumber, Integer pageSize) {
+        Page<Client> clientPage = clientRepository.findByCompanyContains(company, PageRequest.of(pageNumber, pageSize));
+        return buildResponse(clientPage, (int)clientRepository.countByCompanyContains(company));
     }
 
     private ClientPaginatedResponse buildResponse(Page<Client> clientPage, int totalElements){
@@ -89,7 +110,7 @@ public class ClientServiceImpl implements ClientService{
     public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
-            client.setName(clientEmailChangeRequest.getNewEmail());
+            client.setEmail(clientEmailChangeRequest.getNewEmail());
             clientRepository.save(client);
         }
     }
@@ -107,7 +128,7 @@ public class ClientServiceImpl implements ClientService{
     public void modifyClientCompany(ClientCompanyChangeRequest clientCompanyChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
-            client.setName(clientCompanyChangeRequest.getNewCompany());
+            client.setCompany(clientCompanyChangeRequest.getNewCompany());
             clientRepository.save(client);
         }
     }
