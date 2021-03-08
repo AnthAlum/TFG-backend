@@ -78,7 +78,7 @@ public class MerchantRegistrationRequest {
 
     @Override
     public String toString() {
-        return "MerchantRegistrationRequest{" +
+        return "MeetingRegistrationRequest{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
