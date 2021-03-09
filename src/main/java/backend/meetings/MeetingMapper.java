@@ -7,12 +7,12 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface MeetingMapper {
-    @Mapping(target = "idMerchant", ignore = true)
-    @Mapping(target = "idClient", ignore = true)
+    @Mapping(target = "idsMerchant", ignore = true)
+    @Mapping(target = "idsClient", ignore = true)
     MeetingResponse meetingToMeetingResponse(Meeting meeting);
 
     @Mapping(target = "idMeeting", ignore = true)
-    @Mapping(target = "merchant", ignore = true)
-    @Mapping(target = "client", ignore = true)
+    @Mapping(target = "merchants", ignore = true)
+    @Mapping(target = "clients", ignore = true)
     Meeting meetingRegistrationRequestToMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
 }

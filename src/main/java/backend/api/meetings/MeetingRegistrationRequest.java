@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Validated
 public class MeetingRegistrationRequest {
@@ -13,11 +14,11 @@ public class MeetingRegistrationRequest {
     @JsonProperty(value = "localDateTime")
     private LocalDateTime localDateTime = null;
 
-    @JsonProperty(value = "idMerchant")
-    private Long idMerchant = null;
+    @JsonProperty(value = "merchants")
+    private ArrayList<Long> merchants = null;
 
-    @JsonProperty(value = "idClient")
-    private Long idClient = null;
+    @JsonProperty(value = "clients")
+    private ArrayList<Long> clients = null;
 
     public String getMatter() {
         return matter;
@@ -35,19 +36,19 @@ public class MeetingRegistrationRequest {
         this.localDateTime = localDateTime;
     }
 
-    public Long getIdMerchant() {
-        return idMerchant;
+    public ArrayList<Long> getMerchants() {
+        return merchants;
     }
 
-    public void setIdMerchant(Long idMerchant) {
-        this.idMerchant = idMerchant;
+    public void setMerchants(ArrayList<Long> merchants) {
+        this.merchants = merchants;
     }
 
-    public Long getIdClient() {
-        return idClient;
+    public ArrayList<Long> getClients() {
+        return clients;
     }
 
-    public void setIdClient(Long idClient) {
-        this.idClient = idClient;
+    public void setClients(ArrayList<Long> clients) {
+        this.clients = clients;
     }
 }

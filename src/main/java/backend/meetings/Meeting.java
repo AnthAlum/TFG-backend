@@ -5,6 +5,8 @@ import backend.merchants.Merchant;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "meeting")
@@ -18,23 +20,21 @@ public class Meeting {
 
     private LocalDateTime date;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "merchant_id", referencedColumnName = "id_merchant")
-    private Merchant merchant;
+    @OneToMany
+    private List<Merchant> merchants = new ArrayList<Merchant>();
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "client_id", referencedColumnName = "id_client")
-    private Client client;
+    @OneToMany
+    private List<Client> clients = new ArrayList<Client>();
 
     public Meeting() {
     }
 
-    public Meeting(Long idMeeting, String matter, LocalDateTime date, Merchant merchant, Client client) {
+    public Meeting(Long idMeeting, String matter, LocalDateTime date, ArrayList<Merchant> merchants, ArrayList<Client> clients) {
         this.idMeeting = idMeeting;
         this.matter = matter;
         this.date = date;
-        this.merchant = merchant;
-        this.client = client;
+        this.merchants = merchants;
+        this.clients = clients;
     }
 
     public Long getIdMeeting() {
@@ -61,19 +61,39 @@ public class Meeting {
         this.date = date;
     }
 
-    public Merchant getMerchant() {
-        return merchant;
+    public List<Merchant> getMerchants() {
+        return merchants;
     }
 
-    public void setMerchant(Merchant merchant) {
-        this.merchant = merchant;
+    public void setMerchants(List<Merchant> merchants) {
+        this.merchants = merchants;
     }
 
-    public Client getClient() {
-        return client;
+    public List<Client> getClients() {
+        return clients;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void addMerchant(Merchant merchant){
+        this.merchants.add(merchant);
+    }
+
+    public void addClient(Client client){
+        this.clients.add(client);
+    }
+
+    public ArrayList<Long> getMerchantsIds(){
+        ArrayList<Long> response = new ArrayList<>();
+        this.merchants.forEach(merchant -> response.add(merchant.getIdMerchant()));
+        return response;
+    }
+
+    public ArrayList<Long> getClientsIds(){
+        ArrayList<Long> response = new ArrayList<>();
+        this.clients.forEach(client -> response.add(client.getIdClient()));
+        return response;
     }
 }

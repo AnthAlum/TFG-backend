@@ -28,10 +28,6 @@ public class MeetingServiceImpl implements MeetingService{
         this.clientRepository = clientRepository;
     }
 
-
-
-
-
     @Override
     public MeetingPaginatedResponse getMeeting(Integer pageNumber, Integer pageSize) {
         Page<Meeting> meetingPage = meetingRepository.searchMeetings(PageRequest.of(pageNumber, pageSize));
@@ -45,8 +41,8 @@ public class MeetingServiceImpl implements MeetingService{
         MeetingListResponse meetingListResponse = new MeetingListResponse();
         meetingPage.forEach(meeting -> {
             MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);
-            meetingResponse.setIdMerchant(meeting.getMerchant().getIdMerchant());
-            meetingResponse.setIdClient(meeting.getClient().getIdClient());
+            meetingResponse.setIdsMerchant(meeting.getMerchantsIds());
+            meetingResponse.setIdsClient(meeting.getClientsIds());
             meetingListResponse.addMeetingResponse(meetingResponse);
         });
         PaginationInfo paginationInfo = new PaginationInfo();
@@ -62,8 +58,12 @@ public class MeetingServiceImpl implements MeetingService{
     @Override
     public void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest) {
         Meeting meeting = meetingMapper.meetingRegistrationRequestToMeeting(meetingRegistrationRequest);
-        meeting.setMerchant(merchantRepository.findById(meetingRegistrationRequest.getIdMerchant()).orElse(null));
-        meeting.setClient(clientRepository.findById(meetingRegistrationRequest.getIdClient()).orElse(null));
+        meetingRegistrationRequest.getMerchants().forEach(idMerchant ->
+                meeting.addMerchant(merchantRepository.findById(idMerchant).orElse(null))
+        );
+        meetingRegistrationRequest.getClients().forEach(idClient ->
+                meeting.addClient(clientRepository.findById(idClient).orElse(null))
+        );
         meeting.setDate(meetingRegistrationRequest.getLocalDateTime());
         meetingRepository.save(meeting);
     }
