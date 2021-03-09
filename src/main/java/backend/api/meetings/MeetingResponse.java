@@ -19,8 +19,8 @@ public class MeetingResponse {
     @JsonProperty("idClient")
     private Long idClient = null;
 
-    @JsonProperty("localDateTime")
-    private LocalDateTime localDateTime = null;
+    @JsonProperty("date")
+    private LocalDateTime date = null;
 
     public Long getIdMeeting() {
         return idMeeting;
@@ -54,11 +54,11 @@ public class MeetingResponse {
         this.idClient = idClient;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

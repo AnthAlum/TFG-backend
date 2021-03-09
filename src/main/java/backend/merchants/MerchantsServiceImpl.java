@@ -18,8 +18,8 @@ public class MerchantsServiceImpl implements MerchantsService {
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
 
-    public MerchantsServiceImpl() {
-    }
+    /*public MerchantsServiceImpl() {
+    }*/
 
     @Autowired
     public MerchantsServiceImpl(MerchantRepository merchantRepository, MerchantMapper merchantMapper) {

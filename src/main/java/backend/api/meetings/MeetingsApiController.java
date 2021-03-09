@@ -4,8 +4,12 @@ import backend.meetings.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-public class MeetingsApiController {
+import javax.validation.Valid;
+
+@RestController
+public class MeetingsApiController implements MeetingsApi{
     private MeetingService meetingService;
 
     @Autowired
@@ -13,7 +17,7 @@ public class MeetingsApiController {
         this.meetingService = meetingService;
     }
 
-    public ResponseEntity<MeetingPaginatedResponse> getClients(Integer pageNumber, Integer size) {
+    public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
         MeetingPaginatedResponse response = meetingService.getMeeting(pageNumber, size);
         return checkResponse(response);
     }
@@ -22,5 +26,11 @@ public class MeetingsApiController {
         if(meetingPaginatedResponse == null)
             return new ResponseEntity<MeetingPaginatedResponse>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<MeetingPaginatedResponse>(meetingPaginatedResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> registerMeeting(@Valid MeetingRegistrationRequest meetingRegistrationRequest) {
+        meetingService.registerMeeting(meetingRegistrationRequest);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

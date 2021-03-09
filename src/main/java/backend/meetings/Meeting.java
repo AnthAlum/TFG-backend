@@ -15,16 +15,27 @@ public class Meeting {
     private Long idMeeting;
 
     private String matter;
-    @Column(name = "local_date_time", columnDefinition = "TIMESTAMP")
-    private LocalDateTime localDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    private LocalDateTime date;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "merchant_id", referencedColumnName = "id_merchant")
     private Merchant merchant;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id", referencedColumnName = "id_client")
     private Client client;
+
+    public Meeting() {
+    }
+
+    public Meeting(Long idMeeting, String matter, LocalDateTime date, Merchant merchant, Client client) {
+        this.idMeeting = idMeeting;
+        this.matter = matter;
+        this.date = date;
+        this.merchant = merchant;
+        this.client = client;
+    }
 
     public Long getIdMeeting() {
         return idMeeting;
@@ -42,12 +53,12 @@ public class Meeting {
         this.matter = matter;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public Merchant getMerchant() {
