@@ -1,10 +1,11 @@
 package backend.api.merchants;
 
+import backend.api.meetings.MeetingResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
 @Validated
 public class MerchantResponse {
@@ -22,6 +23,9 @@ public class MerchantResponse {
 
     @JsonProperty("phone")
     private String phone = null;
+
+    @JsonProperty("meetings")
+    private ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
 
     /**
      * Get id
@@ -86,40 +90,15 @@ public class MerchantResponse {
         this.idRole = idRole;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MerchantResponse that = (MerchantResponse) o;
-        return Objects.equals(idMerchant, that.idMerchant) && Objects.equals(idRole, that.idRole) && Objects.equals(name, that.name)  && Objects.equals(email, that.email) && Objects.equals(phone, that.phone);
+    public ArrayList<MeetingResponse> getMeetingResponses() {
+        return meetingResponses;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idMerchant, idRole, name, email, phone);
+    public void setMeetingResponses(ArrayList<MeetingResponse> meetingResponses) {
+        this.meetingResponses = meetingResponses;
     }
 
-    @Override
-    public String toString() {
-        return "MerchantResponse{" +
-                "idMerchant=" + idMerchant +
-                ", idRol=" + idRole +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+    public void addMeetingResponse(MeetingResponse meetingResponse){
+        this.meetingResponses.add(meetingResponse);
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
 }

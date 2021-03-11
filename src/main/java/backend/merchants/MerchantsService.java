@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface MerchantsService extends UserDetailsService {
-    public Merchant findMerchantById(Long idMerchant);
     public MerchantResponse getMerchantById(Long idMerchant);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) throws AlreadyRegisteredException;
     public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size);

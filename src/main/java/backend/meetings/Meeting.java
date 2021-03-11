@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "meeting")
 public class Meeting {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     @Column(name = "id_meeting")
     private Long idMeeting;
 
@@ -20,10 +20,10 @@ public class Meeting {
 
     private LocalDateTime date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Merchant> merchants = new ArrayList<Merchant>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Client> clients = new ArrayList<Client>();
 
     public Meeting() {
@@ -83,17 +83,5 @@ public class Meeting {
 
     public void addClient(Client client){
         this.clients.add(client);
-    }
-
-    public ArrayList<Long> getMerchantsIds(){
-        ArrayList<Long> response = new ArrayList<>();
-        this.merchants.forEach(merchant -> response.add(merchant.getIdMerchant()));
-        return response;
-    }
-
-    public ArrayList<Long> getClientsIds(){
-        ArrayList<Long> response = new ArrayList<>();
-        this.clients.forEach(client -> response.add(client.getIdClient()));
-        return response;
     }
 }

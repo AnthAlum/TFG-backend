@@ -1,10 +1,13 @@
 package backend.api.meetings;
 
+import backend.api.clients.ClientListResponse;
+import backend.api.clients.ClientResponse;
+import backend.api.merchants.MerchantListResponse;
+import backend.api.merchants.MerchantResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Validated
 public class MeetingResponse {
@@ -14,11 +17,11 @@ public class MeetingResponse {
     @JsonProperty("matter")
     private String matter = null;
 
-    @JsonProperty("idsMerchant")
-    private ArrayList<Long> idsMerchant = null;
+    @JsonProperty("merchants")
+    private MerchantListResponse merchants = new MerchantListResponse();
 
-    @JsonProperty("idsClient")
-    private ArrayList<Long> idsClient = null;
+    @JsonProperty("clients")
+    private ClientListResponse clients = new ClientListResponse();
 
     @JsonProperty("date")
     private LocalDateTime date = null;
@@ -39,20 +42,28 @@ public class MeetingResponse {
         this.matter = matter;
     }
 
-    public ArrayList<Long> getIdsMerchant() {
-        return idsMerchant;
+    public MerchantListResponse getMerchants() {
+        return merchants;
     }
 
-    public void setIdsMerchant(ArrayList<Long> idsMerchant) {
-        this.idsMerchant = idsMerchant;
+    public void setMerchants(MerchantListResponse merchants) {
+        this.merchants = merchants;
     }
 
-    public ArrayList<Long> getIdsClient() {
-        return idsClient;
+    public void addMerchantResponse(MerchantResponse merchantResponse){
+        this.merchants.addMerchantResponse(merchantResponse);
     }
 
-    public void setIdsClient(ArrayList<Long> idsClient) {
-        this.idsClient = idsClient;
+    public ClientListResponse getClients() {
+        return clients;
+    }
+
+    public void setClients(ClientListResponse clients) {
+        this.clients = clients;
+    }
+
+    public void addClientResponse(ClientResponse clientResponse){
+        this.clients.addClientResponse(clientResponse);
     }
 
     public LocalDateTime getDate() {

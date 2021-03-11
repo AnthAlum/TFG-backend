@@ -1,7 +1,10 @@
 package backend.merchants;
 
+import backend.api.meetings.MeetingResponse;
 import backend.api.merchants.*;
 import backend.api.others.PaginationInfo;
+import backend.meetings.MeetingRepository;
+import backend.meetings.MeetingService;
 import backend.utility.AlreadyRegisteredException;
 import backend.utility.BadPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +20,23 @@ import java.util.List;
 public class MerchantsServiceImpl implements MerchantsService {
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
-
-    /*public MerchantsServiceImpl() {
-    }*/
+    private MeetingRepository meetingRepository;
+    private MeetingService meetingService;
 
     @Autowired
-    public MerchantsServiceImpl(MerchantRepository merchantRepository, MerchantMapper merchantMapper) {
+    public MerchantsServiceImpl(MerchantRepository merchantRepository,
+                                MerchantMapper merchantMapper,
+                                MeetingRepository meetingRepository,
+                                MeetingService meetingService) {
         this.merchantRepository = merchantRepository;
         this.merchantMapper = merchantMapper;
-    }
-
-    @Override
-    public Merchant findMerchantById(Long idMerchant) {
-        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
-        return merchant;
+        this.meetingRepository = meetingRepository;
+        this.meetingService = meetingService;
     }
 
     @Override
     public MerchantResponse getMerchantById(Long idMerchant) {
-        Merchant merchant = findMerchantById(idMerchant);
+        Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant);
         return merchantResponse;
     }
@@ -85,10 +86,13 @@ public class MerchantsServiceImpl implements MerchantsService {
             return null;
         }
         MerchantListResponse merchantListResponse = new MerchantListResponse(); //Crear el response de la lista vacia de comerciales
-        merchantPage.forEach(merchant ->
-                merchantListResponse.addMerchantResponse(
-                        merchantMapper.merchantToMerchantResponse(merchant)
-                )); //Ir agregando
+        merchantPage.forEach(merchant -> { //1: Por cada comercial
+            MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant); // obtenemos el merchantResponse
+            merchant.getMeetings().forEach(meeting -> { //  1.1: de las reuniones de un comercial
+                MeetingResponse meetingResponse = meetingService.getMeetingById(meeting.getIdMeeting()); // obtenemos el meetingResponse respectivo
+                merchantResponse.addMeetingResponse(meetingResponse); //   y lo agregamos al merchantResponse
+            });
+        });
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setTotalElements(totalElements);
         paginationInfo.setTotalPages(merchantPage.getTotalPages());

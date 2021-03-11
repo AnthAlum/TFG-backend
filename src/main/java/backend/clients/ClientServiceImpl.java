@@ -1,7 +1,10 @@
 package backend.clients;
 
 import backend.api.clients.*;
+import backend.api.meetings.MeetingResponse;
 import backend.api.others.PaginationInfo;
+import backend.meetings.MeetingRepository;
+import backend.meetings.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,25 +15,26 @@ public class ClientServiceImpl implements ClientService{
 
     private ClientMapper clientMapper;
     private ClientRepository clientRepository;
+    private MeetingRepository meetingRepository;
+    private MeetingService meetingService;
 
     public ClientServiceImpl() {
     }
 
     @Autowired
-    public ClientServiceImpl(ClientMapper clientMapper, ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientMapper clientMapper,
+                             ClientRepository clientRepository,
+                             MeetingRepository meetingRepository,
+                             MeetingService meetingService) {
         this.clientMapper = clientMapper;
         this.clientRepository = clientRepository;
-    }
-
-    @Override
-    public Client findClientById(Long idClient) {
-        Client client = clientRepository.findById(idClient).orElse(null);
-        return client;
+        this.meetingRepository = meetingRepository;
+        this.meetingService = meetingService;
     }
 
     @Override
     public ClientResponse getClientById(Long idClient) {
-        Client client = findClientById(idClient);
+        Client client = clientRepository.findById(idClient).orElse(null);
         ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
         return clientResponse;
     }
@@ -74,11 +78,16 @@ public class ClientServiceImpl implements ClientService{
     private ClientPaginatedResponse buildResponse(Page<Client> clientPage, int totalElements){
         if(clientPage == null)
             return null;
-        ClientListResponse clientListResponse = new ClientListResponse();
-        clientPage.forEach(client ->
-                clientListResponse.addClientResponse(
-                        clientMapper.ClientToClientResponse(client)
-                ));
+        ClientListResponse clientListResponse = new ClientListResponse(); //Create the list of clientResponses for the
+        clientPage.forEach(client -> {
+            ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
+            client.getMeetings().forEach(meeting -> {
+                MeetingResponse meetingResponse = meetingService.getMeetingById(meeting.getIdMeeting());
+                clientResponse.addMeetingResponse(meetingResponse);
+            });
+            clientListResponse.addClientResponse(clientResponse);
+        });
+
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setTotalElements(totalElements);
         paginationInfo.setTotalPages(clientPage.getTotalPages());

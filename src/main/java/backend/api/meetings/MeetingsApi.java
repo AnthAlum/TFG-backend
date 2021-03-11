@@ -2,6 +2,8 @@ package backend.api.meetings;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,5 +33,13 @@ public interface MeetingsApi {
             method = RequestMethod.POST)
     ResponseEntity<Void> registerMeeting(@ApiParam(value = "the new meeting") @Valid @RequestBody MeetingRegistrationRequest meetingRegistrationRequest);
 
+    @Operation(summary = "Deletes a meeting", description = "Deletes a meeting of the given ID.", tags={ "Meeting" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting deleted sucessfully."),
+
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID.") })
+    @RequestMapping(value = "/meetings/{meetingId}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId);
 
 }

@@ -1,6 +1,7 @@
 package backend.merchants;
 
 
+import backend.meetings.Meeting;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,13 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "merchant")
 public class Merchant implements UserDetails {
     /*   ATTRIBUTES  */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     @Column(name = "id_merchant")
     private Long idMerchant;
     /**
@@ -28,17 +30,20 @@ public class Merchant implements UserDetails {
     private String phone;
     private String password;
 
+    @OneToMany
+    private List<Meeting> meetings = new ArrayList<>();
 
     /*   CTOR., GETTERS, SETTERS    */
     public Merchant(){}
 
-    public Merchant(Long idMerchant, Integer idRole, String name, String email, String phone, String password) {
+    public Merchant(Long idMerchant, Integer idRole, String email, String name, String phone, String password, List<Meeting> meetings) {
         this.idMerchant = idMerchant;
         this.idRole = idRole;
-        this.name = name;
         this.email = email;
+        this.name = name;
         this.phone = phone;
         this.password = password;
+        this.meetings = meetings;
     }
 
     public Long getIdMerchant() {
@@ -89,6 +94,14 @@ public class Merchant implements UserDetails {
         this.password = password;
     }
 
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetings) {
+        this.meetings = meetings;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -126,15 +139,7 @@ public class Merchant implements UserDetails {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Merchant{" +
-                "idMerchant=" + idMerchant +
-                ", idRole=" + idRole +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void addMeeting(Meeting meeting){
+        this.meetings.add(meeting);
     }
 }

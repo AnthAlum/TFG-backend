@@ -33,4 +33,10 @@ public class MeetingsApiController implements MeetingsApi{
         meetingService.registerMeeting(meetingRegistrationRequest);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteMeeting(Long meetingId) {
+        meetingService.deleteMeeting(meetingId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }

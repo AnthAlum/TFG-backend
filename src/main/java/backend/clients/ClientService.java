@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ClientService {
-    public Client findClientById(Long idClient);
     public ClientResponse getClientById(Long idClient);
     public ClientPaginatedResponse getClients(Integer pageNumber, Integer pageSize);
     public ClientPaginatedResponse getClientsByEmail(String email, Integer pageNumber, Integer pageSize);

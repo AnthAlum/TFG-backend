@@ -1,15 +1,17 @@
 package backend.clients;
 
-import backend.merchants.Merchant;
+import backend.meetings.Meeting;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
 public class Client {
     /*   ATTRIBUTES  */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     @Column(name = "id_client")
     private Long idClient;
 
@@ -18,15 +20,18 @@ public class Client {
     private String phone;
     private String company;
 
+    @OneToMany
+    private List<Meeting> meetings = new ArrayList<>();
     /*   CTOR., GETTERS, SETTERS    */
     public Client(){}
 
-    public Client(Long idClient, String name, String email, String phone, String company) {
+    public Client(Long idClient, String name, String email, String phone, String company, List<Meeting> meetings) {
         this.idClient = idClient;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.company = company;
+        this.meetings = meetings;
     }
 
     public Long getIdClient() {
@@ -67,5 +72,17 @@ public class Client {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetings) {
+        this.meetings = meetings;
+    }
+
+    public void addMeeting(Meeting meeting){
+        this.meetings.add(meeting);
     }
 }

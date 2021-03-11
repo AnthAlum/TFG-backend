@@ -1,9 +1,9 @@
 package backend.api.clients;
 
+import backend.api.meetings.MeetingListResponse;
+import backend.api.meetings.MeetingResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.Objects;
 
 @Validated
 public class ClientResponse {
@@ -21,6 +21,9 @@ public class ClientResponse {
 
     @JsonProperty("company")
     private String company = null;
+
+    @JsonProperty("meetings")
+    private MeetingListResponse meetingListResponse = new MeetingListResponse();
 
     public Long getIdClient() {
         return idClient;
@@ -62,27 +65,7 @@ public class ClientResponse {
         this.company = company;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ClientResponse that = (ClientResponse) o;
-        return Objects.equals(idClient, that.idClient) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && phone.equals(that.phone) && Objects.equals(company, that.company);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idClient, name, email, phone, company);
-    }
-
-    @Override
-    public String toString() {
-        return "ClientResponse{" +
-                "idClient=" + idClient +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", company='" + company + '\'' +
-                '}';
+    public void addMeetingResponse(MeetingResponse meetingResponse){
+        this.meetingListResponse.addMeetingResponse(meetingResponse);
     }
 }
