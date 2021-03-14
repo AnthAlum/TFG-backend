@@ -35,11 +35,51 @@ public interface MeetingsApi {
 
     @Operation(summary = "Deletes a meeting", description = "Deletes a meeting of the given ID.", tags={ "Meeting" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Meeting deleted sucessfully."),
+            @ApiResponse(responseCode = "200", description = "Meeting deleted successfully."),
 
             @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID.") })
     @RequestMapping(value = "/meetings/{meetingId}",
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId);
+
+    @Operation(summary = "Modify meeting's date", description = "Modify meeting's date", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's date modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/date",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyDate(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "the new date") @Valid @RequestBody MeetingDateChangeRequest meetingDateChangeRequest);
+
+    @Operation(summary = "Modify meeting's matter", description = "Modify meeting's matter", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's date modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/matter",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMatter(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "the new date") @Valid @RequestBody MeetingMatterChangeRequest meetingMatterChangeRequest);
+
+    @Operation(summary = "Modify one meeting's merchant", description = "Modify one meeting's merchant", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's merchant modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/merchant",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyMerchant(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "merchant and operation information") @Valid @RequestBody MeetingMerchantChangeRequest meetingMerchantChangeRequest);
+
+    @Operation(summary = "Modify one meeting's client", description = "Modify one meeting's client", tags = { "Client" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's client modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/client",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyClient(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "client and operation information") @Valid @RequestBody MeetingClientChangeRequest meetingClientChangeRequest);
 
 }

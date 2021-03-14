@@ -39,4 +39,28 @@ public class MeetingsApiController implements MeetingsApi{
         meetingService.deleteMeeting(meetingId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> modifyDate(Long meetingId, @Valid MeetingDateChangeRequest meetingDateChangeRequest) {
+        meetingService.modifyMeetingDate(meetingId, meetingDateChangeRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyMatter(Long meetingId, @Valid MeetingMatterChangeRequest meetingMatterChangeRequest) {
+        meetingService.modifyMeetingMatter(meetingId, meetingMatterChangeRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyMerchant(Long meetingId, @Valid MeetingMerchantChangeRequest meetingMerchantChangeRequest) {
+        meetingService.modifyMeetingMerchant(meetingId, meetingMerchantChangeRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> modifyClient(Long meetingId, @Valid MeetingClientChangeRequest meetingClientChangeRequest) {
+        meetingService.modifyMeetingClient(meetingId, meetingClientChangeRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

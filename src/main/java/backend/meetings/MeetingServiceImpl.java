@@ -1,14 +1,13 @@
 package backend.meetings;
 
 import backend.api.clients.ClientResponse;
-import backend.api.meetings.MeetingListResponse;
-import backend.api.meetings.MeetingPaginatedResponse;
-import backend.api.meetings.MeetingRegistrationRequest;
-import backend.api.meetings.MeetingResponse;
+import backend.api.meetings.*;
 import backend.api.merchants.MerchantResponse;
 import backend.api.others.PaginationInfo;
+import backend.clients.Client;
 import backend.clients.ClientRepository;
 import backend.clients.ClientService;
+import backend.merchants.Merchant;
 import backend.merchants.MerchantRepository;
 import backend.merchants.MerchantsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +104,22 @@ public class MeetingServiceImpl implements MeetingService{
         return buildResponse(meetingPage, (int)meetingRepository.count());
     }
 
+    @Override
+    @Transactional
+    public MeetingResponse getMeetingById(Long idMeeting) {
+        Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
+        MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);
+        meeting.getMerchants().forEach(merchant -> {
+            MerchantResponse merchantResponse = merchantService.getMerchantById(merchant.getIdMerchant());
+            meetingResponse.addMerchantResponse(merchantResponse);
+        });
+        meeting.getClients().forEach(client -> {
+            ClientResponse clientResponse = clientService.getClientById(client.getIdClient());
+            meetingResponse.addClientResponse(clientResponse);
+        });
+        return meetingResponse;
+    }
+
     private MeetingPaginatedResponse buildResponse(Page<Meeting> meetingPage, int totalElements){
         if(meetingPage == null) {
             return null;
@@ -152,6 +167,64 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
+    public void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting != null){
+            meeting.setDate(meetingDateChangeRequest.getLocalDateTime());
+            meetingRepository.save(meeting);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void modifyMeetingMatter(Long meetingId, MeetingMatterChangeRequest meetingMatterChangeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting != null){
+            meeting.setMatter(meetingMatterChangeRequest.getMatter());
+            meetingRepository.save(meeting);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void modifyMeetingMerchant(Long meetingId, MeetingMerchantChangeRequest meetingMerchantChangeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        Merchant merchant = merchantRepository.findById(meetingMerchantChangeRequest.getMerchantId()).orElse(null);
+        switch (meetingMerchantChangeRequest.getOperation()){
+            case "remove":
+                meeting.removeMerchant(merchant);
+                merchant.deleteMeeting(meeting);
+                break;
+            case "add":
+                meeting.addMerchant(merchant);
+                merchant.addMeeting(meeting);
+                break;
+        }
+        merchantRepository.save(merchant);
+        meetingRepository.save(meeting);
+    }
+
+    @Override
+    @Transactional
+    public void modifyMeetingClient(Long meetingId, MeetingClientChangeRequest meetingClientChangeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        Client client = clientRepository.findById(meetingClientChangeRequest.getClientId()).orElse(null);
+        switch (meetingClientChangeRequest.getOperation()){
+            case "remove":
+                meeting.removeClient(client);
+                client.deleteMeeting(meeting);
+                break;
+            case "add":
+                meeting.addClient(client);
+                client.addMeeting(meeting);
+                break;
+        }
+        clientRepository.save(client);
+        meetingRepository.save(meeting);
+    }
+
+    @Override
+    @Transactional
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         meeting.getMerchants().forEach(merchant -> { // Por cada merchant relacionado con el meeting
@@ -165,15 +238,4 @@ public class MeetingServiceImpl implements MeetingService{
         meetingRepository.delete(meeting);
     }
 
-    @Override
-    @Transactional
-    public MeetingResponse getMeetingById(Long idMeeting) {
-        Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
-        MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);
-        meeting.getMerchants().forEach(merchant -> {
-            MerchantResponse merchantResponse = merchantService.getMerchantById(merchant.getIdMerchant());
-            meetingResponse.addMerchantResponse(merchantResponse);
-        });
-        return meetingResponse;
-    }
 }

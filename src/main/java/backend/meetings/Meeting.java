@@ -82,9 +82,13 @@ public class Meeting {
         this.merchants.add(merchant);
     }
 
+    public void removeMerchant(Merchant merchant) { this.merchants.remove(merchant); }
+
     public void addClient(Client client){
         this.clients.add(client);
     }
+
+    public void removeClient(Client client) { this.clients.remove(client); }
 
     @Override
     public boolean equals(Object o) {
