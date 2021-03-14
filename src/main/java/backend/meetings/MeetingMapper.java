@@ -14,6 +14,5 @@ public interface MeetingMapper {
     @Mapping(target = "idMeeting", ignore = true)
     @Mapping(target = "merchants", ignore = true)
     @Mapping(target = "clients", ignore = true)
-    @Mapping(target = "meetings", ignore = true)
     Meeting meetingRegistrationRequestToMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
 }

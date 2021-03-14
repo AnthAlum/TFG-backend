@@ -5,13 +5,14 @@ import backend.meetings.Meeting;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "client")
 public class Client {
     /*   ATTRIBUTES  */
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_client")
     private Long idClient;
 
@@ -20,7 +21,12 @@ public class Client {
     private String phone;
     private String company;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "related_client",
+            joinColumns = @JoinColumn(name = "id_client"),
+            inverseJoinColumns = @JoinColumn(name = "id_meeting")
+    )
     private List<Meeting> meetings = new ArrayList<>();
     /*   CTOR., GETTERS, SETTERS    */
     public Client(){}
@@ -84,5 +90,34 @@ public class Client {
 
     public void addMeeting(Meeting meeting){
         this.meetings.add(meeting);
+    }
+
+    public void deleteMeeting(Meeting meeting){
+        this.meetings.remove(meeting);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(idClient, client.idClient) && Objects.equals(name, client.name) && Objects.equals(email, client.email) && Objects.equals(phone, client.phone) && Objects.equals(company, client.company) && Objects.equals(meetings, client.meetings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idClient, name, email, phone, company, meetings);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "idClient=" + idClient +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", company='" + company + '\'' +
+                ", meetings=" + meetings +
+                '}';
     }
 }

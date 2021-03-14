@@ -1,5 +1,6 @@
 package backend.api.clients;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 @Validated
 public class ClientListResponse {
+    @JsonProperty("Clients")
     private List<ClientResponse> clientResponseList;
 
     public ClientListResponse(){

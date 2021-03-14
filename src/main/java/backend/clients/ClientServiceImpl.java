@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ClientServiceImpl implements ClientService{
 
@@ -18,17 +20,53 @@ public class ClientServiceImpl implements ClientService{
     private MeetingRepository meetingRepository;
     private MeetingService meetingService;
 
-    public ClientServiceImpl() {
-    }
-
+/*
     @Autowired
     public ClientServiceImpl(ClientMapper clientMapper,
                              ClientRepository clientRepository,
                              MeetingRepository meetingRepository,
                              MeetingService meetingService) {
+        super();
         this.clientMapper = clientMapper;
         this.clientRepository = clientRepository;
         this.meetingRepository = meetingRepository;
+        this.meetingService = meetingService;
+    }
+*/
+
+    public ClientMapper getClientMapper() {
+        return clientMapper;
+    }
+
+    @Autowired
+    public void setClientMapper(ClientMapper clientMapper) {
+        this.clientMapper = clientMapper;
+    }
+
+    public ClientRepository getClientRepository() {
+        return clientRepository;
+    }
+
+    @Autowired
+    public void setClientRepository(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
+
+    public MeetingRepository getMeetingRepository() {
+        return meetingRepository;
+    }
+
+    @Autowired
+    public void setMeetingRepository(MeetingRepository meetingRepository) {
+        this.meetingRepository = meetingRepository;
+    }
+
+    public MeetingService getMeetingService() {
+        return meetingService;
+    }
+
+    @Autowired
+    public void setMeetingService(MeetingService meetingService) {
         this.meetingService = meetingService;
     }
 
@@ -40,18 +78,21 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void registerClient(ClientRegistrationRequest clientRegistrationRequest) {
         Client client = clientMapper.clientRegistrationRequestToClient(clientRegistrationRequest);
         clientRepository.save(client);
     }
 
     @Override
+    @Transactional
     public ClientPaginatedResponse getClients(Integer pageNumber, Integer pageSize){
         Page<Client> clientPage = clientRepository.searchClients(PageRequest.of(pageNumber, pageSize));
         return buildResponse(clientPage, (int)clientRepository.count());
     }
 
     @Override
+    @Transactional
     public ClientPaginatedResponse getClientsByEmail(String email, Integer pageNumber, Integer pageSize) {
         Page<Client> clientPage = clientRepository.findByEmailContains(email, PageRequest.of(pageNumber, pageSize));
         return buildResponse(clientPage, (int)clientRepository.countByEmailContains(email));
@@ -64,12 +105,14 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public ClientPaginatedResponse getClientsByPhone(String phone, Integer pageNumber, Integer pageSize) {
         Page<Client> clientPage = clientRepository.findByPhoneContains(phone, PageRequest.of(pageNumber, pageSize));
         return buildResponse(clientPage, (int)clientRepository.countByPhoneContains(phone));
     }
 
     @Override
+    @Transactional
     public ClientPaginatedResponse getClientsByCompany(String company, Integer pageNumber, Integer pageSize) {
         Page<Client> clientPage = clientRepository.findByCompanyContains(company, PageRequest.of(pageNumber, pageSize));
         return buildResponse(clientPage, (int)clientRepository.countByCompanyContains(company));
@@ -99,6 +142,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void deleteClient(Long idClient){
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
@@ -107,6 +151,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void modifyClientName(ClientNameChangeRequest clientNameChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
@@ -116,6 +161,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
@@ -125,6 +171,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void modifyClientPhone(ClientPhoneChangeRequest clientPhoneChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){
@@ -134,6 +181,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    @Transactional
     public void modifyClientCompany(ClientCompanyChangeRequest clientCompanyChangeRequest, Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client != null){

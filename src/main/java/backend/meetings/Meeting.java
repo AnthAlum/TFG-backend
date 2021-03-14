@@ -7,12 +7,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "meeting")
 public class Meeting {
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_meeting")
     private Long idMeeting;
 
@@ -20,10 +21,10 @@ public class Meeting {
 
     private LocalDateTime date;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "meetings")
     private List<Merchant> merchants = new ArrayList<Merchant>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "meetings")
     private List<Client> clients = new ArrayList<Client>();
 
     public Meeting() {
@@ -84,4 +85,18 @@ public class Meeting {
     public void addClient(Client client){
         this.clients.add(client);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meeting meeting = (Meeting) o;
+        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idMeeting, matter, date, merchants, clients);
+    }
+
 }

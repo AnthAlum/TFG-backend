@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class MeetingServiceImpl implements MeetingService{
     private MeetingRepository meetingRepository;
@@ -24,7 +26,7 @@ public class MeetingServiceImpl implements MeetingService{
     private MerchantsService merchantService;
     private ClientRepository clientRepository;
     private ClientService clientService;
-
+/*
     @Autowired
     public MeetingServiceImpl(MeetingRepository meetingRepository,
                               MeetingMapper meetingMapper,
@@ -40,8 +42,64 @@ public class MeetingServiceImpl implements MeetingService{
         this.clientRepository = clientRepository;
         this.clientService = clientService;
     }
+*/
+
+    public MeetingRepository getMeetingRepository() {
+        return meetingRepository;
+    }
+
+    @Autowired
+    public void setMeetingRepository(MeetingRepository meetingRepository) {
+        this.meetingRepository = meetingRepository;
+    }
+
+    public MeetingMapper getMeetingMapper() {
+        return meetingMapper;
+    }
+
+    @Autowired
+    public void setMeetingMapper(MeetingMapper meetingMapper) {
+        this.meetingMapper = meetingMapper;
+    }
+
+    public MerchantRepository getMerchantRepository() {
+        return merchantRepository;
+    }
+
+    @Autowired
+    public void setMerchantRepository(MerchantRepository merchantRepository) {
+        this.merchantRepository = merchantRepository;
+    }
+
+    public MerchantsService getMerchantService() {
+        return merchantService;
+    }
+
+    @Autowired
+    public void setMerchantService(MerchantsService merchantService) {
+        this.merchantService = merchantService;
+    }
+
+    public ClientRepository getClientRepository() {
+        return clientRepository;
+    }
+
+    @Autowired
+    public void setClientRepository(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
+
+    public ClientService getClientService() {
+        return clientService;
+    }
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @Override
+    @Transactional
     public MeetingPaginatedResponse getMeeting(Integer pageNumber, Integer pageSize) {
         Page<Meeting> meetingPage = meetingRepository.searchMeetings(PageRequest.of(pageNumber, pageSize));
         return buildResponse(meetingPage, (int)meetingRepository.count());
@@ -63,6 +121,7 @@ public class MeetingServiceImpl implements MeetingService{
                 ClientResponse clientResponse = clientService.getClientById(client.getIdClient());
                 meetingResponse.addClientResponse(clientResponse);
             });
+            meetingListResponse.addMeetingResponse(meetingResponse); //Add the meetingResponse to the list of meetingResponses.
         });
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setTotalPages(meetingPage.getTotalPages());
@@ -75,24 +134,39 @@ public class MeetingServiceImpl implements MeetingService{
     }
 
     @Override
+    @Transactional
     public void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest) {
-        Meeting meeting = meetingMapper.meetingRegistrationRequestToMeeting(meetingRegistrationRequest);
-        meetingRegistrationRequest.getMerchants().forEach(idMerchant ->
-                meeting.addMerchant(merchantRepository.findById(idMerchant).orElse(null))
+        Meeting meeting = meetingMapper.meetingRegistrationRequestToMeeting(meetingRegistrationRequest); //Obtenemos el meeting.
+        meetingRegistrationRequest.getMerchants().forEach(idMerchant -> // 1. Con cada idMerchant del registrationRequest
+                meeting.addMerchant(merchantRepository.findById(idMerchant).orElse(null)) //    buscamos el merchant y lo guardamos en la lista.
         );
+        // Igual con los clientes.
         meetingRegistrationRequest.getClients().forEach(idClient ->
                 meeting.addClient(clientRepository.findById(idClient).orElse(null))
         );
         meeting.setDate(meetingRegistrationRequest.getLocalDateTime());
         meetingRepository.save(meeting);
+        meeting.getMerchants().forEach(merchant -> merchant.addMeeting(meeting)); // Guardamos el nuevo meeting en las listas de los merchants.
+        meeting.getClients().forEach(client -> client.addMeeting(meeting)); // Igual con los clientes.
     }
 
     @Override
+    @Transactional
     public void deleteMeeting(Long meetingId) {
-        meetingRepository.delete(meetingRepository.findById(meetingId).orElse(null));
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        meeting.getMerchants().forEach(merchant -> { // Por cada merchant relacionado con el meeting
+            merchant.deleteMeeting(meeting);    // quitamos el meeting a eliminar.
+            merchantRepository.save(merchant);  //   y actualizamos la lista de los meetings.
+        });
+        meeting.getClients().forEach(client -> { // Igual en los clientes.
+            client.deleteMeeting(meeting);
+            clientRepository.save(client);
+        });
+        meetingRepository.delete(meeting);
     }
 
     @Override
+    @Transactional
     public MeetingResponse getMeetingById(Long idMeeting) {
         Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
         MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);

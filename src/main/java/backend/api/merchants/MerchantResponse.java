@@ -1,11 +1,10 @@
 package backend.api.merchants;
 
+import backend.api.meetings.MeetingListResponse;
 import backend.api.meetings.MeetingResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.ArrayList;
 
 @Validated
 public class MerchantResponse {
@@ -25,7 +24,7 @@ public class MerchantResponse {
     private String phone = null;
 
     @JsonProperty("meetings")
-    private ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
+    private MeetingListResponse meetingResponses = new MeetingListResponse();
 
     /**
      * Get id
@@ -90,15 +89,15 @@ public class MerchantResponse {
         this.idRole = idRole;
     }
 
-    public ArrayList<MeetingResponse> getMeetingResponses() {
+    public MeetingListResponse getMeetingResponses() {
         return meetingResponses;
     }
 
-    public void setMeetingResponses(ArrayList<MeetingResponse> meetingResponses) {
+    public void setMeetingResponses(MeetingListResponse meetingResponses) {
         this.meetingResponses = meetingResponses;
     }
 
     public void addMeetingResponse(MeetingResponse meetingResponse){
-        this.meetingResponses.add(meetingResponse);
+        this.meetingResponses.addMeetingResponse(meetingResponse);
     }
 }
