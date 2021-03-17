@@ -5,13 +5,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface MeetingService {
-    public MeetingResponse getMeetingById(Long idMeeting);
-    public MeetingPaginatedResponse getMeeting(Integer pageNumber, Integer pageSize);
-    public void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
-    public void deleteMeeting(Long meetingId);
-    public void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest);
-    public void modifyMeetingMatter(Long meetingId, MeetingMatterChangeRequest meetingMatterChangeRequest);
-    public void modifyMeetingMerchant(Long meetingId, MeetingMerchantChangeRequest meetingMerchantChangeRequest);
-    public void modifyMeetingClient(Long meetingId, MeetingClientChangeRequest meetingClientChangeRequest);
-
+    MeetingResponse getMeetingById(Long idMeeting);
+    MeetingPaginatedResponse getMeetings(Integer pageNumber, Integer pageSize);
+    void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
+    void deleteMeeting(Long meetingId);
+    void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest);
+    void modifyMeetingMatter(Long meetingId, MeetingMatterChangeRequest meetingMatterChangeRequest);
+    void addMeetingMerchant(Long meetingId, MeetingSubjectChangeRequest meetingSubjectChangeRequest);
+    void addMeetingClient(Long meetingId, MeetingSubjectChangeRequest meetingSubjectChangeRequest);
+    void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest);
+    void deleteMeetingMerchant(Long meetingId, Long merchantId);
+    void deleteMeetingClient(Long meetingId, Long clientId);
+    void deleteMeetingKeyword(Long meetingId, String keyword);
 }

@@ -98,6 +98,24 @@ public class MerchantsServiceImpl implements MerchantsService {
         return buildResponse(merchantPage, (int)merchantRepository.count());
     }
 
+
+    @Override
+    @Transactional
+    public MerchantsSimplifiedListResponse getMerchantsSimplified() {
+        MerchantsSimplifiedListResponse merchantsSimplifiedListResponse = new MerchantsSimplifiedListResponse();
+        List<String[]> merchantsSimplified = merchantRepository.getMerchantsSimplified();
+        merchantsSimplified.forEach(merchant -> {
+
+            MerchantSimplifiedResponse merchantSimplifiedResponse = new MerchantSimplifiedResponse(
+                    Long.parseLong(merchant[0]),
+                    merchant[1],
+                    merchant[2]
+            );
+            merchantsSimplifiedListResponse.addResponse(merchantSimplifiedResponse);
+        });
+        return merchantsSimplifiedListResponse;
+    }
+
     @Override
     @Transactional
     public MerchantPaginatedResponse getMerchantsByIdRole(Integer idRole, Integer pageNumber, Integer size) {

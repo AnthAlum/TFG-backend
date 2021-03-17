@@ -27,15 +27,20 @@ public class Meeting {
     @ManyToMany(mappedBy = "meetings")
     private List<Client> clients = new ArrayList<Client>();
 
+    @Column
+    @ElementCollection(targetClass=String.class)
+    private List<String> keywords = new ArrayList<>();
+
     public Meeting() {
     }
 
-    public Meeting(Long idMeeting, String matter, LocalDateTime date, ArrayList<Merchant> merchants, ArrayList<Client> clients) {
+    public Meeting(Long idMeeting, String matter, LocalDateTime date, List<Merchant> merchants, List<Client> clients, List<String> keywords) {
         this.idMeeting = idMeeting;
         this.matter = matter;
         this.date = date;
         this.merchants = merchants;
         this.clients = clients;
+        this.keywords = keywords;
     }
 
     public Long getIdMeeting() {
@@ -90,17 +95,44 @@ public class Meeting {
 
     public void removeClient(Client client) { this.clients.remove(client); }
 
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public void addKeyword(String keyword){
+        this.keywords.add(keyword);
+    }
+
+    public void removeKeyword(String keyword){
+        this.keywords.remove(keyword);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients);
+        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMeeting, matter, date, merchants, clients);
+        return Objects.hash(idMeeting, matter, date, merchants, clients, keywords);
     }
 
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "idMeeting=" + idMeeting +
+                ", matter='" + matter + '\'' +
+                ", date=" + date +
+                ", merchants=" + merchants +
+                ", clients=" + clients +
+                ", keywords=" + keywords +
+                '}';
+    }
 }

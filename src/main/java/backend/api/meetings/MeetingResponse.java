@@ -7,7 +7,8 @@ import backend.api.merchants.MerchantResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Validated
 public class MeetingResponse {
@@ -24,7 +25,13 @@ public class MeetingResponse {
     private ClientListResponse clients = new ClientListResponse();
 
     @JsonProperty("date")
-    private LocalDateTime date = null;
+    private String date = null;
+
+    @JsonProperty("time")
+    private String time = null;
+
+    @JsonProperty("keywords")
+    private List<String> keywords = new ArrayList<>();
 
     public Long getIdMeeting() {
         return idMeeting;
@@ -66,11 +73,27 @@ public class MeetingResponse {
         this.clients.addClientResponse(clientResponse);
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 }

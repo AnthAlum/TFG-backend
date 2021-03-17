@@ -1,9 +1,12 @@
 package backend.api.meetings;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingListResponse {
+    @JsonProperty("meetingResponseList")
     private List<MeetingResponse> meetingResponseList;
 
     public MeetingListResponse() {

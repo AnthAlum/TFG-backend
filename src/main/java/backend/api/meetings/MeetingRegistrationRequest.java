@@ -3,7 +3,6 @@ package backend.api.meetings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Validated
@@ -12,13 +11,16 @@ public class MeetingRegistrationRequest {
     private String matter = null;
 
     @JsonProperty(value = "localDateTime")
-    private LocalDateTime localDateTime = null;
+    private String localDateTime = null;
 
     @JsonProperty(value = "merchants")
     private ArrayList<Long> merchants = null;
 
     @JsonProperty(value = "clients")
     private ArrayList<Long> clients = null;
+
+    @JsonProperty(value = "keywords")
+    private ArrayList<String> keywords = null;
 
     public String getMatter() {
         return matter;
@@ -28,11 +30,11 @@ public class MeetingRegistrationRequest {
         this.matter = matter;
     }
 
-    public LocalDateTime getLocalDateTime() {
+    public String getLocalDateTime() {
         return localDateTime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
+    public void setLocalDateTime(String localDateTime) {
         this.localDateTime = localDateTime;
     }
 
@@ -50,5 +52,13 @@ public class MeetingRegistrationRequest {
 
     public void setClients(ArrayList<Long> clients) {
         this.clients = clients;
+    }
+
+    public ArrayList<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(ArrayList<String> keywords) {
+        this.keywords = keywords;
     }
 }

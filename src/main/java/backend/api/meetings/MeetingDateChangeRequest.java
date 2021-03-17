@@ -3,18 +3,16 @@ package backend.api.meetings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDateTime;
-
 @Validated
 public class MeetingDateChangeRequest {
     @JsonProperty("newDate")
-    private LocalDateTime localDateTime;
+    private String localDateTime;
 
-    public LocalDateTime getLocalDateTime() {
+    public String getLocalDateTime() {
         return localDateTime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
+    public void setLocalDateTime(String localDateTime) {
         this.localDateTime = localDateTime;
     }
 }

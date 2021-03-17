@@ -18,8 +18,16 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
-        MeetingPaginatedResponse response = meetingService.getMeeting(pageNumber, size);
+        MeetingPaginatedResponse response = meetingService.getMeetings(pageNumber, size);
         return checkResponse(response);
+    }
+
+    @Override
+    public ResponseEntity<MeetingResponse> getMeeting(Long meetingId) {
+        MeetingResponse response = meetingService.getMeetingById(meetingId);
+        if(response == null)
+            return new ResponseEntity<MeetingResponse>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MeetingResponse>(response, HttpStatus.OK);
     }
 
     private ResponseEntity<MeetingPaginatedResponse> checkResponse(MeetingPaginatedResponse meetingPaginatedResponse){
@@ -53,14 +61,39 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     @Override
-    public ResponseEntity<Void> modifyMerchant(Long meetingId, @Valid MeetingMerchantChangeRequest meetingMerchantChangeRequest) {
-        meetingService.modifyMeetingMerchant(meetingId, meetingMerchantChangeRequest);
+    public ResponseEntity<Void> addMerchant(Long meetingId, @Valid MeetingSubjectChangeRequest meetingSubjectChangeRequest) {
+        meetingService.addMeetingMerchant(meetingId, meetingSubjectChangeRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> modifyClient(Long meetingId, @Valid MeetingClientChangeRequest meetingClientChangeRequest) {
-        meetingService.modifyMeetingClient(meetingId, meetingClientChangeRequest);
+    public ResponseEntity<Void> addClient(Long meetingId, @Valid MeetingSubjectChangeRequest meetingSubjectChangeRequest) {
+        meetingService.addMeetingClient(meetingId, meetingSubjectChangeRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Void> addKeyword(Long meetingId, @Valid MeetingKeywordChangeRequest meetingKeywordChangeRequest) {
+        meetingService.addMeetingKeyword(meetingId, meetingKeywordChangeRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteMerchant(Long meetingId, Long merchantId) {
+        meetingService.deleteMeetingMerchant(meetingId, merchantId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteClient(Long meetingId, Long clientId) {
+        meetingService.deleteMeetingClient(meetingId, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteKeyword(Long meetingId, String keyword) {
+        meetingService.deleteMeetingKeyword(meetingId, keyword);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

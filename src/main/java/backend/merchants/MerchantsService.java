@@ -14,6 +14,7 @@ public interface MerchantsService extends UserDetailsService {
     public MerchantResponse getMerchantById(Long idMerchant);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) throws AlreadyRegisteredException;
     public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size);
+    public MerchantsSimplifiedListResponse getMerchantsSimplified();
     public MerchantPaginatedResponse getMerchantsByIdRole(Integer idRole, Integer pageNumber, Integer size);
     public MerchantPaginatedResponse getMerchantsByEmail(String email, Integer pageNumber, Integer size);
     public MerchantPaginatedResponse getMerchantsByName(String name, Integer pageNumber, Integer size);

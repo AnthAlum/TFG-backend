@@ -25,6 +25,14 @@ public interface MeetingsApi {
     ResponseEntity<MeetingPaginatedResponse> getMeetings(@ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
                                                        @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
+    @Operation(summary = "Returns one meeting information.", description = "Returns one meeting information from the given ID.", tags={ "Meeting" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingPaginatedResponse.class))) })
+    @RequestMapping(value = "/meetings/{meetingId}",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MeetingResponse> getMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId);
+
     @Operation(summary = "Returns all meetings information.", description = "Returns all meetings information in a list.", tags={ "Meeting" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = Void.class))) })
@@ -62,24 +70,61 @@ public interface MeetingsApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMatter(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "the new date") @Valid @RequestBody MeetingMatterChangeRequest meetingMatterChangeRequest);
 
-    @Operation(summary = "Modify one meeting's merchant", description = "Modify one meeting's merchant", tags = { "Meeting" })
+    @Operation(summary = "Adds one merchant to the meeting", description = "Adds one merchant to the given meeting", tags = { "Meeting" })
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Meeting's merchant modified successfully"),
             @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
     })
-    @RequestMapping(value = "/meetings/{meetingId}/merchant",
+    @RequestMapping(value = "/meetings/{meetingId}/merchants",
             consumes = { "application/json" },
-            method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyMerchant(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "merchant and operation information") @Valid @RequestBody MeetingMerchantChangeRequest meetingMerchantChangeRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<Void> addMerchant(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "merchant ID") @Valid @RequestBody MeetingSubjectChangeRequest meetingSubjectChangeRequest);
 
-    @Operation(summary = "Modify one meeting's client", description = "Modify one meeting's client", tags = { "Client" })
+    @Operation(summary = "Adds one merchant to the meeting", description = "Adds one merchant to the given meeting", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's merchant modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/clients",
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> addClient(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "merchant ID") @Valid @RequestBody MeetingSubjectChangeRequest meetingSubjectChangeRequest);
+
+    @Operation(summary = "Adds one keyword to the meeting", description = "Adds one keyword to the given meeting", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's merchant modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/keywords",
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> addKeyword(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "merchant ID") @Valid @RequestBody MeetingKeywordChangeRequest meetingKeywordChangeRequest);
+
+    @Operation(summary = "Deletes one meeting's merchant", description = "Deletes one meeting's merchant", tags = { "Meeting" })
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Meeting's client modified successfully"),
             @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
     })
-    @RequestMapping(value = "/meetings/{meetingId}/client",
-            consumes = { "application/json" },
-            method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClient(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "client and operation information") @Valid @RequestBody MeetingClientChangeRequest meetingClientChangeRequest);
+    @RequestMapping(value = "/meetings/{meetingId}/merchants/{merchantId}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @Parameter(in = ParameterIn.PATH, description = "Merchant's Id", required = true, schema = @Schema()) @PathVariable("merchantId") Long merchantId);
+
+    @Operation(summary = "Deletes one meeting's client", description = "Deletes one meeting's client", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's client modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/clients/{clientId}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteClient(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @Parameter(in = ParameterIn.PATH, description = "Client's Id", required = true, schema = @Schema()) @PathVariable("clientId") Long clientId);
+
+    @Operation(summary = "Deletes one meeting's client", description = "Deletes one meeting's client", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's client modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/keywords/{keyword}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteKeyword(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @Parameter(in = ParameterIn.PATH, description = "Keyword", required = true, schema = @Schema()) @PathVariable("keyword") String keyword);
 
 }

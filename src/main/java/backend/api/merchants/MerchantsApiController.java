@@ -46,6 +46,14 @@ public class MerchantsApiController implements MerchantsApi {
     }
 
     @Override
+    public ResponseEntity<MerchantsSimplifiedListResponse> getMerchantsSimplified() {
+        MerchantsSimplifiedListResponse merchants = merchantsService.getMerchantsSimplified();
+        if(merchants == null)
+            return new ResponseEntity<MerchantsSimplifiedListResponse>(merchants, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MerchantsSimplifiedListResponse>(merchants, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(@Valid String email, @Valid Integer pageNumber, @Valid Integer size) {
         MerchantPaginatedResponse merchants = merchantsService.getMerchantsByEmail(email, pageNumber, size);
         if(merchants == null)

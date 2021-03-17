@@ -6,13 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MerchantRepository extends CrudRepository<Merchant, Long> {
     @Query("select m from Merchant m where m.email = ?1")
-    public Merchant findMerchantByEmail(String email);
+    Merchant findMerchantByEmail(String email);
 
     @Query("select m from Merchant m")
-    public Page<Merchant> searchMerchants(Pageable pageable);
+    Page<Merchant> searchMerchants(Pageable pageable);
+
+    @Query("select m.id, m.name, m.email from Merchant m")
+    List<String[]> getMerchantsSimplified();
 
     Page<Merchant> findByIdRole(Integer idRole, Pageable pageable);
     long countByIdRole(Integer idRole);

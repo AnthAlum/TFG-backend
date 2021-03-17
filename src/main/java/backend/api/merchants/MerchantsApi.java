@@ -41,6 +41,15 @@ public interface MerchantsApi {
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 
+    @Operation(summary = "Returns all merchants information simplified", description = "Returns all merchants information simplified in a list.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantListResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/merchants-simplified",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantsSimplifiedListResponse> getMerchantsSimplified();
+
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
     @ApiResponses(value = {

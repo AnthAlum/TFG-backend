@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface MeetingMapper {
     @Mapping(target = "merchants", ignore = true)
     @Mapping(target = "clients", ignore = true)
+    @Mapping(target = "date", ignore = true)
+    @Mapping(target = "time", ignore = true)
     MeetingResponse meetingToMeetingResponse(Meeting meeting);
 
     @Mapping(target = "idMeeting", ignore = true)
