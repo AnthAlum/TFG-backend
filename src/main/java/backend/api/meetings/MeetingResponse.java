@@ -18,6 +18,9 @@ public class MeetingResponse {
     @JsonProperty("matter")
     private String matter = null;
 
+    @JsonProperty("description")
+    private String description = null;
+
     @JsonProperty("merchants")
     private MerchantListResponse merchants = new MerchantListResponse();
 
@@ -95,5 +98,13 @@ public class MeetingResponse {
 
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

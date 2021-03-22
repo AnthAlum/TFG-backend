@@ -70,6 +70,16 @@ public interface MeetingsApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyMatter(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "the new date") @Valid @RequestBody MeetingMatterChangeRequest meetingMatterChangeRequest);
 
+    @Operation(summary = "Modify meeting's description", description = "Modify meeting's description", tags = { "Meeting" })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting's description modified successfully"),
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
+    })
+    @RequestMapping(value = "/meetings/{meetingId}/description",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyDescription(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @ApiParam(value = "the new description") @Valid @RequestBody MeetingDescriptionChangeRequest meetingDescriptionChangeRequest);
+
     @Operation(summary = "Adds one merchant to the meeting", description = "Adds one merchant to the given meeting", tags = { "Meeting" })
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Meeting's merchant modified successfully"),

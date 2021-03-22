@@ -188,13 +188,12 @@ public class MeetingServiceImpl implements MeetingService{
         12-03-2016 12:12
         * String str = "2016-03-04 11:30";
         * DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        * LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
-*/
+        * LocalDateTime dateTime = LocalDateTime.parse(str, formatter); */
         String day = dateTime.substring(0, 2);
         String month = dateTime.substring(3, 6);
         String year = dateTime.substring(6, 10) + '-';
         String modifiedDate = dateTime.replace(dateTime.substring(0, 10), year + month + day);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd+HH:mm");
         return LocalDateTime.parse(modifiedDate, formatter);
     }
 
@@ -214,6 +213,16 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         if(meeting != null){
             meeting.setMatter(meetingMatterChangeRequest.getMatter());
+            meetingRepository.save(meeting);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void modifyMeetingDescription(Long meetingId, MeetingDescriptionChangeRequest meetingDescriptionChangeRequest) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting != null){
+            meeting.setDescription(meetingDescriptionChangeRequest.getNewDescription());
             meetingRepository.save(meeting);
         }
     }
@@ -253,7 +262,7 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public void deleteMeetingMerchant(Long meetingId, Long merchantId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
-        Merchant merchant = merchantRepository.findById(meetingId).orElse(null);
+        Merchant merchant = merchantRepository.findById(merchantId).orElse(null);
         merchant.deleteMeeting(meeting);
         meeting.removeMerchant(merchant);
         merchantRepository.save(merchant);

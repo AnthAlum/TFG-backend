@@ -59,9 +59,9 @@ public interface MerchantsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = false, defaultValue = "email@example.com") String email,
-            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
-            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = true, defaultValue = "") String email,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = true, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = true, defaultValue = "25") Integer size);
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
@@ -72,9 +72,9 @@ public interface MerchantsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<MerchantPaginatedResponse> getMerchantsByName(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = false, defaultValue = "namexample") String name,
-            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
-            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer pageSize);
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = true, defaultValue = "") String name,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = true, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = true, defaultValue = "25") Integer pageSize);
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns all merchants information", description = "Returns all merchants information in a list.", tags={ "Merchant" })
@@ -85,7 +85,7 @@ public interface MerchantsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<MerchantPaginatedResponse> getMerchantsByPhone(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "123456789") String phone,
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "") String phone,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 

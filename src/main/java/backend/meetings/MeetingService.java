@@ -11,6 +11,7 @@ public interface MeetingService {
     void deleteMeeting(Long meetingId);
     void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest);
     void modifyMeetingMatter(Long meetingId, MeetingMatterChangeRequest meetingMatterChangeRequest);
+    void modifyMeetingDescription(Long meetingId, MeetingDescriptionChangeRequest meetingDescriptionChangeRequest);
     void addMeetingMerchant(Long meetingId, MeetingSubjectChangeRequest meetingSubjectChangeRequest);
     void addMeetingClient(Long meetingId, MeetingSubjectChangeRequest meetingSubjectChangeRequest);
     void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest);

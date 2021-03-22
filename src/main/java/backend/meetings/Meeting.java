@@ -19,6 +19,8 @@ public class Meeting {
 
     private String matter;
 
+    private String description;
+
     private LocalDateTime date;
 
     @ManyToMany(mappedBy = "meetings")
@@ -34,9 +36,10 @@ public class Meeting {
     public Meeting() {
     }
 
-    public Meeting(Long idMeeting, String matter, LocalDateTime date, List<Merchant> merchants, List<Client> clients, List<String> keywords) {
+    public Meeting(Long idMeeting, String matter, String description, LocalDateTime date, List<Merchant> merchants, List<Client> clients, List<String> keywords) {
         this.idMeeting = idMeeting;
         this.matter = matter;
+        this.description = description;
         this.date = date;
         this.merchants = merchants;
         this.clients = clients;
@@ -111,17 +114,25 @@ public class Meeting {
         this.keywords.remove(keyword);
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords);
+        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(description, meeting.description) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMeeting, matter, date, merchants, clients, keywords);
+        return Objects.hash(idMeeting, matter, description, date, merchants, clients, keywords);
     }
 
     @Override
@@ -129,9 +140,8 @@ public class Meeting {
         return "Meeting{" +
                 "idMeeting=" + idMeeting +
                 ", matter='" + matter + '\'' +
+                ", description='" + description + '\'' +
                 ", date=" + date +
-                ", merchants=" + merchants +
-                ", clients=" + clients +
                 ", keywords=" + keywords +
                 '}';
     }
