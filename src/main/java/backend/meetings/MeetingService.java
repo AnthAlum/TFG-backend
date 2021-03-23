@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 public interface MeetingService {
     MeetingResponse getMeetingById(Long idMeeting);
     MeetingPaginatedResponse getMeetings(Integer pageNumber, Integer pageSize);
+    MeetingPaginatedResponse getMeetingsByMatter(String matter, Integer pageNumber, Integer pageSize);
     void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
     void deleteMeeting(Long meetingId);
     void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest);

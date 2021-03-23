@@ -27,23 +27,6 @@ public class MeetingServiceImpl implements MeetingService{
     private MerchantsService merchantService;
     private ClientRepository clientRepository;
     private ClientService clientService;
-/*
-    @Autowired
-    public MeetingServiceImpl(MeetingRepository meetingRepository,
-                              MeetingMapper meetingMapper,
-                              MerchantRepository merchantRepository,
-                              MerchantsService merchantService,
-                              ClientRepository clientRepository,
-                              ClientService clientService) {
-        super();
-        this.meetingRepository = meetingRepository;
-        this.meetingMapper = meetingMapper;
-        this.merchantRepository = merchantRepository;
-        this.merchantService = merchantService;
-        this.clientRepository = clientRepository;
-        this.clientService = clientService;
-    }
-*/
 
     public MeetingRepository getMeetingRepository() {
         return meetingRepository;
@@ -101,13 +84,6 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public MeetingPaginatedResponse getMeetings(Integer pageNumber, Integer pageSize) {
-        Page<Meeting> meetingPage = meetingRepository.searchMeetings(PageRequest.of(pageNumber, pageSize));
-        return buildResponse(meetingPage, (int)meetingRepository.count());
-    }
-
-    @Override
-    @Transactional
     public MeetingResponse getMeetingById(Long idMeeting) {
         Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
         MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);
@@ -122,6 +98,20 @@ public class MeetingServiceImpl implements MeetingService{
             meetingResponse.addClientResponse(clientResponse);
         });
         return meetingResponse;
+    }
+
+    @Override
+    @Transactional
+    public MeetingPaginatedResponse getMeetings(Integer pageNumber, Integer pageSize) {
+        Page<Meeting> meetingPage = meetingRepository.searchMeetings(PageRequest.of(pageNumber, pageSize));
+        return buildResponse(meetingPage, (int)meetingRepository.count());
+    }
+
+    @Override
+    @Transactional
+    public MeetingPaginatedResponse getMeetingsByMatter(String matter, Integer pageNumber, Integer pageSize) {
+        Page<Meeting> meetingPage = meetingRepository.findByMatterContains(matter, PageRequest.of(pageNumber, pageSize));
+        return buildResponse(meetingPage, (int)meetingRepository.countByMatterContains(matter));
     }
 
     private MeetingPaginatedResponse buildResponse(Page<Meeting> meetingPage, int totalElements){
@@ -193,7 +183,7 @@ public class MeetingServiceImpl implements MeetingService{
         String month = dateTime.substring(3, 6);
         String year = dateTime.substring(6, 10) + '-';
         String modifiedDate = dateTime.replace(dateTime.substring(0, 10), year + month + day);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd+HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(modifiedDate, formatter);
     }
 

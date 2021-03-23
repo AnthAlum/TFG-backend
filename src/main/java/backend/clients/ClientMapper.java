@@ -11,5 +11,6 @@ public interface ClientMapper {
     ClientResponse ClientToClientResponse(Client client);
 
     @Mapping(target = "idClient", ignore = true)
+    @Mapping(target = "meetings", ignore = true)
     Client clientRegistrationRequestToClient(ClientRegistrationRequest clientRegistrationRequest);
 }

@@ -1,7 +1,5 @@
 package backend.api.clients;
 
-import backend.api.meetings.MeetingListResponse;
-import backend.api.meetings.MeetingResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,8 +20,6 @@ public class ClientResponse {
     @JsonProperty("company")
     private String company = null;
 
-    @JsonProperty("meetings")
-    private MeetingListResponse meetingListResponse = new MeetingListResponse();
 
     public Long getIdClient() {
         return idClient;
@@ -65,7 +61,4 @@ public class ClientResponse {
         this.company = company;
     }
 
-    public void addMeetingResponse(MeetingResponse meetingResponse){
-        this.meetingListResponse.addMeetingResponse(meetingResponse);
-    }
 }

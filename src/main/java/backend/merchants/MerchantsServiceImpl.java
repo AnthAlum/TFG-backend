@@ -1,6 +1,5 @@
 package backend.merchants;
 
-import backend.api.meetings.MeetingResponse;
 import backend.api.merchants.*;
 import backend.api.others.PaginationInfo;
 import backend.meetings.MeetingRepository;
@@ -152,10 +151,6 @@ public class MerchantsServiceImpl implements MerchantsService {
         MerchantListResponse merchantListResponse = new MerchantListResponse(); //Crear el response de la lista vacia de comerciales
         merchantPage.forEach(merchant -> { //1: Por cada comercial
             MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant); // obtenemos el merchantResponse
-            merchant.getMeetings().forEach(meeting -> { //  1.1: de las reuniones de un comercial
-                MeetingResponse meetingResponse = meetingService.getMeetingById(meeting.getIdMeeting()); // obtenemos el meetingResponse respectivo
-                merchantResponse.addMeetingResponse(meetingResponse); //   y lo agregamos al merchantResponse
-            });
             merchantListResponse.addMerchantResponse(merchantResponse);
         });
         PaginationInfo paginationInfo = new PaginationInfo();

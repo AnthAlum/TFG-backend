@@ -33,6 +33,18 @@ public interface MeetingsApi {
             method = RequestMethod.GET)
     ResponseEntity<MeetingResponse> getMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId);
 
+    @Operation(summary = "Returns meetings information", description = "Returns meetings information filtered by matter.", tags={ "Meeting" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingPaginatedResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method.") })
+    @RequestMapping(value = "/meetings/findbymatter",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MeetingPaginatedResponse> getMeetingsByMatter(
+            @ApiParam(value = "the matter for filtering") @Valid @RequestParam(value = "matter", required = false, defaultValue = "") String matter,
+            @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @ApiParam(value = "the number of elements per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer pageSize);
+
     @Operation(summary = "Returns all meetings information.", description = "Returns all meetings information in a list.", tags={ "Meeting" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = Void.class))) })

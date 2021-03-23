@@ -17,9 +17,10 @@ public class MeetingsApiController implements MeetingsApi{
         this.meetingService = meetingService;
     }
 
-    public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
-        MeetingPaginatedResponse response = meetingService.getMeetings(pageNumber, size);
-        return checkResponse(response);
+    private ResponseEntity<MeetingPaginatedResponse> checkResponse(MeetingPaginatedResponse meetingPaginatedResponse){
+        if(meetingPaginatedResponse == null)
+            return new ResponseEntity<MeetingPaginatedResponse>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MeetingPaginatedResponse>(meetingPaginatedResponse, HttpStatus.OK);
     }
 
     @Override
@@ -30,10 +31,16 @@ public class MeetingsApiController implements MeetingsApi{
         return new ResponseEntity<MeetingResponse>(response, HttpStatus.OK);
     }
 
-    private ResponseEntity<MeetingPaginatedResponse> checkResponse(MeetingPaginatedResponse meetingPaginatedResponse){
-        if(meetingPaginatedResponse == null)
-            return new ResponseEntity<MeetingPaginatedResponse>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<MeetingPaginatedResponse>(meetingPaginatedResponse, HttpStatus.OK);
+    @Override
+    public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
+        MeetingPaginatedResponse response = meetingService.getMeetings(pageNumber, size);
+        return checkResponse(response);
+    }
+
+    @Override
+    public ResponseEntity<MeetingPaginatedResponse> getMeetingsByMatter(@Valid String matter, @Valid Integer pageNumber, @Valid Integer pageSize) {
+        MeetingPaginatedResponse response = meetingService.getMeetingsByMatter(matter, pageNumber, pageSize);
+        return checkResponse(response);
     }
 
     @Override

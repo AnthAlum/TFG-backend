@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface MerchantMapper {
-
     MerchantResponse merchantToMerchantResponse(Merchant merchant);
 
     @Mapping(target = "idMerchant", ignore = true)

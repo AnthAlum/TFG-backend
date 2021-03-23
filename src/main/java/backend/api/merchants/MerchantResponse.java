@@ -1,7 +1,5 @@
 package backend.api.merchants;
 
-import backend.api.meetings.MeetingListResponse;
-import backend.api.meetings.MeetingResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
@@ -22,9 +20,6 @@ public class MerchantResponse {
 
     @JsonProperty("phone")
     private String phone = null;
-
-    @JsonProperty("meetings")
-    private MeetingListResponse meetingResponses = new MeetingListResponse();
 
     /**
      * Get id
@@ -89,15 +84,4 @@ public class MerchantResponse {
         this.idRole = idRole;
     }
 
-    public MeetingListResponse getMeetingResponses() {
-        return meetingResponses;
-    }
-
-    public void setMeetingResponses(MeetingListResponse meetingResponses) {
-        this.meetingResponses = meetingResponses;
-    }
-
-    public void addMeetingResponse(MeetingResponse meetingResponse){
-        this.meetingResponses.addMeetingResponse(meetingResponse);
-    }
 }

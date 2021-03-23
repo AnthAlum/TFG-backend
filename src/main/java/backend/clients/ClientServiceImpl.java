@@ -1,7 +1,6 @@
 package backend.clients;
 
 import backend.api.clients.*;
-import backend.api.meetings.MeetingResponse;
 import backend.api.others.PaginationInfo;
 import backend.meetings.MeetingRepository;
 import backend.meetings.MeetingService;
@@ -124,10 +123,6 @@ public class ClientServiceImpl implements ClientService{
         ClientListResponse clientListResponse = new ClientListResponse(); //Create the list of clientResponses for the
         clientPage.forEach(client -> {
             ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
-            client.getMeetings().forEach(meeting -> {
-                MeetingResponse meetingResponse = meetingService.getMeetingById(meeting.getIdMeeting());
-                clientResponse.addMeetingResponse(meetingResponse);
-            });
             clientListResponse.addClientResponse(clientResponse);
         });
 

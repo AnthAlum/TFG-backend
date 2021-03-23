@@ -10,7 +10,7 @@ public class MeetingRegistrationRequest {
     @JsonProperty(value = "matter")
     private String matter = null;
 
-    @JsonProperty(value = "localDateTime")
+    @JsonProperty(value = "date")
     private String localDateTime = null;
 
     @JsonProperty(value = "merchants")

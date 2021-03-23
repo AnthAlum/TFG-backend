@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface MeetingRepository extends CrudRepository<Meeting, Long> {
     @Query("select m from Meeting m")
     public Page<Meeting> searchMeetings(Pageable pageable);
+
+    Page<Meeting> findByMatterContains(String matter, Pageable pageable);
+    long countByMatterContains(String matter);
 }
