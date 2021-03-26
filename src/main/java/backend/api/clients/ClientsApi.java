@@ -125,7 +125,7 @@ public interface ClientsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<ClientPaginatedResponse> getClientsByName(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = false, defaultValue = "name") String name,
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "name", required = false, defaultValue = "") String name,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
 

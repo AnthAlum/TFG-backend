@@ -11,6 +11,13 @@ public class MerchantsSimplifiedListResponse {
     @JsonProperty("simplifiedList")
     private List<MerchantSimplifiedResponse> merchantSimplifiedResponseList = new ArrayList<>();
 
+    public MerchantsSimplifiedListResponse() {
+    }
+
+    public MerchantsSimplifiedListResponse(List<MerchantSimplifiedResponse> merchantSimplifiedResponseList) {
+        this.merchantSimplifiedResponseList = merchantSimplifiedResponseList;
+    }
+
     public List<MerchantSimplifiedResponse> getMerchantSimplifiedResponseList() {
         return merchantSimplifiedResponseList;
     }

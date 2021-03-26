@@ -97,8 +97,8 @@ public interface MerchantsApi {
     @RequestMapping(value = "/merchants/findbyidRole",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "idRole", required = false, defaultValue = "email@example.com") Integer idRole,
+    ResponseEntity<MerchantPaginatedResponse> getMerchantsByIdRole(
+            @ApiParam(value = "the idRole for filtering") @Valid @RequestParam(value = "idRole", required = false, defaultValue = "0") Integer idRole,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer size);
 

@@ -175,7 +175,6 @@ public class Merchant implements UserDetails {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
-                ", meetings=" + meetings +
                 '}';
     }
 }

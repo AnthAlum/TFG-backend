@@ -12,4 +12,5 @@ public interface MerchantMapper {
     @Mapping(target = "idMerchant", ignore = true)
     @Mapping(target = "meetings", ignore = true)
     Merchant merchantRegistrationRequestToMerchant(MerchantRegistrationRequest merchantRegistrationRequest);
+
 }

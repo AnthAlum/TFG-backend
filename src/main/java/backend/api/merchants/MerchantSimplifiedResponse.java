@@ -14,6 +14,9 @@ public class MerchantSimplifiedResponse {
     @JsonProperty("email")
     private String email;
 
+    public MerchantSimplifiedResponse() {
+    }
+
     public MerchantSimplifiedResponse(Long idMerchant, String nameAndLastName, String email) {
         this.idMerchant = idMerchant;
         this.nameAndLastName = nameAndLastName;

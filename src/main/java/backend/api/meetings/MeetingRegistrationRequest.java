@@ -13,6 +13,9 @@ public class MeetingRegistrationRequest {
     @JsonProperty(value = "date")
     private String localDateTime = null;
 
+    @JsonProperty(value = "description")
+    private String description = null;
+
     @JsonProperty(value = "merchants")
     private ArrayList<Long> merchants = null;
 
@@ -60,5 +63,13 @@ public class MeetingRegistrationRequest {
 
     public void setKeywords(ArrayList<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

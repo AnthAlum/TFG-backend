@@ -13,6 +13,14 @@ public class PaginationInfo {
     @JsonProperty("totalElements")
     private Integer totalElements = null;
 
+    public PaginationInfo() {
+    }
+
+    public PaginationInfo(Integer totalPages, Integer totalElements) {
+        this.totalPages = totalPages;
+        this.totalElements = totalElements;
+    }
+
     public Integer getTotalPages() {
         return totalPages;
     }

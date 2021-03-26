@@ -78,7 +78,7 @@ public class MerchantsApiController implements MerchantsApi {
     }
 
     @Override
-    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByEmail(@Valid Integer idRole, @Valid Integer pageNumber, @Valid Integer size) {
+    public ResponseEntity<MerchantPaginatedResponse> getMerchantsByIdRole(@Valid Integer idRole, @Valid Integer pageNumber, @Valid Integer size) {
         MerchantPaginatedResponse merchants = merchantsService.getMerchantsByIdRole(idRole, pageNumber, size);
         if(merchants == null)
             return new ResponseEntity<MerchantPaginatedResponse>(merchants, HttpStatus.BAD_REQUEST);
