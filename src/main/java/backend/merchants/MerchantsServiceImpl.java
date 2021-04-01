@@ -82,6 +82,14 @@ public class MerchantsServiceImpl implements MerchantsService {
 
     @Override
     @Transactional
+    public MerchantResponse getMerchantByEmail(String email) {
+        Merchant merchant = merchantRepository.findMerchantByEmail(email);
+        MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant);
+        return merchantResponse;
+    }
+
+    @Override
+    @Transactional
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) throws AlreadyRegisteredException {
         Merchant merchant = merchantRepository.findMerchantByEmail(merchantRegistrationRequest.getEmail());
         if(merchant != null)

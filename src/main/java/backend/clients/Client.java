@@ -20,6 +20,7 @@ public class Client {
     private String email;
     private String phone;
     private String company;
+    private Long remind = Long.parseLong("5");
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -31,12 +32,13 @@ public class Client {
     /*   CTOR., GETTERS, SETTERS    */
     public Client(){}
 
-    public Client(Long idClient, String name, String email, String phone, String company, List<Meeting> meetings) {
+    public Client(Long idClient, String name, String email, String phone, String company, Long remind, List<Meeting> meetings) {
         this.idClient = idClient;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.company = company;
+        this.remind = remind;
         this.meetings = meetings;
     }
 
@@ -96,17 +98,25 @@ public class Client {
         this.meetings.remove(meeting);
     }
 
+    public Long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Long remind) {
+        this.remind = remind;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return Objects.equals(idClient, client.idClient) && Objects.equals(name, client.name) && Objects.equals(email, client.email) && Objects.equals(phone, client.phone) && Objects.equals(company, client.company) && Objects.equals(meetings, client.meetings);
+        return Objects.equals(idClient, client.idClient) && Objects.equals(name, client.name) && Objects.equals(email, client.email) && Objects.equals(phone, client.phone) && Objects.equals(company, client.company) && Objects.equals(remind, client.remind) && Objects.equals(meetings, client.meetings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idClient, name, email, phone, company, meetings);
+        return Objects.hash(idClient, name, email, phone, company, remind, meetings);
     }
 
     @Override
@@ -117,7 +127,7 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", company='" + company + '\'' +
-                ", meetings=" + meetings +
+                ", remind=" + remind +
                 '}';
     }
 }

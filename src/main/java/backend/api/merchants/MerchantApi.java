@@ -5,6 +5,7 @@
  */
 package backend.api.merchants;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -39,6 +40,17 @@ public interface MerchantApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
+
+    @Operation(summary = "Returns merchant's information.", description = "Returns merchant's information of the given email.", tags={ "Merchant" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MerchantResponse.class))),
+            @ApiResponse(responseCode = "403", description = "You are not allowed for use this method."),
+            @ApiResponse(responseCode = "404", description = "Merchant not found with the given email.") })
+    @RequestMapping(value = "/merchants/email",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MerchantResponse> getMerchantByEmail(@ApiParam(value = "the email for filtering")  @Valid @RequestParam("email") String merchantEmail);
+
 
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Change merchant's name", description = "Change merchant's name with the given new name.", tags={ "Merchant" })

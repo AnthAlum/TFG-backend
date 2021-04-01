@@ -28,13 +28,20 @@ public class MerchantApiController implements MerchantApi {
         this.merchantsService = merchantsService;
     }
 
+    @Override
     public ResponseEntity<Void> deleteMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId) {
         merchantsService.deleteMerchant(merchantId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId) {
         return new ResponseEntity<MerchantResponse>(merchantsService.getMerchantById(merchantId), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MerchantResponse> getMerchantByEmail(@Valid String merchantEmail) {
+        return new ResponseEntity<MerchantResponse>(merchantsService.getMerchantByEmail(merchantEmail), HttpStatus.OK);
     }
 
     @Override

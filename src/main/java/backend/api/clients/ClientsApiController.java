@@ -71,6 +71,12 @@ public class ClientsApiController implements ClientsApi {
     }
 
     @Override
+    public ResponseEntity<Void> modifyClientRemind(Long clientId, @Valid ClientRemindChangeRequest body) {
+        clientService.modifyClientRemind(body, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<ClientPaginatedResponse> getClientsByEmail(@Valid String email, @Valid Integer pageNumber, @Valid Integer pageSize) {
         ClientPaginatedResponse clients = clientService.getClientsByEmail(email, pageNumber, pageSize);
         return checkResponse(clients);

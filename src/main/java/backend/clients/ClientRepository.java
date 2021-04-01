@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long> {
+    @Query("select c from Client c where c.email = ?1")
+    Client findClientByEmail(String email);
+
     @Query("select c from Client c")
     public Page<Client> searchClients(Pageable pageable);
 

@@ -20,6 +20,8 @@ public class ClientResponse {
     @JsonProperty("company")
     private String company = null;
 
+    @JsonProperty("remind")
+    private Long remind = null;
 
     public Long getIdClient() {
         return idClient;
@@ -61,4 +63,11 @@ public class ClientResponse {
         this.company = company;
     }
 
+    public Long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Long remind) {
+        this.remind = remind;
+    }
 }

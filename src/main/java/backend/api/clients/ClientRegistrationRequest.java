@@ -7,17 +7,20 @@ import java.util.Objects;
 
 @Validated
 public class ClientRegistrationRequest {
-    @JsonProperty(value = "name", index = 0)
+    @JsonProperty(value = "name")
     private String name = null;
 
-    @JsonProperty(value = "phone", index = 1)
+    @JsonProperty(value = "phone")
     private String phone = null;
 
-    @JsonProperty(value = "email", index = 2)
+    @JsonProperty(value = "email")
     private String email = null;
 
-    @JsonProperty(value = "company", index = 3)
+    @JsonProperty(value = "company")
     private String company = null;
+
+    @JsonProperty(value = "remind")
+    private Long remind = null;
 
     public String getName() {
         return name;
@@ -51,26 +54,35 @@ public class ClientRegistrationRequest {
         this.company = company;
     }
 
+    public Long getRemind() {
+        return remind;
+    }
+
+    public void setRemind(Long remind) {
+        this.remind = remind;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientRegistrationRequest that = (ClientRegistrationRequest) o;
-        return  Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(company, that.company);
+        return Objects.equals(name, that.name) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(company, that.company) && Objects.equals(remind, that.remind);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, phone, company);
+        return Objects.hash(name, phone, email, company, remind);
     }
 
     @Override
     public String toString() {
         return "ClientRegistrationRequest{" +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                "name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", company='" + company + '\'' +
+                ", remind=" + remind +
                 '}';
     }
 }

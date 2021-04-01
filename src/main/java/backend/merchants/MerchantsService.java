@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MerchantsService extends UserDetailsService {
     public MerchantResponse getMerchantById(Long idMerchant);
+    public MerchantResponse getMerchantByEmail(String email);
     public void registerMerchant(MerchantRegistrationRequest merchantRegistrationRequest) throws AlreadyRegisteredException;
     public MerchantPaginatedResponse getMerchants(Integer pageNumber, Integer size);
     public MerchantsSimplifiedListResponse getMerchantsSimplified();

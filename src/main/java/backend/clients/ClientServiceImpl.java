@@ -185,4 +185,13 @@ public class ClientServiceImpl implements ClientService{
         }
     }
 
+    @Override
+    @Transactional
+    public void modifyClientRemind(ClientRemindChangeRequest clientRemindChangeRequest, Long idClient) {
+        Client client = clientRepository.findById(idClient).orElse(null);
+        if(client != null){
+            client.setRemind(clientRemindChangeRequest.getNewRemind());
+            clientRepository.save(client);
+        }
+    }
 }

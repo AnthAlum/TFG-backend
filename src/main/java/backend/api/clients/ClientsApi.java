@@ -103,6 +103,16 @@ public interface ClientsApi {
             method = RequestMethod.PUT)
     ResponseEntity<Void> modifyClientCompany(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientCompanyChangeRequest body);
 
+    @Operation(summary = "Change client's remind.", description = "Change client's remind with the given new remind.", tags={ "Client" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Name updated successfully."),
+
+            @ApiResponse(responseCode = "404", description = "Client not found with the given ID.") })
+    @RequestMapping(value = "/clients/{clientId}/remind",
+            consumes = { "application/json" },
+            method = RequestMethod.PUT)
+    ResponseEntity<Void> modifyClientRemind(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientRemindChangeRequest body);
+
     @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Returns all clients information that matches with the given email", description = "Returns all clients information that matches with the given email.", tags={ "Client" })
     @ApiResponses(value = {

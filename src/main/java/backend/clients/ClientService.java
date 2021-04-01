@@ -17,4 +17,5 @@ public interface ClientService {
     public void modifyClientEmail(ClientEmailChangeRequest clientEmailChangeRequest, Long idClient);
     public void  modifyClientPhone(ClientPhoneChangeRequest clientPhoneChangeRequest, Long idClient);
     public void modifyClientCompany(ClientCompanyChangeRequest clientCompanyChangeRequest, Long idClient);
+    public void modifyClientRemind(ClientRemindChangeRequest clientRemindChangeRequest, Long idClient);
 }
