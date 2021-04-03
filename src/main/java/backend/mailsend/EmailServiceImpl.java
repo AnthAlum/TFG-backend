@@ -15,7 +15,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendMessage(String to, String clientEmail, String notificationText) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("pymesapplication@gmail.com");
-        message.setCc("Reminder for contact with client");
+        message.setSubject("Reminder for contact with client");
         message.setTo(to);
         message.setText(notificationText);
         javaMailSender.send(message);

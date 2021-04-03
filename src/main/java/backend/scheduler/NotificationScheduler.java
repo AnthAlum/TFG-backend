@@ -30,7 +30,7 @@ public class NotificationScheduler {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 25 03 * * ?") //Execute at 12 PM every day
+    @Scheduled(cron = "0 33 03 * * ?") //Execute at 12 PM every day
     @Transactional
     public void sendNotifications(){
         notificationRepository.deleteAll(); //DELETE THIS LINE

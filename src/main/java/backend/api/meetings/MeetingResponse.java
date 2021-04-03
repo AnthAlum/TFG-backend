@@ -36,6 +36,9 @@ public class MeetingResponse {
     @JsonProperty("keywords")
     private List<String> keywords = new ArrayList<>();
 
+    @JsonProperty("wordCloud")
+    private List<String> wordCloud = new ArrayList<>();
+
     public Long getIdMeeting() {
         return idMeeting;
     }
@@ -106,5 +109,13 @@ public class MeetingResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getWordCloud() {
+        return wordCloud;
+    }
+
+    public void setWordCloud(List<String> wordCloud) {
+        this.wordCloud = wordCloud;
     }
 }

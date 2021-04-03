@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MeetingServiceImpl implements MeetingService{
@@ -168,6 +170,7 @@ public class MeetingServiceImpl implements MeetingService{
                 meeting.addClient(clientRepository.findById(idClient).orElse(null))
         );
         meeting.setDate(stringToLocalDateTime(meetingRegistrationRequest.getLocalDateTime()));
+        meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
         meeting.getMerchants().forEach(merchant -> merchant.addMeeting(meeting)); // Guardamos el nuevo meeting en las listas de los merchants.
         meeting.getClients().forEach(client -> client.addMeeting(meeting)); // Igual con los clientes.
@@ -185,6 +188,30 @@ public class MeetingServiceImpl implements MeetingService{
         String modifiedDate = dateTime.replace(dateTime.substring(0, 10), year + month + day);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(modifiedDate, formatter);
+    }
+
+    private List<String> generateWordCloud(String description, List<String> keywords){
+        Map<String, Integer> wordCounter = new HashMap<>(); // Map for store words and frequency.
+        List<String> descriptionWords = Arrays.asList(description.split("[\\s,\\.]|[A-z]{0,3}")); //Slip words by spaces and commas.
+        for(int i = 0; i < descriptionWords.size(); i++){ //Count description words in wordCounter.
+            String word = descriptionWords.get(i).toLowerCase(Locale.ROOT);
+            if(wordCounter.containsKey(word))
+                wordCounter.put(word, wordCounter.get(word) + 1);
+            else
+                wordCounter.put(word, 1);
+        }
+        keywords.forEach(keyword -> { //Count keywords in wordCounter.
+            String toLowerCase = keyword.toLowerCase(Locale.ROOT);
+            if(wordCounter.containsKey(toLowerCase))
+                wordCounter.put(toLowerCase, wordCounter.get(toLowerCase) + 1);
+            else
+                wordCounter.put(toLowerCase, 1);
+        });
+        List<Map.Entry<String, Integer>> wordsSorted = wordCounter.entrySet().stream()
+                .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).limit(10).collect(Collectors.toList());//Sort by Integer values.
+        ArrayList<String> wordCloud = new ArrayList<>();
+        wordsSorted.forEach(entry -> wordCloud.add(entry.getKey())); // Store the 10 words with higher frequency.
+        return wordCloud;
     }
 
     @Override
@@ -213,6 +240,7 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         if(meeting != null){
             meeting.setDescription(meetingDescriptionChangeRequest.getNewDescription());
+            meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
             meetingRepository.save(meeting);
         }
     }
@@ -245,6 +273,7 @@ public class MeetingServiceImpl implements MeetingService{
     public void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         meeting.addKeyword(meetingKeywordChangeRequest.getKeyword());
+        meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
     }
 
@@ -275,6 +304,7 @@ public class MeetingServiceImpl implements MeetingService{
     public void deleteMeetingKeyword(Long meetingId, String keyword) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         meeting.removeKeyword(keyword);
+        meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
     }
 

@@ -38,10 +38,21 @@ public class Meeting {
     @ElementCollection(targetClass=Notification.class)
     private List<Notification> notifications = new ArrayList<>();
 
+    @ElementCollection
+    private List<String> wordCloud;
+
     public Meeting() {
     }
 
-    public Meeting(Long idMeeting, String matter, String description, LocalDateTime date, List<Merchant> merchants, List<Client> clients, List<String> keywords, List<Notification> notifications) {
+    public Meeting(Long idMeeting,
+                   String matter,
+                   String description,
+                   LocalDateTime date,
+                   List<Merchant> merchants,
+                   List<Client> clients,
+                   List<String> keywords,
+                   List<Notification> notifications,
+                   List<String> wordCloud) {
         this.idMeeting = idMeeting;
         this.matter = matter;
         this.description = description;
@@ -50,6 +61,7 @@ public class Meeting {
         this.clients = clients;
         this.keywords = keywords;
         this.notifications = notifications;
+        this.wordCloud = wordCloud;
     }
 
     public Long getIdMeeting() {
@@ -136,17 +148,25 @@ public class Meeting {
         this.notifications = notifications;
     }
 
+    public List<String> getWordCloud() {
+        return wordCloud;
+    }
+
+    public void setWordCloud(List<String> wordCloud) {
+        this.wordCloud = wordCloud;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(description, meeting.description) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords) && Objects.equals(notifications, meeting.notifications);
+        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(description, meeting.description) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords) && Objects.equals(notifications, meeting.notifications) && Objects.equals(wordCloud, meeting.wordCloud);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMeeting, matter, description, date, merchants, clients, keywords, notifications);
+        return Objects.hash(idMeeting, matter, description, date, merchants, clients, keywords, notifications, wordCloud);
     }
 
     @Override
@@ -160,8 +180,7 @@ public class Meeting {
                 ", clients=" + clients +
                 ", keywords=" + keywords +
                 ", notifications=" + notifications +
+                ", wordCloud=" + wordCloud +
                 '}';
     }
-
-
 }
