@@ -8,8 +8,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -27,11 +29,27 @@ public interface MeetingsApi {
 
     @Operation(summary = "Returns one meeting information.", description = "Returns one meeting information from the given ID.", tags={ "Meeting" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingPaginatedResponse.class))) })
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingResponse.class))) })
     @RequestMapping(value = "/meetings/{meetingId}",
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<MeetingResponse> getMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId);
+
+    @Operation(summary = "Returns one meeting word cloud.", description = "Returns one meeting word cloud from the given ID.", tags={ "Meeting" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingWordCloudResponse.class))) })
+    @RequestMapping(value = "/meetings/{meetingId}/wordcloud",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MeetingWordCloudResponse> getWordCloudById(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId);
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingWordCloudResponse.class))) })
+    @RequestMapping(value = "/meetings/{meetingId}/files/{fileId}",
+            method = RequestMethod.GET)
+    ResponseEntity<Resource> getFileById(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
+                                         @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId);
+
 
     @Operation(summary = "Returns meetings information", description = "Returns meetings information filtered by matter.", tags={ "Meeting" })
     @ApiResponses(value = {
@@ -53,20 +71,15 @@ public interface MeetingsApi {
             method = RequestMethod.POST)
     ResponseEntity<Void> registerMeeting(@ApiParam(value = "the new meeting") @Valid @RequestBody MeetingRegistrationRequest meetingRegistrationRequest);
 
-    @Operation(summary = "Deletes a meeting", description = "Deletes a meeting of the given ID.", tags={ "Meeting" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Meeting deleted successfully."),
-
-            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID.") })
-    @RequestMapping(value = "/meetings/{meetingId}",
-            method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId);
+    @RequestMapping(value = "/meetings/{meetingId}/files", method = RequestMethod.POST)
+    ResponseEntity<MeetingFileResponse> addFile(
+            @Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId,
+            @RequestParam("file") MultipartFile file);
 
     @Operation(summary = "Modify meeting's date", description = "Modify meeting's date", tags = { "Meeting" })
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Meeting's date modified successfully"),
-            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")
-    })
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID")})
     @RequestMapping(value = "/meetings/{meetingId}/date",
             consumes = { "application/json" },
             method = RequestMethod.PUT)
@@ -148,5 +161,19 @@ public interface MeetingsApi {
     @RequestMapping(value = "/meetings/{meetingId}/keywords/{keyword}",
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteKeyword(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId, @Parameter(in = ParameterIn.PATH, description = "Keyword", required = true, schema = @Schema()) @PathVariable("keyword") String keyword);
+
+    @Operation(summary = "Deletes a meeting", description = "Deletes a meeting of the given ID.", tags={ "Meeting" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Meeting deleted successfully."),
+
+            @ApiResponse(responseCode = "404", description = "Meeting not found with the given ID.") })
+    @RequestMapping(value = "/meetings/{meetingId}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteMeeting(@Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId);
+
+    @RequestMapping(value = "/meetings/{meetingId}/files/{fileId}", method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteFile(
+            @Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId,
+            @Parameter(in = ParameterIn.PATH, description = "File's ID", required=true, schema=@Schema()) @PathVariable("fileId") Long fileId);
 
 }

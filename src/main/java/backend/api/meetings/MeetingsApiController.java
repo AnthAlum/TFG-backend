@@ -1,10 +1,16 @@
 package backend.api.meetings;
 
+import backend.filemanagment.File;
 import backend.meetings.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -32,6 +38,23 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     @Override
+    public ResponseEntity<MeetingWordCloudResponse> getWordCloudById(Long meetingId) {
+        MeetingWordCloudResponse cloud = meetingService.getMeetingWordCloudById(meetingId);
+        return new ResponseEntity<>(cloud, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Resource> getFileById(Long meetingId, Long fileId) {
+        File file = meetingService.getMeetingFileById(meetingId, fileId);
+        if(file != null)
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(file.getFileType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                    .body(new ByteArrayResource(file.getData()));
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
     public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
         MeetingPaginatedResponse response = meetingService.getMeetings(pageNumber, size);
         return checkResponse(response);
@@ -46,13 +69,24 @@ public class MeetingsApiController implements MeetingsApi{
     @Override
     public ResponseEntity<Void> registerMeeting(@Valid MeetingRegistrationRequest meetingRegistrationRequest) {
         meetingService.registerMeeting(meetingRegistrationRequest);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MeetingFileResponse> addFile(Long meetingId, MultipartFile file) {
+        return new ResponseEntity<>(meetingService.addMeetingFile(meetingId, file), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> deleteMeeting(Long meetingId) {
         meetingService.deleteMeeting(meetingId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteFile(Long meetingId, Long fileId) {
+        meetingService.deleteMeetingFile(meetingId, fileId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

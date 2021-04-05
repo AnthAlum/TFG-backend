@@ -7,6 +7,9 @@ import backend.api.others.PaginationInfo;
 import backend.clients.Client;
 import backend.clients.ClientRepository;
 import backend.clients.ClientService;
+import backend.filemanagment.File;
+import backend.filemanagment.FileRepository;
+import backend.filemanagment.FileService;
 import backend.merchants.Merchant;
 import backend.merchants.MerchantRepository;
 import backend.merchants.MerchantsService;
@@ -14,11 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +36,8 @@ public class MeetingServiceImpl implements MeetingService{
     private MerchantsService merchantService;
     private ClientRepository clientRepository;
     private ClientService clientService;
+    private FileRepository fileRepository;
+    private FileService fileService;
 
     public MeetingRepository getMeetingRepository() {
         return meetingRepository;
@@ -84,6 +93,24 @@ public class MeetingServiceImpl implements MeetingService{
         this.clientService = clientService;
     }
 
+    public FileService getFileService() {
+        return fileService;
+    }
+
+    @Autowired
+    public void setFileService(FileService fileService) {
+        this.fileService = fileService;
+    }
+
+    public FileRepository getFileRepository() {
+        return fileRepository;
+    }
+
+    @Autowired
+    public void setFileRepository(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
+
     @Override
     @Transactional
     public MeetingResponse getMeetingById(Long idMeeting) {
@@ -98,6 +125,10 @@ public class MeetingServiceImpl implements MeetingService{
         meeting.getClients().forEach(client -> {
             ClientResponse clientResponse = clientService.getClientById(client.getIdClient());
             meetingResponse.addClientResponse(clientResponse);
+        });
+        meeting.getFiles().forEach(file -> {
+            MeetingFileResponse fileResponse = fileService.getFileById(file.getIdFile());
+            meetingResponse.addFileResponse(fileResponse);
         });
         return meetingResponse;
     }
@@ -114,6 +145,21 @@ public class MeetingServiceImpl implements MeetingService{
     public MeetingPaginatedResponse getMeetingsByMatter(String matter, Integer pageNumber, Integer pageSize) {
         Page<Meeting> meetingPage = meetingRepository.findByMatterContains(matter, PageRequest.of(pageNumber, pageSize));
         return buildResponse(meetingPage, (int)meetingRepository.countByMatterContains(matter));
+    }
+
+    @Override
+    @Transactional
+    public MeetingWordCloudResponse getMeetingWordCloudById(Long idMeeting) {
+        Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
+        MeetingWordCloudResponse meetingWordCloudResponse = new MeetingWordCloudResponse();
+        meetingWordCloudResponse.setWordCloud(meeting.getWordCloud());
+        return meetingWordCloudResponse;
+    }
+
+    @Override
+    public File getMeetingFileById(Long idMeeting, Long idFile){
+        Meeting meeting = meetingRepository.findById(idMeeting).orElseThrow(() -> new EntityNotFoundException("Meeting not found"));
+        return meeting.getFile(idFile);
     }
 
     private MeetingPaginatedResponse buildResponse(Page<Meeting> meetingPage, int totalElements){
@@ -192,9 +238,11 @@ public class MeetingServiceImpl implements MeetingService{
 
     private List<String> generateWordCloud(String description, List<String> keywords){
         Map<String, Integer> wordCounter = new HashMap<>(); // Map for store words and frequency.
-        List<String> descriptionWords = Arrays.asList(description.split("[\\s,\\.]|[A-z]{0,3}")); //Slip words by spaces and commas.
-        for(int i = 0; i < descriptionWords.size(); i++){ //Count description words in wordCounter.
-            String word = descriptionWords.get(i).toLowerCase(Locale.ROOT);
+        List<String> descriptionWords = Arrays.asList(description.split("[\\s,\\.]")); //Slip words by spaces and commas.
+        Predicate<String> predicate = Pattern.compile("^[A-z]{0,4}$").asPredicate().negate();
+        List<String> stringList = descriptionWords.stream().filter(predicate).collect(Collectors.<String>toList());
+        for(int i = 0; i < stringList.size(); i++){ //Count description words in wordCounter.
+            String word = stringList.get(i).toLowerCase(Locale.ROOT);
             if(wordCounter.containsKey(word))
                 wordCounter.put(word, wordCounter.get(word) + 1);
             else
@@ -203,9 +251,10 @@ public class MeetingServiceImpl implements MeetingService{
         keywords.forEach(keyword -> { //Count keywords in wordCounter.
             String toLowerCase = keyword.toLowerCase(Locale.ROOT);
             if(wordCounter.containsKey(toLowerCase))
-                wordCounter.put(toLowerCase, wordCounter.get(toLowerCase) + 1);
+                wordCounter.put(toLowerCase, wordCounter.get(toLowerCase) + 2);
             else
-                wordCounter.put(toLowerCase, 1);
+                wordCounter.put(toLowerCase, 2
+                );
         });
         List<Map.Entry<String, Integer>> wordsSorted = wordCounter.entrySet().stream()
                 .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).limit(10).collect(Collectors.toList());//Sort by Integer values.
@@ -270,11 +319,19 @@ public class MeetingServiceImpl implements MeetingService{
     }
 
     @Override
+    @Transactional
     public void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         meeting.addKeyword(meetingKeywordChangeRequest.getKeyword());
         meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
+    }
+
+    @Override
+    public MeetingFileResponse addMeetingFile(Long meetingId, MultipartFile multipartFile) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        MeetingFileResponse meetingFileResponse = fileService.postFile(meeting, multipartFile);
+        return meetingFileResponse;
     }
 
     @Override
@@ -305,6 +362,14 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         meeting.removeKeyword(keyword);
         meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
+        meetingRepository.save(meeting);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMeetingFile(Long meetingId, Long fileId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        fileService.deleteFile(meeting, fileId);
         meetingRepository.save(meeting);
     }
 

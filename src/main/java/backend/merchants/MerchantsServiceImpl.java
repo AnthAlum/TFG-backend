@@ -22,19 +22,6 @@ public class MerchantsServiceImpl implements MerchantsService {
     private MerchantMapper merchantMapper;
     private MeetingRepository meetingRepository;
     private MeetingService meetingService;
-/*
-    @Autowired
-    public MerchantsServiceImpl(MerchantRepository merchantRepository,
-                                MerchantMapper merchantMapper,
-                                MeetingRepository meetingRepository,
-                                MeetingService meetingService) {
-        super();
-        this.merchantRepository = merchantRepository;
-        this.merchantMapper = merchantMapper;
-        this.meetingRepository = meetingRepository;
-        this.meetingService = meetingService;
-    }
-    */
 
     public MerchantRepository getMerchantRepository() {
         return merchantRepository;

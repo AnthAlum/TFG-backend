@@ -1,6 +1,7 @@
 package backend.meetings;
 
 import backend.clients.Client;
+import backend.filemanagment.File;
 import backend.merchants.Merchant;
 import backend.notification.Notification;
 
@@ -41,6 +42,9 @@ public class Meeting {
     @ElementCollection
     private List<String> wordCloud;
 
+    @OneToMany(mappedBy = "meeting")
+    private List<File> files;
+
     public Meeting() {
     }
 
@@ -52,7 +56,8 @@ public class Meeting {
                    List<Client> clients,
                    List<String> keywords,
                    List<Notification> notifications,
-                   List<String> wordCloud) {
+                   List<String> wordCloud,
+                   List<File> files) {
         this.idMeeting = idMeeting;
         this.matter = matter;
         this.description = description;
@@ -62,6 +67,7 @@ public class Meeting {
         this.keywords = keywords;
         this.notifications = notifications;
         this.wordCloud = wordCloud;
+        this.files = files;
     }
 
     public Long getIdMeeting() {
@@ -156,17 +162,41 @@ public class Meeting {
         this.wordCloud = wordCloud;
     }
 
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
+
+    public void addFile(File file){
+        this.files.add(file);
+    }
+
+    public void removeFile(File file){
+        this.files.remove(file);
+    }
+
+    public File getFile(Long fileId){
+        for(int i = 0; i < this.files.size(); i++){
+            if(this.files.get(i).getIdFile().equals(fileId))
+                return this.files.get(i);
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Meeting meeting = (Meeting) o;
-        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(description, meeting.description) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords) && Objects.equals(notifications, meeting.notifications) && Objects.equals(wordCloud, meeting.wordCloud);
+        return Objects.equals(idMeeting, meeting.idMeeting) && Objects.equals(matter, meeting.matter) && Objects.equals(description, meeting.description) && Objects.equals(date, meeting.date) && Objects.equals(merchants, meeting.merchants) && Objects.equals(clients, meeting.clients) && Objects.equals(keywords, meeting.keywords) && Objects.equals(notifications, meeting.notifications) && Objects.equals(wordCloud, meeting.wordCloud) && Objects.equals(files, meeting.files);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMeeting, matter, description, date, merchants, clients, keywords, notifications, wordCloud);
+        return Objects.hash(idMeeting, matter, description, date, merchants, clients, keywords, notifications, wordCloud, files);
     }
 
     @Override
@@ -181,6 +211,7 @@ public class Meeting {
                 ", keywords=" + keywords +
                 ", notifications=" + notifications +
                 ", wordCloud=" + wordCloud +
+                ", files=" + files +
                 '}';
     }
 }
