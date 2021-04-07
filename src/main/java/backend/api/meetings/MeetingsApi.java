@@ -50,6 +50,14 @@ public interface MeetingsApi {
     ResponseEntity<Resource> getFileById(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
                                          @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId);
 
+    /*
+    @RequestMapping(value = "/meetings/{meetingId}/files/{fileId}",method = RequestMethod.GET)
+    void getFileById(
+            @Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
+            @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId,
+            HttpServletResponse res);
+*/
+
 
     @Operation(summary = "Returns meetings information", description = "Returns meetings information filtered by matter.", tags={ "Meeting" })
     @ApiResponses(value = {

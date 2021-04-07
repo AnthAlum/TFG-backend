@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,15 +45,31 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseEntity<Resource> getFileById(Long meetingId, Long fileId) {
         File file = meetingService.getMeetingFileById(meetingId, fileId);
+        ByteArrayResource resource = new ByteArrayResource(file.getData());
         if(file != null)
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(file.getFileType()))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-                    .body(new ByteArrayResource(file.getData()));
+                    .contentLength(resource.contentLength())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    /*
+    @Override
+    @Transactional(readOnly = true)
+    public void getFileById(Long meetingId, Long fileId, HttpServletResponse res) {
+        File file = meetingService.getMeetingFileById(meetingId, fileId);
+        ByteArrayResource resource = new ByteArrayResource(file.getData());
+        res.setHeader("Content-Disposition", "attachment; filename=" + file.getFileName());
+        try {
+            res.getOutputStream().write(file.getData());
+        } catch (IOException e) {
+            //....
+        }
+    }*/
 
     @Override
     public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {

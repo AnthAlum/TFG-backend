@@ -11,6 +11,7 @@ public interface MeetingMapper {
     @Mapping(target = "clients", ignore = true)
     @Mapping(target = "date", ignore = true)
     @Mapping(target = "time", ignore = true)
+    @Mapping(target = "files", ignore = true)
     MeetingResponse meetingToMeetingResponse(Meeting meeting);
 
     @Mapping(target = "idMeeting", ignore = true)
