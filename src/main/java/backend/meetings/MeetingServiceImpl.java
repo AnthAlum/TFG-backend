@@ -13,6 +13,12 @@ import backend.filemanagment.FileService;
 import backend.merchants.Merchant;
 import backend.merchants.MerchantRepository;
 import backend.merchants.MerchantsService;
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.speech.v1.*;
+import com.google.cloud.speech.v1.RecognitionConfig.AudioEncoding;
+import com.google.common.collect.Lists;
+import com.google.protobuf.ByteString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -204,6 +211,35 @@ public class MeetingServiceImpl implements MeetingService{
         return localDateTime.toString().substring(11, 16); // Get time from localDateTime string.
     }
 
+    private String speechToText(File speech) throws Exception{
+        String text = "";
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:\\Users\\antho\\Music\\gcpkey.json"))
+                .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+        SpeechSettings settings = SpeechSettings.newBuilder().setCredentialsProvider(FixedCredentialsProvider.create(credentials)).build();
+        // Instantiates a client
+        try(SpeechClient speechClient = SpeechClient.create(settings)){
+            // Builds the sync recognize request
+            RecognitionConfig config = RecognitionConfig.newBuilder()
+                    .setEncoding(AudioEncoding.ENCODING_UNSPECIFIED)
+                    .setSampleRateHertz(16000)
+                    .setLanguageCode("es-ES")
+                    .build();
+            RecognitionAudio audio = RecognitionAudio.newBuilder().setContent(ByteString.copyFrom(speech.getData())).build();
+            // Performs speech recognition on the audio file
+            RecognizeResponse response = speechClient.recognize(config, audio);
+            List<SpeechRecognitionResult> results = response.getResultsList();
+
+            for (SpeechRecognitionResult result : results) {
+                // There can be several alternative transcripts for a given chunk of speech. Just use the
+                // first (most likely) one here.
+                SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
+                System.out.printf("Transcription: %s%n", alternative.getTranscript());
+                text = text + alternative.getTranscript();
+            }
+        }
+        return text;
+    }
+
     @Override
     @Transactional
     public void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest) {
@@ -328,10 +364,29 @@ public class MeetingServiceImpl implements MeetingService{
     }
 
     @Override
+    @Transactional
     public MeetingFileResponse addMeetingFile(Long meetingId, MultipartFile multipartFile) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         MeetingFileResponse meetingFileResponse = fileService.postFile(meeting, multipartFile);
         return meetingFileResponse;
+    }
+
+    @Override
+    @Transactional
+    public String addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        String description = meeting.getDescription();
+        String text = "";
+        try {
+            text = "\n" + speechToText(fileRepository.findById(fileId).orElse(null));
+        } catch (Exception e) {
+            String string = e.toString();
+            System.out.println(string);
+        }
+        String newDescription = description + text;
+        meeting.setDescription(newDescription);
+        meetingRepository.save(meeting);
+        return newDescription;
     }
 
     @Override

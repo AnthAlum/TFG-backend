@@ -50,7 +50,6 @@ public interface MeetingsApi {
     ResponseEntity<Resource> getFileById(@Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
                                          @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId);
 
-
     @Operation(summary = "Returns meetings information", description = "Returns meetings information filtered by matter.", tags={ "Meeting" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingPaginatedResponse.class))),
@@ -75,6 +74,15 @@ public interface MeetingsApi {
     ResponseEntity<MeetingFileResponse> addFile(
             @Parameter(in = ParameterIn.PATH, description = "Meeting's ID", required=true, schema=@Schema()) @PathVariable("meetingId") Long meetingId,
             @RequestParam("file") MultipartFile file);
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingWordCloudResponse.class))) })
+    @RequestMapping(value = "/meetings/{meetingId}/files/{fileId}",
+            method = RequestMethod.POST)
+    ResponseEntity<String> addMeetingDescriptionFromFile(
+            @Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
+            @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId);
+
 
     @Operation(summary = "Modify meeting's date", description = "Modify meeting's date", tags = { "Meeting" })
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {

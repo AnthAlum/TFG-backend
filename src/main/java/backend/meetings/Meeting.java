@@ -21,6 +21,8 @@ public class Meeting {
 
     private String matter;
 
+    @Lob
+    @Column(columnDefinition = "Text")
     private String description;
 
     private LocalDateTime date;
