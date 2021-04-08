@@ -57,19 +57,6 @@ public class MeetingsApiController implements MeetingsApi{
                     .body(resource);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    /*
-    @Override
-    @Transactional(readOnly = true)
-    public void getFileById(Long meetingId, Long fileId, HttpServletResponse res) {
-        File file = meetingService.getMeetingFileById(meetingId, fileId);
-        ByteArrayResource resource = new ByteArrayResource(file.getData());
-        res.setHeader("Content-Disposition", "attachment; filename=" + file.getFileName());
-        try {
-            res.getOutputStream().write(file.getData());
-        } catch (IOException e) {
-            //....
-        }
-    }*/
 
     @Override
     public ResponseEntity<MeetingPaginatedResponse> getMeetings(Integer pageNumber, Integer size) {
