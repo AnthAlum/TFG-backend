@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,15 +19,19 @@ import java.util.Date;
 public class AuthenticationServiceImpl implements AuthenticationService{
 
     private MerchantsService merchantsService;
+    private PasswordEncoder passwordEncoder;
     private JwtConfig jwtConfig;
     private JwtSecretKey jwtSecretKey;
 
     @Autowired
-    public AuthenticationServiceImpl(MerchantsService merchantsService, JwtConfig jwtConfig, JwtSecretKey jwtSecretKey) {
+    public AuthenticationServiceImpl(MerchantsService merchantsService, PasswordEncoder passwordEncoder, JwtConfig jwtConfig, JwtSecretKey jwtSecretKey) {
         this.merchantsService = merchantsService;
+        this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
         this.jwtSecretKey = jwtSecretKey;
     }
+
+
 
     @Override
     public LoginResponse loginUser(LoginRequest loginRequest) {
@@ -34,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             String username = loginRequest.getUsername();
             Integer expirationAfterDays = jwtConfig.getTokenExpirationAfterDays();
             UserDetails user = merchantsService.loadUserByUsername(username);
-            if(!user.getPassword().equals(loginRequest.getPassword()))
+            if(user != null && !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
                 throw new UnsuccessfulLoginException("USERNAME/PASSWORD INCORRECT");
             String jwt = Jwts.builder()
                     .setSubject(username)

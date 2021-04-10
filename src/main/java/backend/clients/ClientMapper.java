@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
-
+    @Mapping(target = "meetings", ignore = true)
     ClientResponse ClientToClientResponse(Client client);
 
     @Mapping(target = "idClient", ignore = true)

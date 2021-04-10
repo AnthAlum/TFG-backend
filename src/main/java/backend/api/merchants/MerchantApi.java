@@ -39,7 +39,7 @@ public interface MerchantApi {
     @RequestMapping(value = "/merchants/{merchantId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
+    ResponseEntity<MerchantResponse> getMerchantById(@Parameter(in = ParameterIn.PATH, description = "Merchant's ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId);
 
     @Operation(summary = "Returns merchant's information.", description = "Returns merchant's information of the given email.", tags={ "Merchant" })
     @ApiResponses(value = {

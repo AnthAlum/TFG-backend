@@ -20,7 +20,7 @@ public interface MeetingService {
     void addMeetingClient(Long meetingId, MeetingSubjectChangeRequest meetingSubjectChangeRequest);
     void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest);
     MeetingFileResponse addMeetingFile(Long meetingId, MultipartFile multipartFile);
-    String addMeetingDescriptionFromFile(Long meetingId, Long fileId);
+    MeetingResponse addMeetingDescriptionFromFile(Long meetingId, Long fileId);
     void deleteMeetingMerchant(Long meetingId, Long merchantId);
     void deleteMeetingClient(Long meetingId, Long clientId);
     void deleteMeetingKeyword(Long meetingId, String keyword);

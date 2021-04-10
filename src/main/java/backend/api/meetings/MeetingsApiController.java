@@ -82,7 +82,7 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     @Override
-    public ResponseEntity<String> addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
+    public ResponseEntity<MeetingResponse> addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
         return new ResponseEntity<>(meetingService.addMeetingDescriptionFromFile(meetingId, fileId), HttpStatus.OK);
     }
 

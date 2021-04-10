@@ -60,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
         http
                 .addFilterBefore(new AuthenticationFilter(jwtConfig, jwtSecretKey, merchantsService), UsernamePasswordAuthenticationFilter.class);
 
-        //http.cors().configurationSource(request -> );
     }
 
     @Override
@@ -73,5 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(merchantsService).passwordEncoder(passwordEncoder);
     }
+
 
 }

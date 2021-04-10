@@ -1,5 +1,7 @@
 package backend.api.clients;
 
+import backend.api.meetings.MeetingSimplifiedListResponse;
+import backend.api.meetings.MeetingSimplifiedResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,6 +24,9 @@ public class ClientResponse {
 
     @JsonProperty("remind")
     private Long remind = null;
+
+    @JsonProperty("meetings")
+    private MeetingSimplifiedListResponse meetings = new MeetingSimplifiedListResponse();
 
     public Long getIdClient() {
         return idClient;
@@ -69,5 +74,17 @@ public class ClientResponse {
 
     public void setRemind(Long remind) {
         this.remind = remind;
+    }
+
+    public MeetingSimplifiedListResponse getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(MeetingSimplifiedListResponse meetings) {
+        this.meetings = meetings;
+    }
+
+    public void addMeetingSimplifiedResponse(MeetingSimplifiedResponse meetingSimplifiedResponse){
+        this.meetings.addResponse(meetingSimplifiedResponse);
     }
 }

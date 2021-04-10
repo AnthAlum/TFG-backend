@@ -2,6 +2,7 @@ package backend.meetings;
 
 import backend.api.meetings.MeetingRegistrationRequest;
 import backend.api.meetings.MeetingResponse;
+import backend.api.meetings.MeetingSimplifiedResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,4 +19,8 @@ public interface MeetingMapper {
     @Mapping(target = "merchants", ignore = true)
     @Mapping(target = "clients", ignore = true)
     Meeting meetingRegistrationRequestToMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
+
+    @Mapping(target = "merchants", ignore = true)
+    @Mapping(target = "clients", ignore = true)
+    MeetingSimplifiedResponse meetingToMeetingSimplifiedResponse(Meeting meeting);
 }

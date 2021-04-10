@@ -1,7 +1,9 @@
 package backend.merchants;
 
+import backend.api.meetings.MeetingSimplifiedResponse;
 import backend.api.merchants.*;
 import backend.api.others.PaginationInfo;
+import backend.meetings.MeetingMapper;
 import backend.meetings.MeetingRepository;
 import backend.meetings.MeetingService;
 import backend.utility.AlreadyRegisteredException;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,7 +24,9 @@ public class MerchantsServiceImpl implements MerchantsService {
     private MerchantRepository merchantRepository;
     private MerchantMapper merchantMapper;
     private MeetingRepository meetingRepository;
+    private MeetingMapper meetingMapper;
     private MeetingService meetingService;
+    private PasswordEncoder passwordEncoder;
 
     public MerchantRepository getMerchantRepository() {
         return merchantRepository;
@@ -59,11 +64,35 @@ public class MerchantsServiceImpl implements MerchantsService {
         this.meetingService = meetingService;
     }
 
+    public MeetingMapper getMeetingMapper() {
+        return meetingMapper;
+    }
+
+    @Autowired
+    public void setMeetingMapper(MeetingMapper meetingMapper) {
+        this.meetingMapper = meetingMapper;
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
     @Transactional
     public MerchantResponse getMerchantById(Long idMerchant) {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant);
+        merchant.getMeetings().forEach(meeting -> {
+            MeetingSimplifiedResponse meetingSimplifiedResponse = meetingMapper.meetingToMeetingSimplifiedResponse(meeting);
+            meetingSimplifiedResponse.setMerchants((long)meeting.getMerchants().size());
+            meetingSimplifiedResponse.setClients((long)meeting.getClients().size());
+            merchantResponse.addMeetingSimplifiedResponse(meetingSimplifiedResponse);
+        });
         return merchantResponse;
     }
 
@@ -82,6 +111,7 @@ public class MerchantsServiceImpl implements MerchantsService {
         if(merchant != null)
             throw new AlreadyRegisteredException("Already registered");
         Merchant newMerchant = merchantMapper.merchantRegistrationRequestToMerchant(merchantRegistrationRequest);
+        newMerchant.setPassword(passwordEncoder.encode(merchantRegistrationRequest.getPassword()));
         merchantRepository.save(newMerchant);
     }
 
@@ -215,8 +245,8 @@ public class MerchantsServiceImpl implements MerchantsService {
     public void modifyMerchantPassword(MerchantPasswordChangeRequest merchantPasswordChangeRequest, Long idMerchant) throws BadPasswordException {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         if(merchant != null){
-            if(merchant.getPassword().equals(merchantPasswordChangeRequest.getPassword())){
-                merchant.setPassword(merchantPasswordChangeRequest.getNewPassword());
+            if(passwordEncoder.matches(merchantPasswordChangeRequest.getPassword(), merchant.getPassword())){
+                merchant.setPassword(passwordEncoder.encode(merchantPasswordChangeRequest.getNewPassword()));
                 merchantRepository.save(merchant);
             } else{
                 throw new BadPasswordException("Wrong password");

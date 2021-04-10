@@ -79,7 +79,7 @@ public interface MeetingsApi {
             @ApiResponse(responseCode = "200", description = "Request completed.", content = @Content(schema = @Schema(implementation = MeetingWordCloudResponse.class))) })
     @RequestMapping(value = "/meetings/{meetingId}/files/{fileId}",
             method = RequestMethod.POST)
-    ResponseEntity<String> addMeetingDescriptionFromFile(
+    ResponseEntity<MeetingResponse> addMeetingDescriptionFromFile(
             @Parameter(in = ParameterIn.PATH, description = "Meeting's Id", required = true, schema = @Schema()) @PathVariable("meetingId") Long meetingId,
             @Parameter(in = ParameterIn.PATH, description = "File's Id", required = true, schema = @Schema()) @PathVariable("fileId") Long fileId);
 

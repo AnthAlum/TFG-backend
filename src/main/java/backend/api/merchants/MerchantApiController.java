@@ -35,7 +35,7 @@ public class MerchantApiController implements MerchantApi {
     }
 
     @Override
-    public ResponseEntity<MerchantResponse> getMerchant(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId) {
+    public ResponseEntity<MerchantResponse> getMerchantById(@Parameter(in = ParameterIn.PATH, description = "Merchant ID", required=true, schema=@Schema()) @PathVariable("merchantId") Long merchantId) {
         return new ResponseEntity<MerchantResponse>(merchantsService.getMerchantById(merchantId), HttpStatus.OK);
     }
 

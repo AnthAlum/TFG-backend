@@ -275,7 +275,7 @@ public class MeetingServiceImpl implements MeetingService{
     private List<String> generateWordCloud(String description, List<String> keywords){
         Map<String, Integer> wordCounter = new HashMap<>(); // Map for store words and frequency.
         List<String> descriptionWords = Arrays.asList(description.split("[\\s,\\.]")); //Slip words by spaces and commas.
-        Predicate<String> predicate = Pattern.compile("^[A-z]{0,4}$").asPredicate().negate();
+        Predicate<String> predicate = Pattern.compile("^[A-zÀ-ú]{0,4}$").asPredicate().negate();
         List<String> stringList = descriptionWords.stream().filter(predicate).collect(Collectors.<String>toList());
         for(int i = 0; i < stringList.size(); i++){ //Count description words in wordCounter.
             String word = stringList.get(i).toLowerCase(Locale.ROOT);
@@ -373,20 +373,20 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public String addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
+    public MeetingResponse addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         String description = meeting.getDescription();
         String text = "";
         try {
             text = "\n" + speechToText(fileRepository.findById(fileId).orElse(null));
         } catch (Exception e) {
-            String string = e.toString();
-            System.out.println(string);
+            System.out.println(e.toString());
         }
         String newDescription = description + text;
         meeting.setDescription(newDescription);
+        meeting.setWordCloud(generateWordCloud(newDescription, meeting.getKeywords()));
         meetingRepository.save(meeting);
-        return newDescription;
+        return getMeetingById(meetingId);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package backend.clients;
 
 import backend.api.clients.*;
+import backend.api.meetings.MeetingSimplifiedResponse;
 import backend.api.others.PaginationInfo;
+import backend.meetings.MeetingMapper;
 import backend.meetings.MeetingRepository;
 import backend.meetings.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +19,9 @@ public class ClientServiceImpl implements ClientService{
     private ClientMapper clientMapper;
     private ClientRepository clientRepository;
     private MeetingRepository meetingRepository;
+    private MeetingMapper meetingMapper;
     private MeetingService meetingService;
 
-/*
-    @Autowired
-    public ClientServiceImpl(ClientMapper clientMapper,
-                             ClientRepository clientRepository,
-                             MeetingRepository meetingRepository,
-                             MeetingService meetingService) {
-        super();
-        this.clientMapper = clientMapper;
-        this.clientRepository = clientRepository;
-        this.meetingRepository = meetingRepository;
-        this.meetingService = meetingService;
-    }
-*/
 
     public ClientMapper getClientMapper() {
         return clientMapper;
@@ -69,10 +59,26 @@ public class ClientServiceImpl implements ClientService{
         this.meetingService = meetingService;
     }
 
+    public MeetingMapper getMeetingMapper() {
+        return meetingMapper;
+    }
+
+    @Autowired
+    public void setMeetingMapper(MeetingMapper meetingMapper) {
+        this.meetingMapper = meetingMapper;
+    }
+
     @Override
+    @Transactional
     public ClientResponse getClientById(Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
         ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
+        client.getMeetings().forEach(meeting -> {
+            MeetingSimplifiedResponse meetingSimplifiedResponse = meetingMapper.meetingToMeetingSimplifiedResponse(meeting);
+            meetingSimplifiedResponse.setMerchants((long) meeting.getMerchants().size());
+            meetingSimplifiedResponse.setClients((long)meeting.getClients().size());
+            clientResponse.addMeetingSimplifiedResponse(meetingSimplifiedResponse);
+        });
         return clientResponse;
     }
 
