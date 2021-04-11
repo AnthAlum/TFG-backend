@@ -122,6 +122,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public MeetingResponse getMeetingById(Long idMeeting) {
         Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
+        if(meeting == null)
+            return null;
         MeetingResponse meetingResponse = meetingMapper.meetingToMeetingResponse(meeting);
         meetingResponse.setDate(getDate(meeting.getDate())); //Assign date
         meetingResponse.setTime(getTime(meeting.getDate()));
@@ -158,6 +160,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public MeetingWordCloudResponse getMeetingWordCloudById(Long idMeeting) {
         Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
+        if(meeting == null)
+            return null;
         MeetingWordCloudResponse meetingWordCloudResponse = new MeetingWordCloudResponse();
         meetingWordCloudResponse.setWordCloud(meeting.getWordCloud());
         return meetingWordCloudResponse;
@@ -293,7 +297,7 @@ public class MeetingServiceImpl implements MeetingService{
                 );
         });
         List<Map.Entry<String, Integer>> wordsSorted = wordCounter.entrySet().stream()
-                .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).limit(10).collect(Collectors.toList());//Sort by Integer values.
+                .sorted((k1, k2) -> -1 * k1.getValue().compareTo(k2.getValue())).limit(10).collect(Collectors.toList());//Sort by Integer values.
         ArrayList<String> wordCloud = new ArrayList<>();
         wordsSorted.forEach(entry -> wordCloud.add(entry.getKey())); // Store the 10 words with higher frequency.
         return wordCloud;
@@ -336,6 +340,8 @@ public class MeetingServiceImpl implements MeetingService{
         Long merchantId = meetingSubjectChangeRequest.getSubjectId();
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         Merchant merchant = merchantRepository.findById(merchantId).orElse(null);
+        if(meeting == null || merchant == null)
+            return;
         merchant.addMeeting(meeting);
         meeting.addMerchant(merchant);
         merchantRepository.save(merchant);
@@ -348,6 +354,8 @@ public class MeetingServiceImpl implements MeetingService{
         Long clientId = meetingSubjectChangeRequest.getSubjectId();
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         Client client = clientRepository.findById(clientId).orElse(null);
+        if(meeting == null || client == null)
+            return;
         client.addMeeting(meeting);
         meeting.addClient(client);
         clientRepository.save(client);
@@ -358,6 +366,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public void addMeetingKeyword(Long meetingId, MeetingKeywordChangeRequest meetingKeywordChangeRequest) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return;
         meeting.addKeyword(meetingKeywordChangeRequest.getKeyword());
         meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
@@ -367,6 +377,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public MeetingFileResponse addMeetingFile(Long meetingId, MultipartFile multipartFile) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return null;
         MeetingFileResponse meetingFileResponse = fileService.postFile(meeting, multipartFile);
         return meetingFileResponse;
     }
@@ -375,6 +387,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public MeetingResponse addMeetingDescriptionFromFile(Long meetingId, Long fileId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return null;
         String description = meeting.getDescription();
         String text = "";
         try {
@@ -394,6 +408,8 @@ public class MeetingServiceImpl implements MeetingService{
     public void deleteMeetingMerchant(Long meetingId, Long merchantId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         Merchant merchant = merchantRepository.findById(merchantId).orElse(null);
+        if(meeting == null || merchant == null)
+            return;
         merchant.deleteMeeting(meeting);
         meeting.removeMerchant(merchant);
         merchantRepository.save(merchant);
@@ -405,6 +421,8 @@ public class MeetingServiceImpl implements MeetingService{
     public void deleteMeetingClient(Long meetingId, Long clientId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         Client client = clientRepository.findById(clientId).orElse(null);
+        if(meeting == null || client == null)
+            return;
         client.deleteMeeting(meeting);
         meeting.removeClient(client);
         clientRepository.save(client);
@@ -415,6 +433,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public void deleteMeetingKeyword(Long meetingId, String keyword) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return;
         meeting.removeKeyword(keyword);
         meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
         meetingRepository.save(meeting);
@@ -424,6 +444,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public void deleteMeetingFile(Long meetingId, Long fileId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return;
         fileService.deleteFile(meeting, fileId);
         meetingRepository.save(meeting);
     }
@@ -432,6 +454,8 @@ public class MeetingServiceImpl implements MeetingService{
     @Transactional
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null)
+            return;
         meeting.getMerchants().forEach(merchant -> { // Por cada merchant relacionado con el meeting
             merchant.deleteMeeting(meeting);    // quitamos el meeting a eliminar.
             merchantRepository.save(merchant);  //   y actualizamos la lista de los meetings.

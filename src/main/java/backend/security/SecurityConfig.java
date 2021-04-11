@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
                     cors.setAllowedHeaders(Arrays.asList("*"));
                     return cors;
                 }).and()
-                .csrf().disable()
+                //.csrf().disable()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

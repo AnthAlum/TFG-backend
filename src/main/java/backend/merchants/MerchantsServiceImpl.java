@@ -86,6 +86,8 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Transactional
     public MerchantResponse getMerchantById(Long idMerchant) {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
+        if(merchant == null)
+            return null;
         MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant);
         merchant.getMeetings().forEach(meeting -> {
             MeetingSimplifiedResponse meetingSimplifiedResponse = meetingMapper.meetingToMeetingSimplifiedResponse(meeting);

@@ -13,6 +13,7 @@ public class JwtConfig {
     private Integer tokenExpirationAfterDays;
 
     public JwtConfig() {
+        //Constructor.
     }
 
     public String getSecretKey() {

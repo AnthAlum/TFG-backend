@@ -8,12 +8,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class FileServiceImpl implements FileService {
 
     private FileRepository fileRepository;
     private FileMapper fileMapper;
+
+    private static final Logger LOGGER = Logger.getLogger( FileServiceImpl.class.getName() );
 
     public FileRepository getFileRepository() {
         return fileRepository;
@@ -45,6 +49,8 @@ public class FileServiceImpl implements FileService {
     public MeetingFileResponse postFile(Meeting meeting, MultipartFile multipartFile) {
         MeetingFileResponse meetingFileResponse = null;
         String filename = multipartFile.getOriginalFilename();
+        if(filename == null)
+            return null;
         int index = filename.lastIndexOf('.');
         String extension = filename.substring(index + 1);
         try {
@@ -52,7 +58,7 @@ public class FileServiceImpl implements FileService {
             meeting.addFile(file);
             meetingFileResponse = fileMapper.fileToMeetingFileResponse(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
         return meetingFileResponse;
     }

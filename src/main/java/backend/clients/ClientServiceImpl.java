@@ -72,6 +72,8 @@ public class ClientServiceImpl implements ClientService{
     @Transactional
     public ClientResponse getClientById(Long idClient) {
         Client client = clientRepository.findById(idClient).orElse(null);
+        if(client == null)
+            return null;
         ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
         client.getMeetings().forEach(meeting -> {
             MeetingSimplifiedResponse meetingSimplifiedResponse = meetingMapper.meetingToMeetingSimplifiedResponse(meeting);

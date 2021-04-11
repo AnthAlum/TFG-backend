@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             String username = loginRequest.getUsername();
             Integer expirationAfterDays = jwtConfig.getTokenExpirationAfterDays();
             UserDetails user = merchantsService.loadUserByUsername(username);
-            if(user != null && !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
+            if(user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
                 throw new UnsuccessfulLoginException("USERNAME/PASSWORD INCORRECT");
             String jwt = Jwts.builder()
                     .setSubject(username)

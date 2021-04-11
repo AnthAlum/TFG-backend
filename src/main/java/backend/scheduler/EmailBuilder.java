@@ -28,6 +28,8 @@ public class EmailBuilder {
     public String[] searchEmails(Long idMerchant, Long idClient){
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         Client client = clientRepository.findById(idClient).orElse(null);
+        if(merchant == null || client == null)
+            return null;
         String[] emails = new String[2];
         emails[0] = merchant.getEmail();
         emails[1] = client.getEmail();
@@ -39,6 +41,8 @@ public class EmailBuilder {
         Meeting meeting = meetingRepository.findById(idMeeting).orElse(null);
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         Client client = clientRepository.findById(idClient).orElse(null);
+        if(merchant == null || client == null || meeting == null)
+            return null;
         String notification = "Hi " + merchant.getName() + "!\n" +
                 "You have not been un touch with " + client.getName() + " since " + meeting.getDate().toLocalDate() + ".\n" +
                 "\n" +
