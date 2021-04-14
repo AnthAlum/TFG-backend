@@ -42,7 +42,9 @@ public class NotificationScheduler {
             * notification[1] = id_merchant
             * notification[2] = id_client
             * */
-            Long idMeeting = notification[0], idMerchant = notification[1], idClient = notification[2];
+            Long idMeeting = notification[0];
+            Long idMerchant = notification[1];
+            Long idClient = notification[2];
             String[] emails = emailBuilder.searchEmails(idMerchant, idClient);
             /*
             * emails[0] = merchant email

@@ -102,8 +102,7 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Transactional
     public MerchantResponse getMerchantByEmail(String email) {
         Merchant merchant = merchantRepository.findMerchantByEmail(email);
-        MerchantResponse merchantResponse = merchantMapper.merchantToMerchantResponse(merchant);
-        return merchantResponse;
+        return merchantMapper.merchantToMerchantResponse(merchant);
     }
 
     @Override
@@ -259,8 +258,6 @@ public class MerchantsServiceImpl implements MerchantsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        List<MerchantResponse> pages = getMerchants(0, 5).getPages();
-        Merchant merchant = merchantRepository.findMerchantByEmail(email);
-        return merchant;
+        return merchantRepository.findMerchantByEmail(email);
     }
 }

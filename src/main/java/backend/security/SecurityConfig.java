@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
                     cors.setAllowedHeaders(Arrays.asList("*"));
                     return cors;
                 }).and()
-                //.csrf().disable()
+                .csrf().disable()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
                 .authenticated();
 
         http
-                .addFilterBefore(new AuthenticationFilter(jwtConfig, jwtSecretKey, merchantsService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationFilter(jwtConfig, jwtSecretKey), UsernamePasswordAuthenticationFilter.class);
 
     }
 

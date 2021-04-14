@@ -1,6 +1,30 @@
 package backend.api.merchants;
 
-/*
+
+import backend.merchants.Merchant;
+import backend.merchants.MerchantRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -11,6 +35,10 @@ public class MerchantsApiControllerTest {
 
     @Autowired
     private MerchantRepository merchantRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String jwt;
 
     private void checkEqualResponse(Merchant storedMerchant, Merchant receivedMerchant){
@@ -30,7 +58,15 @@ public class MerchantsApiControllerTest {
         assertThat(storedMerchant.getName(), equalTo(receivedMerchant.getName()));
         assertThat(storedMerchant.getEmail(), equalTo(receivedMerchant.getEmail()));
         assertThat(storedMerchant.getPhone(), equalTo(receivedMerchant.getPhone()));
-        assertThat(storedMerchant.getPassword(), equalTo(receivedMerchant.getPassword()));
+        assertThat(true, equalTo(passwordEncoder.matches(receivedMerchant.getPassword(), storedMerchant.getPassword())));
+    }
+
+    private void checkLists(List<Merchant> storedMerchants, List<MerchantResponse> receivedMerchants){
+        for(int i = 0; i < receivedMerchants.size(); i++){
+            Merchant receivedMerchant = merchantResponseToMerchant(receivedMerchants.get(i));
+            Merchant storedMerchant = storedMerchants.get(i);
+            checkEqualResponse(storedMerchant, receivedMerchant);
+        }
     }
 
     @Before
@@ -113,7 +149,6 @@ public class MerchantsApiControllerTest {
         //Testing received merchant responses and the merchant in database.
         List<Merchant> storedMerchants = merchantRepository.findByNameContains(name, PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize))).getContent();
         checkLists(storedMerchants, receivedMerchants);
-        //Testing pagination info received and sent?
     }
 
     @Test
@@ -149,14 +184,6 @@ public class MerchantsApiControllerTest {
         checkLists(storedMerchants, receivedMerchants);
     }
 
-    private void checkLists(List<Merchant> storedMerchants, List<MerchantResponse> receivedMerchants){
-        for(int i = 0; i < receivedMerchants.size(); i++){
-            Merchant receivedMerchant = merchantResponseToMerchant(receivedMerchants.get(i));
-            Merchant storedMerchant = storedMerchants.get(i);
-            checkEqualResponse(storedMerchant, receivedMerchant);
-        }
-    }
-
     private void deleteMerchant(String email){
         Merchant merchant = merchantRepository.findMerchantByEmail(email);
         if(merchant != null)
@@ -180,4 +207,4 @@ public class MerchantsApiControllerTest {
                 merchantResponse.getName(), merchantResponse.getPhone(), null, null);
         return merchant;
     }
-}*/
+}

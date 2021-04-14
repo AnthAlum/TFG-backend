@@ -3,12 +3,13 @@ package backend.filemanagment;
 import backend.meetings.Meeting;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
 @Table(name = "file")
-public class File {
+public class File implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_file")

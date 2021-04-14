@@ -2,7 +2,7 @@ package backend.authentication;
 
 public class UnsuccessfulLoginException extends Exception{
 
-    private String error = null;
+    private final String error;
 
     public UnsuccessfulLoginException(String error) {
         this.error = error;
@@ -12,7 +12,4 @@ public class UnsuccessfulLoginException extends Exception{
         return error;
     }
 
-    public void setError(String error) {
-        this.error = error;
-    }
 }

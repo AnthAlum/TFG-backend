@@ -1,6 +1,5 @@
 package backend.security;
 
-import backend.merchants.MerchantsService;
 import backend.security.jwt.JwtConfig;
 import backend.security.jwt.JwtSecretKey;
 import com.google.common.base.Strings;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -32,13 +30,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     private JwtConfig jwtConfig;
     private JwtSecretKey jwtSecretKey;
-    private MerchantsService merchantsService;
 
     @Autowired
-    public AuthenticationFilter(JwtConfig jwtConfig, JwtSecretKey jwtSecretKey, MerchantsService merchantsService) {
+    public AuthenticationFilter(JwtConfig jwtConfig, JwtSecretKey jwtSecretKey) {
         this.jwtConfig = jwtConfig;
         this.jwtSecretKey = jwtSecretKey;
-        this.merchantsService = merchantsService;
     }
 
     @Override
@@ -53,7 +49,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                         .parseClaimsJws(token);
                 Claims body = claimsJws.getBody();
                 String userEmail = body.getSubject();
-                UserDetails userDetails = merchantsService.loadUserByUsername(userEmail);
                 List<Map<String, String>> authorities = (List<Map<String, String>>)body.get("authorities");
                 Set<SimpleGrantedAuthority> grantedAuthorities = authorities.stream()
                         .map(m -> new SimpleGrantedAuthority(m.get("authority")))
@@ -65,7 +60,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch(JwtException e){
-
+                throw new IOException();
             }
         }
         filterChain.doFilter(request, response);

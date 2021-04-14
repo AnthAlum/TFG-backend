@@ -26,16 +26,16 @@ public class MeetingsApiController implements MeetingsApi{
 
     private ResponseEntity<MeetingPaginatedResponse> checkResponse(MeetingPaginatedResponse meetingPaginatedResponse){
         if(meetingPaginatedResponse == null)
-            return new ResponseEntity<MeetingPaginatedResponse>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<MeetingPaginatedResponse>(meetingPaginatedResponse, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(meetingPaginatedResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<MeetingResponse> getMeeting(Long meetingId) {
         MeetingResponse response = meetingService.getMeetingById(meetingId);
         if(response == null)
-            return new ResponseEntity<MeetingResponse>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<MeetingResponse>(response, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
@@ -48,13 +48,14 @@ public class MeetingsApiController implements MeetingsApi{
     @Transactional(readOnly = true)
     public ResponseEntity<Resource> getFileById(Long meetingId, Long fileId) {
         File file = meetingService.getMeetingFileById(meetingId, fileId);
-        ByteArrayResource resource = new ByteArrayResource(file.getData());
-        if(file != null)
+        if(file != null) {
+            ByteArrayResource resource = new ByteArrayResource(file.getData());
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
                     .contentLength(resource.contentLength())
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(resource);
+        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

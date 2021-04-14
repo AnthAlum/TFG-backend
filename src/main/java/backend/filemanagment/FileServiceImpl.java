@@ -67,6 +67,8 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public void deleteFile(Meeting meeting, Long fileId) {
         File file = fileRepository.findById(fileId).orElse(null);
+        if(file == null)
+            return;
         meeting.removeFile(file);
         fileRepository.delete(file);
     }

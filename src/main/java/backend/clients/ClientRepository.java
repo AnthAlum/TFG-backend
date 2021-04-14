@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long> {
     @Query("select c from Client c where c.email = ?1")
-    Client findClientByEmail(String email);
+    List<Client> findClientByEmail(String email);
 
     @Query("select c from Client c")
     public Page<Client> searchClients(Pageable pageable);

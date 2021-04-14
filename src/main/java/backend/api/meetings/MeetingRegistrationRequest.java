@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Validated
 public class MeetingRegistrationRequest {
@@ -45,7 +46,7 @@ public class MeetingRegistrationRequest {
         this.localDateTime = localDateTime;
     }
 
-    public ArrayList<Long> getMerchants() {
+    public List<Long> getMerchants() {
         return merchants;
     }
 
@@ -53,7 +54,7 @@ public class MeetingRegistrationRequest {
         this.merchants = merchants;
     }
 
-    public ArrayList<Long> getClients() {
+    public List<Long> getClients() {
         return clients;
     }
 
@@ -61,7 +62,7 @@ public class MeetingRegistrationRequest {
         this.clients = clients;
     }
 
-    public ArrayList<String> getKeywords() {
+    public List<String> getKeywords() {
         return keywords;
     }
 
@@ -77,7 +78,7 @@ public class MeetingRegistrationRequest {
         this.description = description;
     }
 
-    public ArrayList<MultipartFile> getAudios() {
+    public List<MultipartFile> getAudios() {
         return audios;
     }
 

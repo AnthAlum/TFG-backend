@@ -13,7 +13,7 @@ public class ClientListResponse {
     private List<ClientResponse> clientResponseList;
 
     public ClientListResponse(){
-        this.clientResponseList = new ArrayList<ClientResponse>();
+        this.clientResponseList = new ArrayList<>();
     }
 
     public ClientListResponse(List<ClientResponse> clientResponseList) {

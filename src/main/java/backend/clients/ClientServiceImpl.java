@@ -74,7 +74,7 @@ public class ClientServiceImpl implements ClientService{
         Client client = clientRepository.findById(idClient).orElse(null);
         if(client == null)
             return null;
-        ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
+        ClientResponse clientResponse = clientMapper.clientToClientResponse(client);
         client.getMeetings().forEach(meeting -> {
             MeetingSimplifiedResponse meetingSimplifiedResponse = meetingMapper.meetingToMeetingSimplifiedResponse(meeting);
             meetingSimplifiedResponse.setMerchants((long) meeting.getMerchants().size());
@@ -130,7 +130,7 @@ public class ClientServiceImpl implements ClientService{
             return null;
         ClientListResponse clientListResponse = new ClientListResponse(); //Create the list of clientResponses for the
         clientPage.forEach(client -> {
-            ClientResponse clientResponse = clientMapper.ClientToClientResponse(client);
+            ClientResponse clientResponse = clientMapper.clientToClientResponse(client);
             clientListResponse.addClientResponse(clientResponse);
         });
 

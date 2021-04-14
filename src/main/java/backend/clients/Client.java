@@ -3,13 +3,14 @@ package backend.clients;
 import backend.meetings.Meeting;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "client")
-public class Client {
+public class Client implements Serializable {
     /*   ATTRIBUTES  */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +30,9 @@ public class Client {
             inverseJoinColumns = @JoinColumn(name = "id_meeting")
     )
     private List<Meeting> meetings = new ArrayList<>();
+
     /*   CTOR., GETTERS, SETTERS    */
+
     public Client(){}
 
     public Client(Long idClient, String name, String email, String phone, String company, Long remind, List<Meeting> meetings) {

@@ -1,6 +1,29 @@
 package backend.api.merchants;
 
-/*
+
+import backend.merchants.Merchant;
+import backend.merchants.MerchantRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -11,6 +34,9 @@ public class MerchantApiControllerTest {
 
     @Autowired
     private MerchantRepository merchantRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private String jwt;
 
     private void checkEqualResponse(Merchant storedMerchant, Merchant receivedMerchant){
@@ -166,9 +192,9 @@ public class MerchantApiControllerTest {
             Merchant merchant = merchantRepository.findMerchantByEmail(email);
             MockHttpServletRequestBuilder builder = put("/merchants/" + merchant.getIdMerchant() + "/password").contentType(MediaType.APPLICATION_JSON).content(putBody).header("Authorization", this.jwt);
             mvc.perform(builder).andExpect(status().isOk());
-            //Check if sent phone has been saved in repository
+            //Check if sent password has been saved in repository
             merchant = merchantRepository.findMerchantByEmail(email); //Gets same merchant with modified attribute.
-            assertThat(merchant.getPassword(), equalTo(newPassword));
+            assertThat(true, equalTo(passwordEncoder.matches(newPassword, merchant.getPassword())));
         } finally {
             deleteMerchant(email); //Delete temp merchant
         }
@@ -233,4 +259,4 @@ public class MerchantApiControllerTest {
                 "}";
         return putBody;
     }
-}*/
+}

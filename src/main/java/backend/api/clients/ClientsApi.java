@@ -71,7 +71,7 @@ public interface ClientsApi {
     @RequestMapping(value = "/clients/{clientId}/name",
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<Void> modifyClientName(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "", schema=@Schema()) @Valid @RequestBody ClientNameChangeRequest body);
+    ResponseEntity<Void> modifyClientName(@Parameter(in = ParameterIn.PATH, description = "Client's ID", required=true, schema=@Schema()) @PathVariable("clientId") Long clientId, @Parameter(in = ParameterIn.DEFAULT, description = "Client's new name", schema=@Schema()) @Valid @RequestBody ClientNameChangeRequest body);
 
     @Operation(summary = "Change client's email.", description = "Change client's email with the given new email.", tags={ "Client" })
     @ApiResponses(value = {
@@ -122,7 +122,7 @@ public interface ClientsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<ClientPaginatedResponse> getClientsByEmail(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = false, defaultValue = "email@example.com") String email,
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "email", required = false, defaultValue = "") String email,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "size", required = false, defaultValue = "25") Integer pageSize);
 
@@ -148,7 +148,7 @@ public interface ClientsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<ClientPaginatedResponse> getClientsByPhone(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "phone") String phone,
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "phone", required = false, defaultValue = "") String phone,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
 
@@ -161,7 +161,7 @@ public interface ClientsApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<ClientPaginatedResponse> getClientsByCompany(
-            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "company", required = false, defaultValue = "company") String company,
+            @ApiParam(value = "the email for filtering") @Valid @RequestParam(value = "company", required = false, defaultValue = "") String company,
             @ApiParam(value = "the number of the page") @Valid @RequestParam(value = "page number", required = false, defaultValue = "0") Integer pageNumber,
             @ApiParam(value = "the number of element per page") @Valid @RequestParam(value = "page size", required = false, defaultValue = "25") Integer pageSize);
 

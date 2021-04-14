@@ -22,7 +22,7 @@ public class AuthenticationApiController implements AuthenticationApi{
     public ResponseEntity<LoginResponse> userLogin(@Valid LoginRequest body) {
         LoginResponse loginResponse = authenticationService.loginUser(body);
         if(loginResponse == null)
-            return new ResponseEntity<LoginResponse>(new LoginResponse("FORBIDDEN"), HttpStatus.FORBIDDEN);
-        return new ResponseEntity<LoginResponse>(loginResponse, HttpStatus.OK);
+            return new ResponseEntity<>(new LoginResponse("FORBIDDEN"), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 }

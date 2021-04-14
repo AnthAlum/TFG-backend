@@ -128,4 +128,7 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+### Others ###
+*.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/maven,java,intellij+all

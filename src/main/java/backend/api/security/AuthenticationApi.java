@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 public interface AuthenticationApi {
-
     @ApiOperation(value = "Authenticates a user into the system", nickname = "userLogin", notes = "Logs in a user into the system", response = LoginResponse.class, tags={ "Authentication", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Logged in successfully", response = LoginResponse.class),

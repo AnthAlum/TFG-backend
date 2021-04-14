@@ -216,7 +216,7 @@ public class MeetingServiceImpl implements MeetingService{
     }
 
     private String speechToText(File speech) throws Exception{
-        String text = "";
+        StringBuilder bld = new StringBuilder();
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:\\Users\\antho\\Music\\gcpkey.json"))
                 .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         SpeechSettings settings = SpeechSettings.newBuilder().setCredentialsProvider(FixedCredentialsProvider.create(credentials)).build();
@@ -238,10 +238,10 @@ public class MeetingServiceImpl implements MeetingService{
                 // first (most likely) one here.
                 SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
                 System.out.printf("Transcription: %s%n", alternative.getTranscript());
-                text = text + alternative.getTranscript();
+                bld.append(alternative.getTranscript());
             }
         }
-        return text;
+        return bld.toString();
     }
 
     @Override
@@ -379,8 +379,7 @@ public class MeetingServiceImpl implements MeetingService{
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
         if(meeting == null)
             return null;
-        MeetingFileResponse meetingFileResponse = fileService.postFile(meeting, multipartFile);
-        return meetingFileResponse;
+        return fileService.postFile(meeting, multipartFile);
     }
 
     @Override
@@ -464,6 +463,7 @@ public class MeetingServiceImpl implements MeetingService{
             client.deleteMeeting(meeting);
             clientRepository.save(client);
         });
+        meeting.getFiles().forEach(file -> fileRepository.delete(file));
         meetingRepository.delete(meeting);
     }
 

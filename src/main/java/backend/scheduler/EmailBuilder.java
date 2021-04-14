@@ -29,7 +29,7 @@ public class EmailBuilder {
         Merchant merchant = merchantRepository.findById(idMerchant).orElse(null);
         Client client = clientRepository.findById(idClient).orElse(null);
         if(merchant == null || client == null)
-            return null;
+            return new String[0];
         String[] emails = new String[2];
         emails[0] = merchant.getEmail();
         emails[1] = client.getEmail();
@@ -43,7 +43,7 @@ public class EmailBuilder {
         Client client = clientRepository.findById(idClient).orElse(null);
         if(merchant == null || client == null || meeting == null)
             return null;
-        String notification = "Hi " + merchant.getName() + "!\n" +
+        return "Hi " + merchant.getName() + "!\n" +
                 "You have not been un touch with " + client.getName() + " since " + meeting.getDate().toLocalDate() + ".\n" +
                 "\n" +
                 "You talked about:\n" +
@@ -55,7 +55,6 @@ public class EmailBuilder {
                 client.getPhone() + "\nCompany: " +
                 client.getCompany() + "\n" +
                 "Please Contact with him/her!";
-        return notification;
     }
 
     public String check(String value, String defaultMessage){

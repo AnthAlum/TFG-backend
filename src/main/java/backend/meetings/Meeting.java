@@ -6,6 +6,7 @@ import backend.merchants.Merchant;
 import backend.notification.Notification;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "meeting")
-public class Meeting {
+public class Meeting implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_meeting")
@@ -28,10 +29,10 @@ public class Meeting {
     private LocalDateTime date;
 
     @ManyToMany(mappedBy = "meetings")
-    private List<Merchant> merchants = new ArrayList<Merchant>();
+    private List<Merchant> merchants = new ArrayList<>();
 
     @ManyToMany(mappedBy = "meetings")
-    private List<Client> clients = new ArrayList<Client>();
+    private List<Client> clients = new ArrayList<>();
 
     @Column
     @ElementCollection(targetClass=String.class)
