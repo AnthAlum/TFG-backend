@@ -4,6 +4,8 @@ import backend.clients.Client;
 import backend.filemanagment.File;
 import backend.merchants.Merchant;
 import backend.notification.Notification;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,25 +30,30 @@ public class Meeting implements Serializable {
 
     private LocalDateTime date;
 
-    @ManyToMany(mappedBy = "meetings")
+    @ManyToMany(mappedBy = "meetings", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Merchant> merchants = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "meetings")
+    @ManyToMany(mappedBy = "meetings", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Client> clients = new ArrayList<>();
 
     @Column
-    @ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass=String.class, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<String> keywords = new ArrayList<>();
 
     @Column
     @ElementCollection(targetClass=Notification.class)
     private List<Notification> notifications = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(targetClass=String.class, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<String> wordCloud;
 
-    @OneToMany(mappedBy = "meeting")
-    private List<File> files;
+    @OneToMany(mappedBy = "meeting", fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<File> files = new ArrayList<>();
 
     public Meeting() {
     }

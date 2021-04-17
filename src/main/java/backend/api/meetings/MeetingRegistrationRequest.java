@@ -2,7 +2,6 @@ package backend.api.meetings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,6 @@ public class MeetingRegistrationRequest {
 
     @JsonProperty(value = "keywords")
     private ArrayList<String> keywords = null;
-
-    @JsonProperty(value = "audios")
-    private ArrayList<MultipartFile> audios = null;
 
     public String getMatter() {
         return matter;
@@ -78,11 +74,4 @@ public class MeetingRegistrationRequest {
         this.description = description;
     }
 
-    public List<MultipartFile> getAudios() {
-        return audios;
-    }
-
-    public void setAudios(ArrayList<MultipartFile> audios) {
-        this.audios = audios;
-    }
 }

@@ -246,7 +246,7 @@ public class MeetingServiceImpl implements MeetingService{
 
     @Override
     @Transactional
-    public void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest) {
+    public MeetingResponse registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest) {
         Meeting meeting = meetingMapper.meetingRegistrationRequestToMeeting(meetingRegistrationRequest); //Obtenemos el meeting.
         meetingRegistrationRequest.getMerchants().forEach(idMerchant -> // 1. Con cada idMerchant del registrationRequest
                 meeting.addMerchant(merchantRepository.findById(idMerchant).orElse(null)) //    buscamos el merchant y lo guardamos en la lista.
@@ -257,9 +257,10 @@ public class MeetingServiceImpl implements MeetingService{
         );
         meeting.setDate(stringToLocalDateTime(meetingRegistrationRequest.getLocalDateTime()));
         meeting.setWordCloud(generateWordCloud(meeting.getDescription(), meeting.getKeywords()));
-        meetingRepository.save(meeting);
+        Meeting storedMeeting = meetingRepository.save(meeting);
         meeting.getMerchants().forEach(merchant -> merchant.addMeeting(meeting)); // Guardamos el nuevo meeting en las listas de los merchants.
         meeting.getClients().forEach(client -> client.addMeeting(meeting)); // Igual con los clientes.
+        return getMeetingById(storedMeeting.getIdMeeting());
     }
 
     private LocalDateTime stringToLocalDateTime(String dateTime){

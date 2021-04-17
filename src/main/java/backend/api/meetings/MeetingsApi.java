@@ -68,7 +68,7 @@ public interface MeetingsApi {
     @RequestMapping(value = "/meetings",
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<Void> registerMeeting(@ApiParam(value = "the new meeting") @Valid @RequestBody MeetingRegistrationRequest meetingRegistrationRequest);
+    ResponseEntity<MeetingResponse> registerMeeting(@ApiParam(value = "the new meeting") @Valid @RequestBody MeetingRegistrationRequest meetingRegistrationRequest);
 
     @RequestMapping(value = "/meetings/{meetingId}/files", method = RequestMethod.POST)
     ResponseEntity<MeetingFileResponse> addFile(

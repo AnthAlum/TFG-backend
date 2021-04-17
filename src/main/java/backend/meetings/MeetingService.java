@@ -12,7 +12,7 @@ public interface MeetingService {
     MeetingPaginatedResponse getMeetingsByMatter(String matter, Integer pageNumber, Integer pageSize);
     MeetingWordCloudResponse getMeetingWordCloudById(Long idMeeting);
     File getMeetingFileById(Long idMeeting, Long idFile);
-    void registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
+    MeetingResponse registerMeeting(MeetingRegistrationRequest meetingRegistrationRequest);
     void modifyMeetingDate(Long meetingId, MeetingDateChangeRequest meetingDateChangeRequest);
     void modifyMeetingMatter(Long meetingId, MeetingMatterChangeRequest meetingMatterChangeRequest);
     void modifyMeetingDescription(Long meetingId, MeetingDescriptionChangeRequest meetingDescriptionChangeRequest);

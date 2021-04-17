@@ -72,9 +72,8 @@ public class MeetingsApiController implements MeetingsApi{
     }
 
     @Override
-    public ResponseEntity<Void> registerMeeting(@Valid MeetingRegistrationRequest meetingRegistrationRequest) {
-        meetingService.registerMeeting(meetingRegistrationRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<MeetingResponse> registerMeeting(@Valid MeetingRegistrationRequest meetingRegistrationRequest) {
+        return new ResponseEntity<>(meetingService.registerMeeting(meetingRegistrationRequest), HttpStatus.OK);
     }
 
     @Override

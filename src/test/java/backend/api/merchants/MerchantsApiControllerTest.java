@@ -79,7 +79,6 @@ public class MerchantsApiControllerTest {
                         "}";
         MvcResult mvcResult = mvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(body))
                 .andReturn();
-        System.out.println(body);
         String jwtResponse = mvcResult.getResponse().getContentAsString();
         this.jwt = jwtResponse.substring(8, jwtResponse.length() - 2);
     }
