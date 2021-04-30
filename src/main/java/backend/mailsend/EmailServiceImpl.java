@@ -1,9 +1,11 @@
 package backend.mailsend;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -12,12 +14,13 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender javaMailSender;
 
     @Override
-    public void sendMessage(String to, String clientEmail, String notificationText) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("pymesapplication@gmail.com");
-        message.setSubject("Reminder for contact with client");
-        message.setTo(to);
-        message.setText(notificationText);
-        javaMailSender.send(message);
+    public void sendMessage(String to, String clientEmail, String notificationText) throws Exception {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        helper.setFrom("pymesapplication@gmail.com");
+        helper.setSubject("Reminder for contact with client");
+        helper.setTo(to);
+        helper.setText(notificationText, true);
+        javaMailSender.send(mimeMessage);
     }
 }
