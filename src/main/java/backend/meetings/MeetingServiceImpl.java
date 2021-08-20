@@ -279,6 +279,9 @@ public class MeetingServiceImpl implements MeetingService{
 
     private List<String> generateWordCloud(String description, List<String> keywords){
         Map<String, Integer> wordCounter = new HashMap<>(); // Map for store words and frequency.
+        ArrayList<String> wordCloud = new ArrayList<>();
+        if(description == null)
+            return wordCloud;
         List<String> descriptionWords = Arrays.asList(description.split("[\\s,\\.]")); //Slip words by spaces and commas.
         Predicate<String> predicate = Pattern.compile("^[A-zÀ-ú]{0,4}$").asPredicate().negate();
         List<String> stringList = descriptionWords.stream().filter(predicate).collect(Collectors.<String>toList());
@@ -299,7 +302,6 @@ public class MeetingServiceImpl implements MeetingService{
         });
         List<Map.Entry<String, Integer>> wordsSorted = wordCounter.entrySet().stream()
                 .sorted((k1, k2) -> -1 * k1.getValue().compareTo(k2.getValue())).limit(10).collect(Collectors.toList());//Sort by Integer values.
-        ArrayList<String> wordCloud = new ArrayList<>();
         wordsSorted.forEach(entry -> wordCloud.add(entry.getKey())); // Store the 10 words with higher frequency.
         return wordCloud;
     }

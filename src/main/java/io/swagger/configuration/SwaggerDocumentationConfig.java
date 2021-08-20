@@ -13,7 +13,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-01-27T22:09:33.361636800+01:00[Europe/Paris]")
 @Configuration
 public class SwaggerDocumentationConfig {
 
@@ -30,8 +29,8 @@ public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("API")
-            .description("API para mi TFG")
+            .title("PYMES Application API REST")
+            .description("API REST para utilizar las operaciones del servidor de mi aplicación para mi TFG.")
             .license("")
             .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")
@@ -44,8 +43,8 @@ public class SwaggerDocumentationConfig {
     public OpenAPI openApi() {
         return new OpenAPI()
             .info(new Info()
-                .title("API")
-                .description("API para mi TFG")
+                .title("PYMES Application API REST")
+                .description("API REST para utilizar las operaciones del servidor de mi aplicación para mi TFG.")
                 .termsOfService("")
                 .version("1.0.0")
                 .license(new License()

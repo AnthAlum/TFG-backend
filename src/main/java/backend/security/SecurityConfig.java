@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/css/*", "/js/*").permitAll()
+                .antMatchers("/", "/css/*", "/js/*", "/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
+                        "/swagger-ui.html", "/webjars/**", "/swagger-ui/", "/swagger-ui", "/swagger-ui/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .anyRequest()
                 .authenticated();
@@ -64,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Indico que 
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**");
+        //web.ignoring().antMatchers("/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
+        //        "/swagger-ui.html", "/webjars/**");
     }
 
     @Override
